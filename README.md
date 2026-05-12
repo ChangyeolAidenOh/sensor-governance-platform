@@ -115,4 +115,3 @@ sensor-governance-platform/
 
 Independent Project by Changyeol Oh
 - GitHub: [ChangyeolAidenOh](https://github.com/ChangyeolAidenOh)
-- M.S. Applied Mathematics and Statistics, Stony Brook University
