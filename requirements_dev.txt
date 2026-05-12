@@ -1,0 +1,41 @@
+# Full development environment (local)
+# Includes ML/DL frameworks, MLOps tools, etc.
+# Usage: pip install -r requirements_dev.txt && pip install -e .
+
+# Core
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+
+# Deep Learning
+torch>=2.0.0
+
+# ML Models
+xgboost>=2.0.0
+
+# Data Quality
+alibi-detect>=0.11.0
+
+# Explainability
+shap>=0.43.0
+
+# MLOps
+mlflow>=2.9.0
+dvc>=3.30.0
+
+# Serving
+fastapi>=0.104.0
+uvicorn>=0.24.0
+pydantic>=2.5.0
+
+# Visualization
+streamlit>=1.28.0
+plotly>=5.18.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Utilities
+pyarrow>=14.0.0
+tqdm>=4.66.0
+pyyaml>=6.0.0
