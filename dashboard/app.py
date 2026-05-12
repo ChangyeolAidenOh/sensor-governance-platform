@@ -488,7 +488,7 @@ with tab4:
             labels={"color": "Δ RMSE"},
             template="plotly_white",
         )
-        fig.update_layout(height=350)
+        fig.update_layout(height=550)
         st.plotly_chart(fig, width="stretch")
 
         # Strategy table
