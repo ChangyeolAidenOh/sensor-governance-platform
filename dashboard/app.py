@@ -153,7 +153,7 @@ with tab1:
                     xaxis_title="Cycle",
                     yaxis_title="Sensor Value",
                     height=400,
-                    template="plotly_dark",
+                    template="plotly_white",
                 )
                 st.plotly_chart(fig, width="stretch")
 
@@ -172,7 +172,7 @@ with tab1:
                 var_df, x="sensor", y="variance", color="useful",
                 color_discrete_map={True: "#00CC96", False: "#EF553B"},
                 labels={"useful": "Useful Signal"},
-                template="plotly_dark",
+                template="plotly_white",
             )
             fig.update_layout(height=400)
             st.plotly_chart(fig, width="stretch")
@@ -184,7 +184,7 @@ with tab1:
         fig = px.histogram(
             lifecycle, x="total_cycles", nbins=20,
             labels={"total_cycles": "Total Cycles (Lifecycle Length)"},
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.update_layout(height=300)
         st.plotly_chart(fig, width="stretch")
@@ -234,7 +234,7 @@ with tab2:
                 "ML (Traditional)": "#00CC96",
                 "DL (SOTA)": "#EF553B",
             },
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.update_layout(height=400, yaxis_range=[0, 1.05])
         fig.add_hline(y=0.5, line_dash="dash", line_color="gray",
@@ -258,7 +258,7 @@ with tab2:
         fig.update_layout(
             xaxis_title="RUL Threshold",
             yaxis_title="F1 Score",
-            height=400, template="plotly_dark",
+            height=400, template="plotly_white",
         )
         st.plotly_chart(fig, width="stretch")
 
@@ -306,7 +306,7 @@ with tab3:
         fig = px.bar(
             rul_df[rul_df["Model"] != "TFT (worst)"],
             x="Model", y="RMSE", color="Type",
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.update_layout(height=400)
         st.plotly_chart(fig, width="stretch")
@@ -317,7 +317,7 @@ with tab3:
         fig = px.bar(
             rul_df[rul_df["Model"] != "TFT (worst)"],
             x="Model", y="Score", color="Type",
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.update_layout(height=400)
         st.plotly_chart(fig, width="stretch")
@@ -349,7 +349,7 @@ with tab3:
     })
     fig = px.bar(
         vi_data, x="Importance", y="Sensor", orientation="h",
-        template="plotly_dark", color="Importance",
+        template="plotly_white", color="Importance",
         color_continuous_scale="Viridis",
     )
     fig.update_layout(height=350, yaxis=dict(autorange="reversed"))
@@ -384,7 +384,7 @@ with tab3:
                 "Same": "#00CC96", "Fault only": "#636EFA",
                 "Condition only": "#EF553B", "Both": "#AB63FA",
             },
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.add_hline(y=18.81, line_dash="dash", line_color="green",
                       annotation_text="FD001 baseline")
@@ -399,7 +399,7 @@ with tab3:
                 "Same": "#00CC96", "Fault only": "#636EFA",
                 "Condition only": "#EF553B", "Both": "#AB63FA",
             },
-            template="plotly_dark",
+            template="plotly_white",
             labels={"Delta %": "RMSE Increase (%)"},
         )
         fig.update_layout(height=400)
@@ -451,7 +451,7 @@ with tab4:
                 x="severity", y="delta_rmse",
                 color="corruption_type",
                 barmode="group",
-                template="plotly_dark",
+                template="plotly_white",
                 labels={"delta_rmse": "Δ RMSE", "severity": "Severity"},
             )
             fig.update_layout(height=450)
@@ -465,7 +465,7 @@ with tab4:
                 x="severity", y="recovery_rate",
                 color="corruption_type",
                 barmode="group",
-                template="plotly_dark",
+                template="plotly_white",
                 labels={"recovery_rate": "Recovery Rate", "severity": "Severity"},
             )
             fig.update_layout(height=450)
@@ -486,7 +486,7 @@ with tab4:
             pivot, text_auto=".2f",
             color_continuous_scale="RdYlGn_r",
             labels={"color": "Δ RMSE"},
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.update_layout(height=350)
         st.plotly_chart(fig, width="stretch")
@@ -530,7 +530,7 @@ with tab4:
             x="corruption_type", y="delta_rmse",
             color="sensor_group",
             barmode="group",
-            template="plotly_dark",
+            template="plotly_white",
             labels={"delta_rmse": "Δ RMSE", "sensor_group": "Sensor Group"},
         )
         fig.update_layout(height=400)
