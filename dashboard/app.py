@@ -360,6 +360,58 @@ with tab3:
         "This connects Layer 2B (prediction) back to Layer 1 (governance)."
     )
 
+    # Cross-Subset Transfer
+    st.divider()
+    st.subheader("Cross-Subset Transfer — Generalization Gap")
+    st.markdown("*Train on FD001 → test on FD002/FD003/FD004. Proxy for cross-plant deployment.*")
+
+    transfer_data = pd.DataFrame({
+        "Test Subset": ["FD001\n(baseline)", "FD003\n(cross-fault)", "FD002\n(cross-condition)",
+                        "FD004\n(full transfer)"],
+        "RMSE": [18.81, 21.84, 53.99, 54.95],
+        "Delta %": [0, 16.1, 187.1, 192.2],
+        "Score": [914, 3261, 158370, 256728],
+        "Transfer Type": ["Same", "Fault only", "Condition only", "Both"],
+    })
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        fig = px.bar(
+            transfer_data, x="Test Subset", y="RMSE",
+            color="Transfer Type",
+            color_discrete_map={
+                "Same": "#00CC96", "Fault only": "#636EFA",
+                "Condition only": "#EF553B", "Both": "#AB63FA",
+            },
+            template="plotly_dark",
+        )
+        fig.add_hline(y=18.81, line_dash="dash", line_color="green",
+                      annotation_text="FD001 baseline")
+        fig.update_layout(height=400)
+        st.plotly_chart(fig, width="stretch")
+
+    with col2:
+        fig = px.bar(
+            transfer_data, x="Test Subset", y="Delta %",
+            color="Transfer Type",
+            color_discrete_map={
+                "Same": "#00CC96", "Fault only": "#636EFA",
+                "Condition only": "#EF553B", "Both": "#AB63FA",
+            },
+            template="plotly_dark",
+            labels={"Delta %": "RMSE Increase (%)"},
+        )
+        fig.update_layout(height=400)
+        st.plotly_chart(fig, width="stretch")
+
+    st.error(
+        "**Operating condition change (+187%) dominates fault type change (+16%).** "
+        "Cross-plant deployment requires condition normalization first. "
+        "This aligns with corruption experiment: concept drift (+25.69 RMSE) "
+        "is the most damaging corruption type."
+    )
+
 
 # ===================================================================
 # Tab 4: Corruption Impact Analysis (KEY DIFFERENTIATOR)

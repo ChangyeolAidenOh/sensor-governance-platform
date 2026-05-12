@@ -1,0 +1,5 @@
+train_subset,test_subset,conditions_train,conditions_test,faults_train,faults_test,transfer_type,rmse,mae,score,delta_rmse,delta_rmse_pct,delta_score
+FD001,FD001,1,1,1,1,baseline (same),18.8085,13.8413,914.28,0.0,0.0,0.0
+FD001,FD002,1,6,1,1,cross-condition (1→6),53.9937,45.6138,158370.36,35.185199999999995,187.1,157456.08
+FD001,FD003,1,1,1,2,cross-fault (1→2),21.8359,16.3032,3260.96,3.0274,16.1,2346.6800000000003
+FD001,FD004,1,6,1,2,cross-condition + cross-fault,54.9511,46.8779,256727.5,36.1426,192.2,255813.22
