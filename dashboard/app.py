@@ -76,7 +76,7 @@ with st.sidebar:
     st.divider()
 
     st.markdown("**Project**")
-    st.markdown("POSCO Steel Camp AI")
+    st.markdown("Manufacturing AI Portfolio")
     st.markdown("**Dataset**")
     st.markdown("NASA C-MAPSS FD001")
     st.markdown("**Engines**")
@@ -93,9 +93,6 @@ with st.sidebar:
         "Layer 3: MLOps Platform",
         language=None,
     )
-
-    st.divider()
-    st.caption("Changyeol Oh | 2026")
 
 
 # ---------------------------------------------------------------------------
