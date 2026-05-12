@@ -4,7 +4,7 @@ Cross-Subset Transfer Experiment
 Train on FD001, evaluate on FD001/FD002/FD003/FD004 test sets.
 Measures generalization gap = proxy for cross-plant deployment.
 
-POSCO mapping:
+Subset mapping:
   FD001 → FD003: same conditions, different fault modes (포항 라인 A → B)
   FD001 → FD002: different conditions, same fault (포항 → 광양)
   FD001 → FD004: different conditions + different faults (최대 복잡도)
@@ -149,8 +149,8 @@ def run_transfer_experiment(data_dir: str = "data/raw/CMAPSSData",
         print(f"  {row['test_subset']:<8} {row['transfer_type']:<35} "
               f"{row['rmse']:>8.2f} {delta_str:>10} {pct_str:>8} {row['score']:>10.2f}")
 
-    # POSCO mapping
-    print(f"\n--- POSCO MAPPING ---")
+    # Subset mapping
+    print(f"\n--- SUBSET MAPPING ---")
     print(f"  FD001→FD001: Same line, same conditions (baseline)")
     print(f"  FD001→FD003: Same conditions, new fault mode → 다른 고장 유형 대응")
     print(f"  FD001→FD002: New conditions, same fault → 다른 운전 환경 (제품 Mix)")
