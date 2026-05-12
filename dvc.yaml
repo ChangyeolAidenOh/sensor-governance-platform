@@ -1,0 +1,49 @@
+stages:
+  preprocess:
+    cmd: python -m core_pipeline.data.preprocess --data-dir data/raw/CMAPSSData --subset FD001 --output-dir data/processed
+    deps:
+      - data/raw/CMAPSSData/train_FD001.txt
+      - data/raw/CMAPSSData/test_FD001.txt
+      - data/raw/CMAPSSData/RUL_FD001.txt
+      - core_pipeline/data/preprocess.py
+    outs:
+      - data/processed/FD001/train.parquet
+      - data/processed/FD001/test.parquet
+      - data/processed/FD001/rul_true.parquet
+
+  train_xgboost:
+    cmd: python -m core_pipeline.rul.xgboost_rul --data-dir data/raw/CMAPSSData --subset FD001
+    deps:
+      - data/processed/FD001/
+      - core_pipeline/rul/xgboost_rul.py
+    metrics:
+      - experiments/xgboost_metrics.json:
+          cache: false
+
+  corruption_experiment:
+    cmd: python -m experiments.run_corruption_experiment_v2 --subset FD001
+    deps:
+      - data/processed/FD001/
+      - core_pipeline/governance/corruption.py
+      - core_pipeline/governance/quality_metrics.py
+      - core_pipeline/rul/xgboost_rul.py
+    outs:
+      - experiments/corruption_experiment_FD001.csv
+    metrics:
+      - experiments/corruption_experiment_FD001.json:
+          cache: false
+
+  anomaly_detection:
+    cmd: python -m core_pipeline.anomaly.isolation_forest --data-dir data/raw/CMAPSSData --subset FD001
+    deps:
+      - data/processed/FD001/
+      - core_pipeline/anomaly/isolation_forest.py
+
+  cross_stage:
+    cmd: python -m experiments.run_cross_stage_experiments --subset FD001
+    deps:
+      - core_pipeline/anomaly/isolation_forest.py
+      - core_pipeline/rul/xgboost_rul.py
+      - core_pipeline/governance/corruption.py
+    outs:
+      - experiments/targeted_corruption_results.csv

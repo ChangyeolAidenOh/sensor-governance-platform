@@ -1,0 +1,7 @@
+corruption_type,severity,sensor_group,sensors,rmse_clean,rmse_corrupt,delta_rmse,score_clean,score_corrupt
+sensor_drift,high,top_4,"sensor_11,sensor_3,sensor_4,sensor_14",18.8085,22.2126,3.4041,914.28,2264.01
+sensor_drift,high,bottom_4,"sensor_8,sensor_7,sensor_2,sensor_17",18.8085,22.6296,3.8211,914.28,2445.57
+gaussian_noise,high,top_4,"sensor_11,sensor_3,sensor_4,sensor_14",18.8085,19.6058,0.7973,914.28,1374.41
+gaussian_noise,high,bottom_4,"sensor_8,sensor_7,sensor_2,sensor_17",18.8085,18.6582,-0.1503,914.28,916.56
+concept_drift,low,top_4,"sensor_11,sensor_3,sensor_4,sensor_14",18.8085,44.4641,25.6556,914.28,51451.45
+concept_drift,low,bottom_4,"sensor_8,sensor_7,sensor_2,sensor_17",18.8085,44.8678,26.0593,914.28,47633.57

@@ -1,0 +1,16 @@
+corruption_type,severity,remediation_strategy,rmse_clean,rmse_corrupt,rmse_recovered,delta_rmse,recovery_rate,score_clean,score_corrupt,score_recovered,concept_drift_detected,params,elapsed_sec
+sensor_drift,low,sensor_drop,18.8085,19.3219,19.6843,0.5134,-0.7059,914.28,1002.8,1118.43,False,{'drift_rate': 0.001},2.1
+sensor_drift,medium,sensor_drop,18.8085,19.2279,19.6843,0.4194,-1.0882,914.28,1035.19,1118.43,False,{'drift_rate': 0.005},2.0
+sensor_drift,high,sensor_drop,18.8085,23.2015,19.6843,4.393,0.8006,914.28,4028.58,1118.43,False,{'drift_rate': 0.02},2.1
+random_missing,low,passthrough,18.8085,18.8451,18.8451,0.0366,0.0,914.28,948.26,948.26,False,{'missing_rate': 0.05},2.2
+random_missing,medium,passthrough,18.8085,19.0378,19.0378,0.2293,0.0,914.28,1192.1,1192.1,False,{'missing_rate': 0.1},2.2
+random_missing,high,passthrough,18.8085,19.6837,19.6837,0.8752,0.0,914.28,1203.78,1203.78,False,{'missing_rate': 0.2},2.1
+stuck_at_fault,low,sensor_drop,18.8085,19.011,19.6843,0.2025,-3.3249,914.28,1187.85,1118.43,False,{'stuck_pct': 0.05},1.9
+stuck_at_fault,medium,sensor_drop,18.8085,18.4012,19.6843,-0.4073,0.0,914.28,1053.71,1118.43,False,{'stuck_pct': 0.15},2.1
+stuck_at_fault,high,sensor_drop,18.8085,20.2167,19.6843,1.4082,0.3781,914.28,1459.22,1118.43,False,{'stuck_pct': 0.3},3.1
+gaussian_noise,low,smoothing,18.8085,19.6303,19.0359,0.8218,0.7233,914.28,1235.57,1202.16,False,{'snr_db': 20},3.0
+gaussian_noise,medium,smoothing,18.8085,19.5796,19.0269,0.7711,0.7168,914.28,1258.01,1157.89,False,{'snr_db': 10},2.6
+gaussian_noise,high,smoothing,18.8085,19.3889,18.9301,0.5804,0.7905,914.28,1180.42,1179.8,False,{'snr_db': 5},3.0
+concept_drift,low,retrain_alert,18.8085,44.499,18.8085,25.6905,1.0,914.28,48981.38,914.28,True,{'corr_shift': 0.1},1.3
+concept_drift,medium,retrain_alert,18.8085,43.1734,18.8085,24.3649,1.0,914.28,34392.33,914.28,True,{'corr_shift': 0.3},1.2
+concept_drift,high,retrain_alert,18.8085,44.0234,18.8085,25.2149,1.0,914.28,44199.14,914.28,True,{'corr_shift': 0.5},1.2
