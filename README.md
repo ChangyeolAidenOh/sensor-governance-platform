@@ -111,7 +111,3 @@ sensor-governance-platform/
 |-- notebooks/                       # EDA and analysis notebooks
 ```
 
-## Author
-
-Independent Project by Changyeol Oh
-- GitHub: [ChangyeolAidenOh](https://github.com/ChangyeolAidenOh)
