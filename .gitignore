@@ -9,3 +9,4 @@ models/*.pkl
 *.egg-info/
 .DS_Store
 test_mlflow.db
+.idea/
