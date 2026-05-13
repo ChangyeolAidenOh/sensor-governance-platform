@@ -409,6 +409,51 @@ with tab3:
         "is the most damaging corruption type."
     )
 
+    # Full Subset Benchmark
+    st.divider()
+    st.subheader("Full Subset Benchmark — All 4 Subsets")
+    st.markdown("*Each subset independently trained and evaluated (no transfer).*")
+
+    bench_data = pd.DataFrame({
+        "Subset": ["FD001", "FD002", "FD003", "FD004"],
+        "Conditions": [1, 6, 1, 6],
+        "Faults": [1, 1, 2, 2],
+        "Engines": [100, 260, 100, 248],
+        "RMSE": [18.81, 42.34, 17.81, 50.07],
+        "IF AUROC": [0.955, 0.954, 0.953, 0.947],
+    })
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("**RUL Prediction (XGBoost)**")
+        fig = px.bar(
+            bench_data, x="Subset", y="RMSE",
+            color="Conditions",
+            color_continuous_scale=["#00CC96", "#EF553B"],
+            template="plotly_white",
+        )
+        fig.update_layout(height=400)
+        st.plotly_chart(fig, width="stretch")
+
+    with col2:
+        st.markdown("**Anomaly Detection (IF) — Stable Across All**")
+        fig = px.bar(
+            bench_data, x="Subset", y="IF AUROC",
+            color="Conditions",
+            color_continuous_scale=["#00CC96", "#EF553B"],
+            template="plotly_white",
+        )
+        fig.update_layout(height=400, yaxis_range=[0.9, 1.0])
+        st.plotly_chart(fig, width="stretch")
+
+    st.info(
+        "**RUL degrades with operating conditions (RMSE 18→50), "
+        "but IF remains stable (AUROC 0.947–0.955).** "
+        "Anomaly detection can be deployed plant-wide; "
+        "RUL prediction requires per-condition models or normalization."
+    )
+
 
 # ===================================================================
 # Tab 4: Corruption Impact Analysis (KEY DIFFERENTIATOR)
