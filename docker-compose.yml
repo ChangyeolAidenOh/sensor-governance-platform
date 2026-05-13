@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  mlflow:
+    image: python:3.10-slim
+    container_name: sgp_mlflow
+    command: >
+      bash -c "pip install mlflow==2.9.0 -q &&
+               mlflow ui --backend-store-uri sqlite:///mlflow/mlflow.db
+               --host 0.0.0.0 --port 5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow
+    environment:
+      - OMP_NUM_THREADS=1
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: sgp_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - OMP_NUM_THREADS=1
+      - MODEL_PATH=/app/models/xgboost_rul.pkl
+
+  dashboard:
+    image: python:3.10-slim
+    container_name: sgp_dashboard
+    command: >
+      bash -c "pip install streamlit plotly pandas numpy pyarrow -q &&
+               streamlit run /app/dashboard/app.py --server.port 8501 --server.address 0.0.0.0"
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./dashboard:/app/dashboard
+      - ./data:/app/data
+      - ./experiments:/app/experiments

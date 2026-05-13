@@ -1,0 +1,33 @@
+{
+  "model_name": "XGBoost RUL Predictor",
+  "model_type": "Gradient Boosted Trees",
+  "version": "1.0.0",
+  "created_at": "2026-05-13T20:22:37.640209",
+  "framework": "xgboost",
+  "dataset": "NASA C-MAPSS",
+  "subset": "FD001",
+  "n_train_samples": 20631,
+  "n_test_samples": 100,
+  "n_features": 98,
+  "target": "Remaining Useful Life (cycles)",
+  "max_rul": 125,
+  "test_rmse": 18.81,
+  "test_mae": 13.84,
+  "test_score": 914.28,
+  "best_val_rmse": null,
+  "known_limitations": [
+    "Trained on single operating condition (FD001, sea level)",
+    "Cross-condition transfer degrades RMSE by +187% (FD002)",
+    "Does not capture temporal order (each cycle treated independently)",
+    "Sensitive to concept drift (RMSE +25.69 in corruption experiment)"
+  ],
+  "failure_modes": [
+    "Operating condition change: RMSE 18.81 -> 53.99 (+187%)",
+    "Concept drift: RMSE 18.81 -> 44.50 (+137%)",
+    "Sensor drift (high): RMSE 18.81 -> 23.20 (+23%)"
+  ],
+  "recommended_conditions": "Single operating condition (FD001-like). Sensor Health Score >= 70 (Quality Gate PASS).",
+  "not_recommended": "Multi-condition environments (FD002/FD004) without condition normalization. Data with PSI > 0.2 on >30% of features.",
+  "data_quality_required": "Quality Gate PASS (Sensor Health >= 70). Missing rate < 20%. No concept drift detected.",
+  "drift_sensitivity": "Concept drift: CRITICAL (100% detection, retrain required). Sensor drift: MODERATE (80.1% recovery with PSI gate). Gaussian noise: LOW (72-79% recovery with smoothing)."
+}

@@ -1,0 +1,31 @@
+{
+  "model_name": "Bi-LSTM RUL Predictor",
+  "model_type": "Bidirectional LSTM",
+  "version": "1.0.0",
+  "created_at": "2026-05-13T20:22:37.640233",
+  "framework": "pytorch",
+  "dataset": "NASA C-MAPSS",
+  "subset": "FD001",
+  "n_train_samples": 20631,
+  "n_test_samples": 100,
+  "n_features": 14,
+  "target": "Remaining Useful Life (cycles)",
+  "max_rul": 125,
+  "test_rmse": 20.11,
+  "test_mae": 16.77,
+  "test_score": 610.84,
+  "best_val_rmse": 13.58,
+  "known_limitations": [
+    "RMSE higher than XGBoost despite temporal modeling",
+    "Score (610) better than XGBoost (914) \u2014 fewer late predictions",
+    "MC Dropout uncertainty is over-confident (coverage 0.56 vs target 0.90)"
+  ],
+  "failure_modes": [
+    "Val-Test generalization gap: val 13.58 vs test 20.11",
+    "Random initialization sensitivity across runs"
+  ],
+  "recommended_conditions": "When NASA Score optimization is priority over RMSE. Single operating condition.",
+  "not_recommended": "When RMSE is primary metric (use XGBoost or TFT instead).",
+  "data_quality_required": "Quality Gate PASS. Sequence length >= 30 cycles.",
+  "drift_sensitivity": "Similar to XGBoost for feature-level drift. Temporal pattern disruption not separately quantified."
+}
