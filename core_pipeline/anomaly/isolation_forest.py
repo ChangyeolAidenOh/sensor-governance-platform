@@ -22,9 +22,7 @@ from typing import Optional
 from core_pipeline.data.preprocess import DEGRADATION_SENSORS, SENSOR_COLS
 
 
-# ---------------------------------------------------------------------------
 # Anomaly Label Definition
-# ---------------------------------------------------------------------------
 
 def create_anomaly_labels(df: pd.DataFrame,
                           rul_threshold: int = 50) -> pd.DataFrame:
@@ -69,9 +67,7 @@ def get_healthy_data(df: pd.DataFrame,
     return pd.concat(healthy_frames, ignore_index=True)
 
 
-# ---------------------------------------------------------------------------
 # Feature Preparation
-# ---------------------------------------------------------------------------
 
 def prepare_anomaly_features(df: pd.DataFrame,
                              feature_cols: Optional[list] = None
@@ -101,9 +97,7 @@ def prepare_anomaly_features(df: pd.DataFrame,
     return X, feature_cols
 
 
-# ---------------------------------------------------------------------------
 # Model Training & Scoring
-# ---------------------------------------------------------------------------
 
 def train_isolation_forest(healthy_df: pd.DataFrame,
                            feature_cols: Optional[list] = None,
@@ -161,9 +155,7 @@ def score_anomalies(model: IsolationForest,
     return df
 
 
-# ---------------------------------------------------------------------------
 # Evaluation
-# ---------------------------------------------------------------------------
 
 def evaluate_anomaly_detection(df: pd.DataFrame,
                                rul_threshold: int = 50) -> dict:
@@ -238,9 +230,7 @@ def evaluate_multiple_thresholds(df: pd.DataFrame,
     return pd.DataFrame(results)
 
 
-# ---------------------------------------------------------------------------
 # Per-Engine Analysis
-# ---------------------------------------------------------------------------
 
 def analyze_engine_detections(df: pd.DataFrame,
                               rul_threshold: int = 50) -> pd.DataFrame:
@@ -285,9 +275,7 @@ def analyze_engine_detections(df: pd.DataFrame,
     return pd.DataFrame(results)
 
 
-# ---------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     import argparse

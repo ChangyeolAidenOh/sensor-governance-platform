@@ -33,9 +33,7 @@ from core_pipeline.anomaly.isolation_forest import (
 )
 
 
-# ---------------------------------------------------------------------------
 # Dataset
-# ---------------------------------------------------------------------------
 
 class CMAPSSWindowDataset(Dataset):
     """Sliding window dataset for C-MAPSS sensor data."""
@@ -75,9 +73,7 @@ class CMAPSSWindowDataset(Dataset):
         return torch.FloatTensor(self.windows[idx])
 
 
-# ---------------------------------------------------------------------------
 # Model Components
-# ---------------------------------------------------------------------------
 
 class TriangularCausalMask:
     """Causal mask for attention (not used in anomaly detection,
@@ -230,9 +226,7 @@ class AnomalyTransformerModel(nn.Module):
         return recon, series_list, prior_list
 
 
-# ---------------------------------------------------------------------------
 # Loss Functions
-# ---------------------------------------------------------------------------
 
 def association_discrepancy(series_list, prior_list):
     eps = 1e-8
@@ -251,9 +245,7 @@ def association_discrepancy(series_list, prior_list):
     return disc
 
 
-# ---------------------------------------------------------------------------
 # Training
-# ---------------------------------------------------------------------------
 
 def train_anomaly_transformer(dataset: CMAPSSWindowDataset,
                                n_features: int,
@@ -337,9 +329,7 @@ def train_anomaly_transformer(dataset: CMAPSSWindowDataset,
     return {"model": model, "device": device}
 
 
-# ---------------------------------------------------------------------------
 # Inference & Scoring
-# ---------------------------------------------------------------------------
 
 @torch.no_grad()
 def score_windows(model: AnomalyTransformerModel,
@@ -419,9 +409,7 @@ def map_scores_to_cycles(window_scores: np.ndarray,
     return df
 
 
-# ---------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     import argparse

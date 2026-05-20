@@ -183,9 +183,7 @@ class QualityGate:
         return pd.DataFrame(rows)
 
 
-# ---------------------------------------------------------------------------
 # Pipeline Integration
-# ---------------------------------------------------------------------------
 
 def run_governed_pipeline(train_df: pd.DataFrame,
                           sensor_cols: list,

@@ -25,9 +25,7 @@ class SensorHealthScore:
     details: dict         # raw metric values
 
 
-# ---------------------------------------------------------------------------
 # 1. Completeness
-# ---------------------------------------------------------------------------
 
 def compute_completeness(series: pd.Series) -> float:
     """Compute completeness score (0-100) for a sensor window.
@@ -40,9 +38,7 @@ def compute_completeness(series: pd.Series) -> float:
     return round((1.0 - missing_rate) * 100, 2)
 
 
-# ---------------------------------------------------------------------------
 # 2. Stability (PSI - Population Stability Index)
-# ---------------------------------------------------------------------------
 
 def compute_psi(reference: np.ndarray,
                 current: np.ndarray,
@@ -105,9 +101,7 @@ def psi_to_score(psi: float) -> float:
     return round((1.0 - psi / 0.25) * 100, 2)
 
 
-# ---------------------------------------------------------------------------
 # 3. Consistency (cross-sensor correlation stability)
-# ---------------------------------------------------------------------------
 
 def compute_correlation_deviation(current_corr: pd.DataFrame,
                                   reference_corr: pd.DataFrame,
@@ -146,9 +140,7 @@ def correlation_deviation_to_score(deviation: float,
     return round((1.0 - deviation / max_deviation) * 100, 2)
 
 
-# ---------------------------------------------------------------------------
 # Composite Score
-# ---------------------------------------------------------------------------
 
 def compute_sensor_health(sensor: str,
                           current_window: pd.Series,
@@ -254,9 +246,7 @@ def health_scores_to_dataframe(scores: list[SensorHealthScore]) -> pd.DataFrame:
     return pd.DataFrame(records).sort_values("composite")
 
 
-# ---------------------------------------------------------------------------
 # Windowed Health Monitoring
-# ---------------------------------------------------------------------------
 
 def monitor_engine_health(engine_df: pd.DataFrame,
                           sensor_cols: list,

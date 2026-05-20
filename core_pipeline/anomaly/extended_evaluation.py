@@ -26,9 +26,7 @@ from core_pipeline.anomaly.isolation_forest import (
 from core_pipeline.anomaly.rolling_zscore import run_zscore_pipeline, optimize_z_threshold
 
 
-# ---------------------------------------------------------------------------
 # Segment Extraction
-# ---------------------------------------------------------------------------
 
 def extract_segments(labels: np.ndarray) -> list[tuple[int, int]]:
     """Extract contiguous segments of 1s from binary label array.
@@ -53,9 +51,7 @@ def extract_segments(labels: np.ndarray) -> list[tuple[int, int]]:
     return segments
 
 
-# ---------------------------------------------------------------------------
 # Range-based Evaluation
-# ---------------------------------------------------------------------------
 
 def range_based_f1(y_true: np.ndarray, y_pred: np.ndarray,
                    alpha: float = 0.0) -> dict:
@@ -131,9 +127,7 @@ def range_based_f1(y_true: np.ndarray, y_pred: np.ndarray,
     }
 
 
-# ---------------------------------------------------------------------------
 # Event-based Evaluation
-# ---------------------------------------------------------------------------
 
 def event_based_f1(y_true: np.ndarray, y_pred: np.ndarray,
                    min_overlap: float = 0.5) -> dict:
@@ -208,9 +202,7 @@ def event_based_f1(y_true: np.ndarray, y_pred: np.ndarray,
     }
 
 
-# ---------------------------------------------------------------------------
 # Full 3-way Evaluation
-# ---------------------------------------------------------------------------
 
 def evaluate_3way(y_true: np.ndarray,
                   y_pred: np.ndarray,
@@ -248,9 +240,7 @@ def evaluate_3way(y_true: np.ndarray,
     return {**point, **range_metrics, **event_metrics}
 
 
-# ---------------------------------------------------------------------------
 # Per-Engine 3-way (proper time-series evaluation)
-# ---------------------------------------------------------------------------
 
 def evaluate_per_engine_3way(df: pd.DataFrame,
                               rul_threshold: int = 50) -> dict:
@@ -308,9 +298,7 @@ def evaluate_per_engine_3way(df: pd.DataFrame,
     }
 
 
-# ---------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     import argparse

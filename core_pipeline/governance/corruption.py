@@ -47,9 +47,7 @@ class CorruptionResult:
     summary: dict
 
 
-# ---------------------------------------------------------------------------
 # Severity parameter mappings
-# ---------------------------------------------------------------------------
 
 SEVERITY_PARAMS = {
     CorruptionType.SENSOR_DRIFT: {
@@ -80,9 +78,7 @@ SEVERITY_PARAMS = {
 }
 
 
-# ---------------------------------------------------------------------------
 # Corruption Functions
-# ---------------------------------------------------------------------------
 
 def inject_sensor_drift(df: pd.DataFrame,
                         sensors: list,
@@ -236,9 +232,7 @@ def inject_concept_drift(df: pd.DataFrame,
     return corrupted, mask
 
 
-# ---------------------------------------------------------------------------
 # Corruption Dispatcher
-# ---------------------------------------------------------------------------
 
 CORRUPTION_FUNCTIONS = {
     CorruptionType.SENSOR_DRIFT: inject_sensor_drift,

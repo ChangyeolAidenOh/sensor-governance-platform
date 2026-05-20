@@ -129,7 +129,6 @@ def run_full_benchmark(data_dir: str = "data/raw/CMAPSSData",
 
     # Summary
     print(f"\n{'='*70}")
-    print("FULL BENCHMARK RESULTS")
     print(f"{'='*70}")
 
     print(f"\n--- RUL Prediction (XGBoost) ---\n")

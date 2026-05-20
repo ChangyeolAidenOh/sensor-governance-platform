@@ -30,9 +30,7 @@ from core_pipeline.data.preprocess import DEGRADATION_SENSORS, SENSOR_COLS
 from core_pipeline.governance.quality_metrics import compute_psi
 
 
-# -------------------------------------------------------------------
 # API Models
-# -------------------------------------------------------------------
 
 class SensorReading(BaseModel):
     """Single cycle sensor readings."""
@@ -77,9 +75,7 @@ class HealthResponse(BaseModel):
     uptime_seconds: float
 
 
-# -------------------------------------------------------------------
 # App
-# -------------------------------------------------------------------
 
 app = FastAPI(
     title="Sensor Governance & RUL Prediction API",
@@ -98,9 +94,7 @@ _state = {
 }
 
 
-# -------------------------------------------------------------------
 # Model Loading
-# -------------------------------------------------------------------
 
 def load_model(model_path: str = "models/xgboost_rul.pkl"):
     """Load a trained model from disk."""
@@ -121,9 +115,7 @@ def load_model(model_path: str = "models/xgboost_rul.pkl"):
     return True
 
 
-# -------------------------------------------------------------------
 # Quality Gate (lightweight version for API)
-# -------------------------------------------------------------------
 
 def assess_quality(readings: list[SensorReading]) -> QualityReport:
     """Quick data quality assessment for incoming sensor data."""
@@ -181,9 +173,7 @@ def assess_quality(readings: list[SensorReading]) -> QualityReport:
     )
 
 
-# -------------------------------------------------------------------
 # Prediction
-# -------------------------------------------------------------------
 
 def predict_rul(readings: list[SensorReading],
                 feature_cols: list,
@@ -238,9 +228,7 @@ def predict_rul(readings: list[SensorReading],
     return round(rul, 1), confidence
 
 
-# -------------------------------------------------------------------
 # Endpoints
-# -------------------------------------------------------------------
 
 @app.get("/health", response_model=HealthResponse)
 def health_check():
@@ -313,9 +301,7 @@ def model_info():
     }
 
 
-# -------------------------------------------------------------------
 # Startup
-# -------------------------------------------------------------------
 
 @app.on_event("startup")
 def startup():

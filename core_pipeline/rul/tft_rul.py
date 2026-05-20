@@ -26,9 +26,7 @@ from core_pipeline.rul.xgboost_rul import cmapss_score
 from core_pipeline.rul.bilstm_rul import RULSequenceDataset
 
 
-# ---------------------------------------------------------------------------
 # TFT Building Blocks
-# ---------------------------------------------------------------------------
 
 class GatedResidualNetwork(nn.Module):
     """GRN: nonlinear processing with skip connection and gating."""
@@ -121,9 +119,7 @@ class TemporalAttention(nn.Module):
         return self.norm(x + self.dropout(attn_out)), attn_weights
 
 
-# ---------------------------------------------------------------------------
 # TFT Model
-# ---------------------------------------------------------------------------
 
 class TFT_RUL(nn.Module):
     """Temporal Fusion Transformer for RUL prediction.
@@ -192,9 +188,7 @@ class TFT_RUL(nn.Module):
         return rul
 
 
-# ---------------------------------------------------------------------------
 # Training
-# ---------------------------------------------------------------------------
 
 def train_tft_rul(train_df: pd.DataFrame,
                   sensor_cols: Optional[list] = None,
@@ -342,9 +336,7 @@ def train_tft_rul(train_df: pd.DataFrame,
     }
 
 
-# ---------------------------------------------------------------------------
 # Evaluation
-# ---------------------------------------------------------------------------
 
 def evaluate_tft_rul(model: TFT_RUL,
                      test_df: pd.DataFrame,
@@ -405,9 +397,7 @@ def evaluate_tft_rul(model: TFT_RUL,
     }
 
 
-# ---------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     import argparse

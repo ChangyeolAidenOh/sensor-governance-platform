@@ -45,9 +45,7 @@ def setup_mlflow(tracking_dir: str = MLFLOW_TRACKING_DIR,
     print(f"Experiment: {experiment_name}")
     print(f"  To view: OMP_NUM_THREADS=1 mlflow ui --backend-store-uri {tracking_uri}")
 
-# -------------------------------------------------------------------
 # XGBoost Run
-# -------------------------------------------------------------------
 
 def log_xgboost_run(data: dict,
                     max_rul: int = 125,
@@ -119,9 +117,7 @@ def log_xgboost_run(data: dict,
         return metrics
 
 
-# -------------------------------------------------------------------
 # Bi-LSTM Run
-# -------------------------------------------------------------------
 
 def log_bilstm_run(data: dict,
                    max_rul: int = 125,
@@ -181,9 +177,7 @@ def log_bilstm_run(data: dict,
         return metrics
 
 
-# -------------------------------------------------------------------
 # TFT Run
-# -------------------------------------------------------------------
 
 def log_tft_run(data: dict,
                 max_rul: int = 125,
@@ -249,9 +243,7 @@ def log_tft_run(data: dict,
         return metrics
 
 
-# -------------------------------------------------------------------
 # Model Comparison & Registry
-# -------------------------------------------------------------------
 
 def compare_and_register(results: dict):
     """Compare all models and register the best one."""
@@ -273,9 +265,7 @@ def compare_and_register(results: dict):
     print(f"  Best model (Score): {best_score_name} ({best_score_metrics['score']})")
 
 
-# -------------------------------------------------------------------
 # Main
-# -------------------------------------------------------------------
 
 if __name__ == "__main__":
     import argparse

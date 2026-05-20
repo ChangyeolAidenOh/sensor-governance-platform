@@ -21,9 +21,7 @@ from pathlib import Path
 import json
 
 
-# ---------------------------------------------------------------------------
 # Config
-# ---------------------------------------------------------------------------
 
 st.set_page_config(
     page_title="Sensor Governance Platform",
@@ -37,9 +35,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 EXPERIMENTS_DIR = PROJECT_ROOT / "experiments"
 
 
-# ---------------------------------------------------------------------------
 # Data Loading (cached)
-# ---------------------------------------------------------------------------
 
 @st.cache_data
 def load_corruption_results():
@@ -65,9 +61,7 @@ def load_train_data():
     return None
 
 
-# ---------------------------------------------------------------------------
 # Sidebar
-# ---------------------------------------------------------------------------
 
 with st.sidebar:
     st.title("Sensor Governance Platform")
@@ -95,9 +89,7 @@ with st.sidebar:
     )
 
 
-# ---------------------------------------------------------------------------
 # Tabs
-# ---------------------------------------------------------------------------
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Sensor Health",
@@ -108,9 +100,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 
-# ===================================================================
 # Tab 1: Sensor Health Monitor
-# ===================================================================
 
 with tab1:
     st.header("Sensor Health Monitor")
@@ -190,9 +180,7 @@ with tab1:
         st.warning("Train data not found. Run preprocessing first.")
 
 
-# ===================================================================
 # Tab 2: Anomaly Detection Comparison
-# ===================================================================
 
 with tab2:
     st.header("Anomaly Detection — Model Comparison")
@@ -269,9 +257,7 @@ with tab2:
     )
 
 
-# ===================================================================
 # Tab 3: RUL Prediction Comparison
-# ===================================================================
 
 with tab3:
     st.header("RUL Prediction — Model Comparison")
@@ -455,9 +441,7 @@ with tab3:
     )
 
 
-# ===================================================================
 # Tab 4: Corruption Impact Analysis (KEY DIFFERENTIATOR)
-# ===================================================================
 
 with tab4:
     st.header("Corruption Impact Analysis")
@@ -585,9 +569,7 @@ with tab4:
         )
 
 
-# ===================================================================
 # Tab 5: Platform & Methodology
-# ===================================================================
 
 with tab5:
     st.header("Platform & Methodology")

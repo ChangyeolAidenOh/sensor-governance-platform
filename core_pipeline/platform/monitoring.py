@@ -20,9 +20,7 @@ from dataclasses import dataclass, field
 from core_pipeline.governance.quality_metrics import compute_psi
 
 
-# ---------------------------------------------------------------------------
 # Alert Definitions
-# ---------------------------------------------------------------------------
 
 @dataclass
 class Alert:
@@ -46,9 +44,7 @@ class MonitoringState:
     last_check: str = ""
 
 
-# ---------------------------------------------------------------------------
 # Thresholds
-# ---------------------------------------------------------------------------
 
 THRESHOLDS = {
     "psi_warning": 0.1,
@@ -61,9 +57,7 @@ THRESHOLDS = {
 }
 
 
-# ---------------------------------------------------------------------------
 # Data Drift Monitoring
-# ---------------------------------------------------------------------------
 
 def check_data_drift(reference_df: pd.DataFrame,
                      current_df: pd.DataFrame,
@@ -135,9 +129,7 @@ def check_data_drift(reference_df: pd.DataFrame,
     return alerts
 
 
-# ---------------------------------------------------------------------------
 # Performance Monitoring
-# ---------------------------------------------------------------------------
 
 def check_performance(predictions: np.ndarray,
                       actuals: np.ndarray,
@@ -171,9 +163,7 @@ def check_performance(predictions: np.ndarray,
     return alerts
 
 
-# ---------------------------------------------------------------------------
 # Sensor Health Monitoring
-# ---------------------------------------------------------------------------
 
 def check_sensor_health(health_scores: dict[str, float],
                         state: MonitoringState) -> list[Alert]:
@@ -220,9 +210,7 @@ def check_sensor_health(health_scores: dict[str, float],
     return alerts
 
 
-# ---------------------------------------------------------------------------
 # Monitoring Report
-# ---------------------------------------------------------------------------
 
 def generate_monitoring_report(state: MonitoringState) -> dict:
     """Generate a summary monitoring report."""
@@ -245,9 +233,7 @@ def generate_monitoring_report(state: MonitoringState) -> dict:
     }
 
 
-# ---------------------------------------------------------------------------
 # Main (demo)
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     from core_pipeline.data.preprocess import preprocess_subset, DEGRADATION_SENSORS

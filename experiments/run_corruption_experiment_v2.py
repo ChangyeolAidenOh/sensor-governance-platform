@@ -51,9 +51,7 @@ N_CORRUPT_SENSORS = 4
 PSI_DROP_THRESHOLD = 0.2
 
 
-# ---------------------------------------------------------------------------
 # Type-Aware Remediation Functions
-# ---------------------------------------------------------------------------
 
 def remediate_passthrough(corrupted_df: pd.DataFrame,
                           target_sensors: list,
@@ -187,9 +185,7 @@ REMEDIATION_MAP = {
 }
 
 
-# ---------------------------------------------------------------------------
 # Experiment Runner
-# ---------------------------------------------------------------------------
 
 @dataclass
 class ExperimentResult:

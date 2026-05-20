@@ -20,9 +20,7 @@ from core_pipeline.data.preprocess import DEGRADATION_SENSORS, SENSOR_COLS
 from core_pipeline.rul.xgboost_rul import cmapss_score
 
 
-# ---------------------------------------------------------------------------
 # Dataset
-# ---------------------------------------------------------------------------
 
 class RULSequenceDataset(Dataset):
     """Sliding window dataset for RUL prediction.
@@ -100,9 +98,7 @@ class RULSequenceDataset(Dataset):
         return self.mean, self.std
 
 
-# ---------------------------------------------------------------------------
 # Model
-# ---------------------------------------------------------------------------
 
 class BiLSTM_RUL(nn.Module):
     """Bidirectional LSTM for RUL prediction.
@@ -151,9 +147,7 @@ class BiLSTM_RUL(nn.Module):
         return rul
 
 
-# ---------------------------------------------------------------------------
 # Training
-# ---------------------------------------------------------------------------
 
 def train_bilstm_rul(train_df: pd.DataFrame,
                      sensor_cols: Optional[list] = None,
@@ -320,9 +314,7 @@ def train_bilstm_rul(train_df: pd.DataFrame,
     }
 
 
-# ---------------------------------------------------------------------------
 # Evaluation
-# ---------------------------------------------------------------------------
 
 def evaluate_bilstm_rul(model: BiLSTM_RUL,
                         test_df: pd.DataFrame,
@@ -389,9 +381,7 @@ def evaluate_bilstm_rul(model: BiLSTM_RUL,
     }
 
 
-# ---------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     import argparse

@@ -29,9 +29,7 @@ from core_pipeline.rul.xgboost_rul import (
 )
 
 
-# ===================================================================
 # Experiment 1: IF anomaly score as RUL feature
-# ===================================================================
 
 def run_if_feature_experiment(data_dir: str = "data/raw/CMAPSSData",
                                subset: str = "FD001",
@@ -101,9 +99,7 @@ def run_if_feature_experiment(data_dir: str = "data/raw/CMAPSSData",
     }
 
 
-# ===================================================================
 # Experiment 2: TFT importance → targeted corruption
-# ===================================================================
 
 # TFT Run 2 (best) variable importance — top 4 vs bottom 4
 TFT_TOP_SENSORS = ["sensor_11", "sensor_3", "sensor_4", "sensor_14"]
@@ -205,14 +201,11 @@ def run_targeted_corruption_experiment(data_dir: str = "data/raw/CMAPSSData",
         print(f"  {'':<25} {'bottom_4':<10} {bot_delta:>+10.4f} {'***' if abs(bot_delta) > abs(top_delta) else ''}")
         ratio = abs(top_delta) / abs(bot_delta) if abs(bot_delta) > 0.001 else float("inf")
         print(f"  {'':<25} {'ratio':<10} {ratio:>10.1f}x")
-        print()
 
     return results_df
 
 
-# ===================================================================
 # Main
-# ===================================================================
 
 if __name__ == "__main__":
     import argparse
@@ -241,7 +234,6 @@ if __name__ == "__main__":
     exp2_result.to_csv(out_dir / "targeted_corruption_results.csv", index=False)
 
     print("\n" + "=" * 60)
-    print("SUMMARY")
     print("=" * 60)
     print(f"\nExp 1 — IF score as feature: RMSE delta = {exp1_result['delta_rmse']:+.4f}")
     print(f"Exp 2 — Targeted corruption results saved to experiments/")

@@ -137,7 +137,6 @@ def run_transfer_experiment(data_dir: str = "data/raw/CMAPSSData",
 
     # Summary
     print("\n" + "=" * 60)
-    print("TRANSFER RESULTS SUMMARY")
     print("=" * 60)
     print(f"\n  Baseline (FD001): RMSE {baseline_rmse}, Score {baseline_score}\n")
     print(f"  {'Test':<8} {'Type':<35} {'RMSE':>8} {'Δ RMSE':>10} {'Δ %':>8} {'Score':>10}")

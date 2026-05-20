@@ -21,9 +21,7 @@ from core_pipeline.anomaly.isolation_forest import (
 )
 
 
-# ---------------------------------------------------------------------------
 # Rolling Z-score Computation
-# ---------------------------------------------------------------------------
 
 def compute_rolling_zscore(df: pd.DataFrame,
                            sensor_cols: Optional[list] = None,
@@ -108,9 +106,7 @@ def compute_composite_zscore(df: pd.DataFrame,
     return df
 
 
-# ---------------------------------------------------------------------------
 # Threshold-based Detection
-# ---------------------------------------------------------------------------
 
 def detect_anomalies_zscore(df: pd.DataFrame,
                              z_threshold: float = 3.0) -> pd.DataFrame:
@@ -165,9 +161,7 @@ def optimize_z_threshold(df: pd.DataFrame,
     }
 
 
-# ---------------------------------------------------------------------------
 # Full Pipeline
-# ---------------------------------------------------------------------------
 
 def run_zscore_pipeline(train_df: pd.DataFrame,
                         window: int = 30,
@@ -192,9 +186,7 @@ def run_zscore_pipeline(train_df: pd.DataFrame,
     return df
 
 
-# ---------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     import argparse
