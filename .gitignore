@@ -10,3 +10,7 @@ models/*.pkl
 .DS_Store
 test_mlflow.db
 .idea/
+
+# docs: planning/decision files stay local; whitelist what is published
+docs/*.md
+!docs/v1_report.md
