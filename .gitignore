@@ -14,3 +14,4 @@ test_mlflow.db
 # docs: planning/decision files stay local; whitelist what is published
 docs/*.md
 !docs/v1_report.md
+docs/install_*.log

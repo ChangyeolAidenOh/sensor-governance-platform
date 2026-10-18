@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sensor-governance-platform"
-version = "0.1.0"
+version = "2.0.0.dev0"
 requires-python = ">=3.10"
 
 [tool.setuptools.packages.find]
