@@ -1,5 +1,10 @@
 # Industrial Sensor Governance & Predictive Maintenance Platform
 
+> **Repository layout**
+> - `main` — **v1 Sensor Governance Platform** (C-MAPSS quality gate, corruption experiments, anomaly detection). Frozen at tag [`v1.0`](https://github.com/ChangyeolAidenOh/sensor-governance-platform/releases/tag/v1.0); this README below describes v1.
+> - `v2` — **Process Reliability Agent** (in development, Stage 0): TEP process data + KOSHA guidance + LangGraph approval-flow agent. Live chat spike (no LLM/DB yet): https://process-reliability-agent.streamlit.app/ — see **Demos** at the bottom.
+
+
 > **v2 in progress (branch `v2`)** — Process Reliability Agent. Live chat spike: https://process-reliability-agent.streamlit.app/ (technical demo, no LLM/DB). v1 analysis platform is frozen at tag `v1.0`; see **Demos** at the bottom.
 
 
