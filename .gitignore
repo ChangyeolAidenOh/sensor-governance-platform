@@ -19,3 +19,9 @@ docs/install_*.log
 # secrets
 .env
 .venv-docling/
+data/raw/kosha/index_*.json
+data/raw/kosha/index_*.csv
+data/raw/kosha/files_manifest.json
+data/raw/kosha/index_*.json
+data/raw/kosha/index_*.csv
+data/raw/kosha/files_manifest.json
