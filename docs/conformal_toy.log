@@ -1,0 +1,25 @@
+== Part A: conformal p-values + BH, realized FDR by exchangeability break (shift = log-scale factor)
+  shift  1.0: FDR 0.067 ± 0.005  batches>alpha 0.29  power 0.153  discoveries 3.6
+  shift  1.1: FDR 0.142 ± 0.008  batches>alpha 0.49  power 0.184  discoveries 5.0
+  shift 1.25: FDR 0.285 ± 0.010  batches>alpha 0.71  power 0.236  discoveries 8.1
+  shift  1.5: FDR 0.534 ± 0.009  batches>alpha 0.91  power 0.326  discoveries 16.1
+  shift  2.0: FDR 0.744 ± 0.003  batches>alpha 1.00  power 0.446  discoveries 34.9
+  p-value super-uniformity at shift 1.0: {'0.01': 0.0088, '0.05': 0.0384, '0.1': 0.0885, '0.25': 0.2238, '0.5': 0.4612}
+  p-value super-uniformity at shift 1.5: {'0.01': 0.0313, '0.05': 0.1421, '0.1': 0.2009, '0.25': 0.3007, '0.5': 0.4837}
+
+== Part B: conformal prediction sets for diagnosis (K=20)
+  iid test: split cov 0.902 size 2.97 min-class 0.46 | mondrian cov 0.901 size 2.83 min-class 0.76 | top1 0.737
+  label shift: hard classes only: split cov 0.424 size 3.52 min-class 0.39 | mondrian cov 0.905 size 3.13 min-class 0.89 | top1 0.175
+
+[checks]
+  PASS  A_fdr_controlled_when_exchangeable
+  PASS  A_pvalues_superuniform_when_exchangeable
+  PASS  A_fdr_collapses_under_shift
+  PASS  A_fdr_monotone_in_shift
+  PASS  B_split_marginal_coverage_ok
+  PASS  B_split_min_class_coverage_below_target
+  PASS  B_mondrian_lifts_min_class_coverage
+  PASS  B_split_coverage_drops_under_label_shift
+  PASS  B_mondrian_robust_to_label_shift
+[go] True  (Go criterion: toy FDR <= alpha when exchangeable, and marginal coverage of the diagnosis set)
+[report] outputs/stage0_conformal_toy.json

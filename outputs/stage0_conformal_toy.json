@@ -1,0 +1,138 @@
+{
+ "seed": 20261018,
+ "alpha": 0.1,
+ "part_a": {
+  "curve": [
+   {
+    "shift": 1.0,
+    "alpha": 0.1,
+    "reps": 500,
+    "fdr_mean": 0.067,
+    "fdr_se": 0.0052,
+    "batches_fdr_gt_alpha": 0.286,
+    "power_mean": 0.1528,
+    "discoveries_mean": 3.64
+   },
+   {
+    "shift": 1.1,
+    "alpha": 0.1,
+    "reps": 500,
+    "fdr_mean": 0.1421,
+    "fdr_se": 0.0076,
+    "batches_fdr_gt_alpha": 0.488,
+    "power_mean": 0.1839,
+    "discoveries_mean": 5.03
+   },
+   {
+    "shift": 1.25,
+    "alpha": 0.1,
+    "reps": 500,
+    "fdr_mean": 0.2848,
+    "fdr_se": 0.0098,
+    "batches_fdr_gt_alpha": 0.708,
+    "power_mean": 0.2361,
+    "discoveries_mean": 8.12
+   },
+   {
+    "shift": 1.5,
+    "alpha": 0.1,
+    "reps": 500,
+    "fdr_mean": 0.5337,
+    "fdr_se": 0.0091,
+    "batches_fdr_gt_alpha": 0.912,
+    "power_mean": 0.3263,
+    "discoveries_mean": 16.12
+   },
+   {
+    "shift": 2.0,
+    "alpha": 0.1,
+    "reps": 500,
+    "fdr_mean": 0.7435,
+    "fdr_se": 0.0028,
+    "batches_fdr_gt_alpha": 1.0,
+    "power_mean": 0.4458,
+    "discoveries_mean": 34.9
+   }
+  ],
+  "uniformity": [
+   {
+    "shift": 1.0,
+    "P(p<=t)": {
+     "0.01": 0.0088,
+     "0.05": 0.0384,
+     "0.1": 0.0885,
+     "0.25": 0.2238,
+     "0.5": 0.4612
+    }
+   },
+   {
+    "shift": 1.5,
+    "P(p<=t)": {
+     "0.01": 0.0313,
+     "0.05": 0.1421,
+     "0.1": 0.2009,
+     "0.25": 0.3007,
+     "0.5": 0.4837
+    }
+   }
+  ]
+ },
+ "part_b": {
+  "iid": {
+   "K": 20,
+   "alpha": 0.1,
+   "hard_classes": [
+    3,
+    9,
+    15
+   ],
+   "test_only_hard": false,
+   "split": {
+    "coverage": 0.9018,
+    "set_size_mean": 2.973,
+    "min_class_coverage": 0.461,
+    "q": 0.9276
+   },
+   "mondrian": {
+    "coverage": 0.9012,
+    "set_size_mean": 2.831,
+    "min_class_coverage": 0.764
+   },
+   "top1_accuracy": 0.7366
+  },
+  "label_shift": {
+   "K": 20,
+   "alpha": 0.1,
+   "hard_classes": [
+    3,
+    9,
+    15
+   ],
+   "test_only_hard": true,
+   "split": {
+    "coverage": 0.4238,
+    "set_size_mean": 3.523,
+    "min_class_coverage": 0.394,
+    "q": 0.9192
+   },
+   "mondrian": {
+    "coverage": 0.9051,
+    "set_size_mean": 3.134,
+    "min_class_coverage": 0.886
+   },
+   "top1_accuracy": 0.1751
+  }
+ },
+ "checks": {
+  "A_fdr_controlled_when_exchangeable": true,
+  "A_pvalues_superuniform_when_exchangeable": true,
+  "A_fdr_collapses_under_shift": true,
+  "A_fdr_monotone_in_shift": true,
+  "B_split_marginal_coverage_ok": true,
+  "B_split_min_class_coverage_below_target": true,
+  "B_mondrian_lifts_min_class_coverage": true,
+  "B_split_coverage_drops_under_label_shift": true,
+  "B_mondrian_robust_to_label_shift": true
+ },
+ "go": true
+}
