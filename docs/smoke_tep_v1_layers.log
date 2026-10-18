@@ -1,0 +1,30 @@
+[load] fault-free testing: 9,600 rows, 10 runs
+[std] min=9.868e-03 median=4.269e-01; near-constant (< 1e-06): []
+[std] 10 lowest:
+xmeas_37    0.009868
+xmeas_39    0.009955
+xmeas_10    0.012725
+xmeas_38    0.018768
+xmeas_9     0.019185
+xmeas_28    0.025614
+xmeas_34    0.026986
+xmeas_1     0.031523
+xmeas_36    0.052967
+xmeas_35    0.066405
+
+[gate] sensor_cols=all 52 (52): windows=470, output rows=9,600 (input 9,600), episodes=10 (input 10)
+[gate] status counts (reported, not a criterion): {'FLAG': 470}
+[gate] evaluated sensors == passed list: True (evaluated 52, passed 52, missing [])
+[gate] score cells: 171,080; NaN=0; inf=0; columns=['completeness', 'stability', 'consistency', 'composite', 'psi', 'corr_deviation', 'missing_rate']
+[gate] composite summary: {'count': 24440.0, 'mean': 33.04, 'std': 3.95, 'min': 30.0, '25%': 30.0, '50%': 31.2, '75%': 35.36, 'max': 74.96}
+
+[gate] sensor_cols=minus low-variance (52): windows=470, output rows=9,600 (input 9,600), episodes=10 (input 10)
+[gate] status counts (reported, not a criterion): {'FLAG': 470}
+[gate] evaluated sensors == passed list: True (evaluated 52, passed 52, missing [])
+[gate] score cells: 171,080; NaN=0; inf=0; columns=['completeness', 'stability', 'consistency', 'composite', 'psi', 'corr_deviation', 'missing_rate']
+[gate] composite summary: {'count': 24440.0, 'mean': 33.04, 'std': 3.95, 'min': 30.0, '25%': 30.0, '50%': 31.2, '75%': 35.36, 'max': 74.96}
+
+[IF] trained on 9,600 fault-free rows, 52 features
+[IF] fault= 0 run=11: rows=960 score pre-onset mean=-0.045 sd=0.026 | post-onset mean=-0.049 sd=0.020 | post>pre95pct: 0.02
+[IF] fault= 1 run=1: rows=960 score pre-onset mean=-0.038 sd=0.024 | post-onset mean=0.070 sd=0.046 | post>pre95pct: 0.97
+[IF] fault= 4 run=1: rows=960 score pre-onset mean=-0.038 sd=0.024 | post-onset mean=-0.036 sd=0.022 | post>pre95pct: 0.05
