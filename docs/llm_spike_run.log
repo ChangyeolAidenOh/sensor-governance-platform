@@ -1,0 +1,122 @@
+PASS claude-sonnet-5-5  S01 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0087 cum=$0.009 lat=1.498
+PASS claude-sonnet-5-5  S02 r1 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0091 cum=$0.018 lat=1.421
+PASS claude-sonnet-5-5  S03 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0110 cum=$0.029 lat=1.877
+PASS claude-sonnet-5-5  S04 r1 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0309 cum=$0.060 lat=1.857
+PASS claude-sonnet-5-5  S05 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0092 cum=$0.069 lat=1.448
+PASS claude-sonnet-5-5  S06 r1 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0141 cum=$0.083 lat=1.365
+PASS claude-sonnet-5-5  S07 r1 tools=['gate_check', 'detect_diagnose', 'retrieve', 'retrieve'] errs=0 req=4 cost=$0.0263 cum=$0.109 lat=2.301
+FAIL claude-sonnet-5-5  S08 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0152 cum=$0.125 lat=4.131
+FAIL claude-sonnet-5-5  S09 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0144 cum=$0.139 lat=3.73
+PASS claude-sonnet-5-5  S10 r1 tools=[] errs=0 req=1 cost=$0.0055 cum=$0.144 lat=2.799
+PASS claude-sonnet-5-5  S01 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0087 cum=$0.153 lat=1.565
+PASS claude-sonnet-5-5  S02 r2 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0090 cum=$0.162 lat=1.431
+PASS claude-sonnet-5-5  S03 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0111 cum=$0.173 lat=1.95
+PASS claude-sonnet-5-5  S04 r2 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0310 cum=$0.204 lat=1.978
+PASS claude-sonnet-5-5  S05 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0091 cum=$0.213 lat=1.65
+PASS claude-sonnet-5-5  S06 r2 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0141 cum=$0.227 lat=1.329
+PASS claude-sonnet-5-5  S07 r2 tools=['gate_check', 'detect_diagnose', 'retrieve', 'retrieve'] errs=0 req=4 cost=$0.0261 cum=$0.254 lat=2.854
+FAIL claude-sonnet-5-5  S08 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0158 cum=$0.269 lat=4.207
+FAIL claude-sonnet-5-5  S09 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0148 cum=$0.284 lat=4.143
+PASS claude-sonnet-5-5  S10 r2 tools=[] errs=0 req=1 cost=$0.0059 cum=$0.290 lat=3.049
+PASS claude-sonnet-5-5  S01 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0087 cum=$0.299 lat=1.534
+PASS claude-sonnet-5-5  S02 r3 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0089 cum=$0.308 lat=1.451
+PASS claude-sonnet-5-5  S03 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0108 cum=$0.318 lat=1.845
+PASS claude-sonnet-5-5  S04 r3 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0303 cum=$0.349 lat=1.92
+PASS claude-sonnet-5-5  S05 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0091 cum=$0.358 lat=1.494
+PASS claude-sonnet-5-5  S06 r3 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0143 cum=$0.372 lat=1.431
+PASS claude-sonnet-5-5  S07 r3 tools=['gate_check', 'detect_diagnose', 'retrieve', 'retrieve'] errs=0 req=4 cost=$0.0263 cum=$0.398 lat=2.226
+FAIL claude-sonnet-5-5  S08 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0152 cum=$0.414 lat=3.553
+FAIL claude-sonnet-5-5  S09 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0150 cum=$0.429 lat=3.955
+PASS claude-sonnet-5-5  S10 r3 tools=[] errs=0 req=1 cost=$0.0054 cum=$0.434 lat=2.672
+PASS claude-haiku-5-5   S01 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0004 cum=$0.434 lat=1.562
+PASS claude-haiku-5-5   S02 r1 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0004 cum=$0.435 lat=1.046
+PASS claude-haiku-5-5   S03 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0007 cum=$0.436 lat=1.799
+PASS claude-haiku-5-5   S04 r1 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0017 cum=$0.437 lat=1.598
+PASS claude-haiku-5-5   S05 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0005 cum=$0.438 lat=1.193
+PASS claude-haiku-5-5   S06 r1 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0007 cum=$0.438 lat=1.164
+PASS claude-haiku-5-5   S07 r1 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0013 cum=$0.440 lat=1.695
+FAIL claude-haiku-5-5   S08 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0009 cum=$0.441 lat=2.811
+FAIL claude-haiku-5-5   S09 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0010 cum=$0.442 lat=3.201
+PASS claude-haiku-5-5   S10 r1 tools=[] errs=0 req=1 cost=$0.0003 cum=$0.442 lat=1.89
+PASS claude-haiku-5-5   S01 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0004 cum=$0.442 lat=0.897
+PASS claude-haiku-5-5   S02 r2 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0004 cum=$0.443 lat=0.997
+PASS claude-haiku-5-5   S03 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0007 cum=$0.443 lat=1.8
+PASS claude-haiku-5-5   S04 r2 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0017 cum=$0.445 lat=1.698
+PASS claude-haiku-5-5   S05 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0005 cum=$0.446 lat=1.147
+PASS claude-haiku-5-5   S06 r2 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0007 cum=$0.446 lat=1.129
+PASS claude-haiku-5-5   S07 r2 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0013 cum=$0.448 lat=1.801
+FAIL claude-haiku-5-5   S08 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0009 cum=$0.448 lat=2.651
+FAIL claude-haiku-5-5   S09 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0008 cum=$0.449 lat=2.356
+PASS claude-haiku-5-5   S10 r2 tools=[] errs=0 req=1 cost=$0.0002 cum=$0.450 lat=1.586
+PASS claude-haiku-5-5   S01 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0004 cum=$0.450 lat=1.238
+PASS claude-haiku-5-5   S02 r3 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0004 cum=$0.450 lat=1.102
+PASS claude-haiku-5-5   S03 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0007 cum=$0.451 lat=2.103
+PASS claude-haiku-5-5   S04 r3 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0017 cum=$0.453 lat=1.72
+PASS claude-haiku-5-5   S05 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0004 cum=$0.453 lat=1.093
+PASS claude-haiku-5-5   S06 r3 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0007 cum=$0.454 lat=1.097
+PASS claude-haiku-5-5   S07 r3 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0013 cum=$0.455 lat=1.775
+FAIL claude-haiku-5-5   S08 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0009 cum=$0.456 lat=2.947
+FAIL claude-haiku-5-5   S09 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0008 cum=$0.457 lat=2.501
+PASS claude-haiku-5-5   S10 r3 tools=[] errs=0 req=1 cost=$0.0002 cum=$0.457 lat=1.303
+PASS gpt-6.1-sol        S01 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0037 cum=$0.461 lat=3.67
+PASS gpt-6.1-sol        S02 r1 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0037 cum=$0.465 lat=2.544
+PASS gpt-6.1-sol        S03 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0051 cum=$0.470 lat=3.957
+PASS gpt-6.1-sol        S04 r1 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0150 cum=$0.485 lat=3.848
+PASS gpt-6.1-sol        S05 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0038 cum=$0.489 lat=2.696
+PASS gpt-6.1-sol        S06 r1 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0060 cum=$0.495 lat=2.511
+PASS gpt-6.1-sol        S07 r1 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0110 cum=$0.506 lat=3.837
+FAIL gpt-6.1-sol        S08 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0061 cum=$0.512 lat=4.873
+PASS gpt-6.1-sol        S09 r1 tools=['retrieve', 'gate_check', 'detect_diagnose', 'propose_work_order'] errs=0 req=4 cost=$0.0134 cum=$0.525 lat=4.704
+PASS gpt-6.1-sol        S10 r1 tools=[] errs=0 req=1 cost=$0.0020 cum=$0.527 lat=4.07
+PASS gpt-6.1-sol        S01 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0037 cum=$0.531 lat=2.24
+PASS gpt-6.1-sol        S02 r2 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0037 cum=$0.534 lat=2.453
+PASS gpt-6.1-sol        S03 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0052 cum=$0.540 lat=3.954
+PASS gpt-6.1-sol        S04 r2 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0143 cum=$0.554 lat=3.634
+PASS gpt-6.1-sol        S05 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0038 cum=$0.558 lat=2.439
+PASS gpt-6.1-sol        S06 r2 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0060 cum=$0.564 lat=2.506
+PASS gpt-6.1-sol        S07 r2 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0115 cum=$0.575 lat=3.8
+FAIL gpt-6.1-sol        S08 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0053 cum=$0.581 lat=4.106
+FAIL gpt-6.1-sol        S09 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0052 cum=$0.586 lat=4.207
+PASS gpt-6.1-sol        S10 r2 tools=[] errs=0 req=1 cost=$0.0020 cum=$0.588 lat=3.503
+PASS gpt-6.1-sol        S01 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0037 cum=$0.592 lat=2.651
+PASS gpt-6.1-sol        S02 r3 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0037 cum=$0.595 lat=2.2
+PASS gpt-6.1-sol        S03 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0050 cum=$0.600 lat=3.408
+PASS gpt-6.1-sol        S04 r3 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0160 cum=$0.616 lat=4.208
+PASS gpt-6.1-sol        S05 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0038 cum=$0.620 lat=3.066
+PASS gpt-6.1-sol        S06 r3 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0060 cum=$0.626 lat=2.593
+PASS gpt-6.1-sol        S07 r3 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0111 cum=$0.637 lat=3.767
+FAIL gpt-6.1-sol        S08 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0059 cum=$0.643 lat=4.839
+FAIL gpt-6.1-sol        S09 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0050 cum=$0.648 lat=4.147
+PASS gpt-6.1-sol        S10 r3 tools=[] errs=0 req=1 cost=$0.0021 cum=$0.650 lat=4.224
+PASS gemini-4-argon     S01 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0049 cum=$0.655 lat=3.559
+PASS gemini-4-argon     S02 r1 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0049 cum=$0.660 lat=3.355
+PASS gemini-4-argon     S03 r1 tools=['retrieve'] errs=0 req=2 cost=$0.0058 cum=$0.666 lat=12.638
+PASS gemini-4-argon     S04 r1 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0173 cum=$0.683 lat=12.395
+PASS gemini-4-argon     S05 r1 tools=['gate_check'] errs=0 req=2 cost=$0.0053 cum=$0.688 lat=3.957
+PASS gemini-4-argon     S06 r1 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0079 cum=$0.696 lat=3.689
+PASS gemini-4-argon     S07 r1 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0141 cum=$0.710 lat=10.996
+PASS gemini-4-argon     S08 r1 tools=['retrieve', 'propose_work_order'] errs=0 req=3 cost=$0.0106 cum=$0.721 lat=5.046
+PASS gemini-4-argon     S09 r1 tools=['retrieve', 'propose_work_order'] errs=0 req=3 cost=$0.0098 cum=$0.731 lat=11.425
+PASS gemini-4-argon     S10 r1 tools=[] errs=0 req=1 cost=$0.0024 cum=$0.733 lat=3.91
+PASS gemini-4-argon     S01 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0047 cum=$0.738 lat=9.177
+PASS gemini-4-argon     S02 r2 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0055 cum=$0.743 lat=27.842
+PASS gemini-4-argon     S03 r2 tools=['retrieve'] errs=0 req=2 cost=$0.0058 cum=$0.749 lat=3.602
+PASS gemini-4-argon     S04 r2 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0178 cum=$0.767 lat=5.754
+PASS gemini-4-argon     S05 r2 tools=['gate_check'] errs=0 req=2 cost=$0.0050 cum=$0.772 lat=12.332
+PASS gemini-4-argon     S06 r2 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0080 cum=$0.780 lat=7.586
+PASS gemini-4-argon     S07 r2 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0142 cum=$0.794 lat=13.24
+PASS gemini-4-argon     S08 r2 tools=['retrieve', 'propose_work_order'] errs=0 req=3 cost=$0.0107 cum=$0.805 lat=18.189
+PASS gemini-4-argon     S09 r2 tools=['retrieve', 'propose_work_order'] errs=0 req=3 cost=$0.0100 cum=$0.815 lat=23.436
+PASS gemini-4-argon     S10 r2 tools=[] errs=0 req=1 cost=$0.0024 cum=$0.817 lat=27.7
+PASS gemini-4-argon     S01 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0049 cum=$0.822 lat=32.508
+PASS gemini-4-argon     S02 r3 tools=['detect_diagnose'] errs=0 req=2 cost=$0.0049 cum=$0.827 lat=35.97
+PASS gemini-4-argon     S03 r3 tools=['retrieve'] errs=0 req=2 cost=$0.0058 cum=$0.833 lat=8.518
+PASS gemini-4-argon     S04 r3 tools=['gate_check', 'detect_diagnose', 'retrieve', 'propose_work_order'] errs=0 req=5 cost=$0.0179 cum=$0.851 lat=6.234
+PASS gemini-4-argon     S05 r3 tools=['gate_check'] errs=0 req=2 cost=$0.0059 cum=$0.856 lat=25.077
+PASS gemini-4-argon     S06 r3 tools=['gate_check', 'detect_diagnose'] errs=0 req=3 cost=$0.0080 cum=$0.864 lat=11.668
+PASS gemini-4-argon     S07 r3 tools=['gate_check', 'detect_diagnose', 'retrieve'] errs=0 req=4 cost=$0.0142 cum=$0.879 lat=6.893
+PASS gemini-4-argon     S08 r3 tools=['retrieve', 'propose_work_order'] errs=0 req=3 cost=$0.0106 cum=$0.889 lat=7.482
+PASS gemini-4-argon     S09 r3 tools=['retrieve', 'propose_work_order'] errs=0 req=3 cost=$0.0098 cum=$0.899 lat=18.923
+PASS gemini-4-argon     S10 r3 tools=[] errs=0 req=1 cost=$0.0025 cum=$0.902 lat=23.976
+
+[summary] {"models": ["claude-sonnet-5-5", "claude-haiku-5-5", "gpt-6.1-sol", "gemini-4-argon"], "scenarios": ["S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10"], "reps": 3, "runs_done": 120, "total_cost_usd": 0.9015, "budget_cap": 40.0, "stopped": null, "effort": "medium", "max_output_tokens": 8000, "runs_file": "outputs/stage0_llm_spike/runs.jsonl"}

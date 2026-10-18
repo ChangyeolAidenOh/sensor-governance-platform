@@ -53,3 +53,6 @@ pymupdf>=1.26
 # llm clients
 ollama>=0.3
 anthropic>=0.30
+langchain-anthropic>=1.7
+langchain-openai>=1.7
+langchain-google-genai>=4.4

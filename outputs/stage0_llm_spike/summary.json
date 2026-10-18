@@ -1,0 +1,28 @@
+{
+ "models": [
+  "claude-sonnet-5-5",
+  "claude-haiku-5-5",
+  "gpt-6.1-sol",
+  "gemini-4-argon"
+ ],
+ "scenarios": [
+  "S01",
+  "S02",
+  "S03",
+  "S04",
+  "S05",
+  "S06",
+  "S07",
+  "S08",
+  "S09",
+  "S10"
+ ],
+ "reps": 3,
+ "runs_done": 120,
+ "total_cost_usd": 0.9015,
+ "budget_cap": 40.0,
+ "stopped": null,
+ "effort": "medium",
+ "max_output_tokens": 8000,
+ "runs_file": "outputs/stage0_llm_spike/runs.jsonl"
+}
