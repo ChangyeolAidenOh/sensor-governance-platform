@@ -1,0 +1,23 @@
+[dsn] localhost:5436/sgp_v2
+[9855b19b] t1_invoke: next=['approve'] pending=1 decision='' audit=[]
+[9855b19b] t1_after_restart_state: next=['approve'] pending=1 decision='' audit=[]
+[9855b19b] t1_resume_approve: next=[] pending=0 decision='approve' audit=['work_order_issued:A-001']
+[9855b19b] t2_invoke: next=['approve'] pending=1 decision='' audit=['work_order_issued:A-001']
+[9855b19b] t2_resume_reject: next=[] pending=0 decision='reject' audit=['work_order_issued:A-001', 'held:B-002:reject']
+[b326a438] t1_invoke: next=['approve'] pending=1 decision='' audit=[]
+[b326a438] t1_after_restart_state: next=['approve'] pending=1 decision='' audit=[]
+[b326a438] t1_resume_approve: next=[] pending=0 decision='approve' audit=['work_order_issued:A-001']
+[b326a438] t2_invoke: next=['approve'] pending=1 decision='' audit=['work_order_issued:A-001']
+[b326a438] t2_resume_reject: next=[] pending=0 decision='reject' audit=['work_order_issued:A-001', 'held:B-002:reject']
+
+[checks]
+  PASS  t1_paused_with_payload
+  PASS  paused_state_survives_restart
+  PASS  t1_resume_issued_work_order
+  PASS  t2_paused_and_history_kept
+  PASS  t2_reject_held
+  PASS  two_turns_recorded
+  PASS  deterministic_across_threads
+  PASS  no_work_order_without_approval
+[go] True  (checkpoints per thread: [10, 10])
+[report] outputs/stage0_interrupt_spike.json

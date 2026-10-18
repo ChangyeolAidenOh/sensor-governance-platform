@@ -1,0 +1,332 @@
+{
+ "dsn_host": "localhost:5436/sgp_v2",
+ "runs": [
+  {
+   "thread_id": "25a06641-a54b-4557-b57b-a6e7f27aab88",
+   "steps": [
+    {
+     "step": "t1_invoke",
+     "seconds": 0.001,
+     "interrupted": true,
+     "interrupt_payload": [
+      {
+       "proposal": "issue work order for alarm A-001",
+       "question": "approve work order?",
+       "alarm_id": "A-001"
+      }
+     ],
+     "values": {
+      "alarm_id": "A-001",
+      "proposal": "issue work order for alarm A-001",
+      "decision": "",
+      "audit": [],
+      "turns": []
+     },
+     "next": [
+      "approve"
+     ],
+     "pending_interrupts": [
+      {
+       "proposal": "issue work order for alarm A-001",
+       "question": "approve work order?",
+       "alarm_id": "A-001"
+      }
+     ]
+    },
+    {
+     "step": "t1_after_restart_state",
+     "seconds": 0.001,
+     "values": {
+      "alarm_id": "A-001",
+      "proposal": "issue work order for alarm A-001",
+      "decision": "",
+      "audit": [],
+      "turns": []
+     },
+     "next": [
+      "approve"
+     ],
+     "pending_interrupts": [
+      {
+       "proposal": "issue work order for alarm A-001",
+       "question": "approve work order?",
+       "alarm_id": "A-001"
+      }
+     ]
+    },
+    {
+     "step": "t1_resume_approve",
+     "seconds": 0.001,
+     "events": [
+      {
+       "approve": {
+        "decision": "approve"
+       }
+      },
+      {
+       "act": {
+        "audit": [
+         "work_order_issued:A-001"
+        ],
+        "turns": [
+         "A-001"
+        ]
+       }
+      }
+     ],
+     "values": {
+      "alarm_id": "A-001",
+      "proposal": "issue work order for alarm A-001",
+      "decision": "approve",
+      "audit": [
+       "work_order_issued:A-001"
+      ],
+      "turns": [
+       "A-001"
+      ]
+     },
+     "next": [],
+     "pending_interrupts": []
+    },
+    {
+     "step": "t2_invoke",
+     "seconds": 0.001,
+     "interrupted": true,
+     "interrupt_payload": [
+      {
+       "proposal": "issue work order for alarm B-002",
+       "question": "approve work order?",
+       "alarm_id": "B-002"
+      }
+     ],
+     "values": {
+      "alarm_id": "B-002",
+      "proposal": "issue work order for alarm B-002",
+      "decision": "",
+      "audit": [
+       "work_order_issued:A-001"
+      ],
+      "turns": [
+       "A-001"
+      ]
+     },
+     "next": [
+      "approve"
+     ],
+     "pending_interrupts": [
+      {
+       "proposal": "issue work order for alarm B-002",
+       "question": "approve work order?",
+       "alarm_id": "B-002"
+      }
+     ]
+    },
+    {
+     "step": "t2_resume_reject",
+     "seconds": 0.005,
+     "values": {
+      "alarm_id": "B-002",
+      "proposal": "issue work order for alarm B-002",
+      "decision": "reject",
+      "audit": [
+       "work_order_issued:A-001",
+       "held:B-002:reject"
+      ],
+      "turns": [
+       "A-001",
+       "B-002"
+      ]
+     },
+     "next": [],
+     "pending_interrupts": []
+    }
+   ],
+   "n_checkpoints": 10,
+   "final_values": {
+    "alarm_id": "B-002",
+    "proposal": "issue work order for alarm B-002",
+    "decision": "reject",
+    "audit": [
+     "work_order_issued:A-001",
+     "held:B-002:reject"
+    ],
+    "turns": [
+     "A-001",
+     "B-002"
+    ]
+   },
+   "before_restart_next": [
+    "approve"
+   ]
+  },
+  {
+   "thread_id": "da998890-6e21-4900-8e38-46bf59d9d72c",
+   "steps": [
+    {
+     "step": "t1_invoke",
+     "seconds": 0.001,
+     "interrupted": true,
+     "interrupt_payload": [
+      {
+       "proposal": "issue work order for alarm A-001",
+       "question": "approve work order?",
+       "alarm_id": "A-001"
+      }
+     ],
+     "values": {
+      "alarm_id": "A-001",
+      "proposal": "issue work order for alarm A-001",
+      "decision": "",
+      "audit": [],
+      "turns": []
+     },
+     "next": [
+      "approve"
+     ],
+     "pending_interrupts": [
+      {
+       "proposal": "issue work order for alarm A-001",
+       "question": "approve work order?",
+       "alarm_id": "A-001"
+      }
+     ]
+    },
+    {
+     "step": "t1_after_restart_state",
+     "seconds": 0.001,
+     "values": {
+      "alarm_id": "A-001",
+      "proposal": "issue work order for alarm A-001",
+      "decision": "",
+      "audit": [],
+      "turns": []
+     },
+     "next": [
+      "approve"
+     ],
+     "pending_interrupts": [
+      {
+       "proposal": "issue work order for alarm A-001",
+       "question": "approve work order?",
+       "alarm_id": "A-001"
+      }
+     ]
+    },
+    {
+     "step": "t1_resume_approve",
+     "seconds": 0.0,
+     "events": [
+      {
+       "approve": {
+        "decision": "approve"
+       }
+      },
+      {
+       "act": {
+        "audit": [
+         "work_order_issued:A-001"
+        ],
+        "turns": [
+         "A-001"
+        ]
+       }
+      }
+     ],
+     "values": {
+      "alarm_id": "A-001",
+      "proposal": "issue work order for alarm A-001",
+      "decision": "approve",
+      "audit": [
+       "work_order_issued:A-001"
+      ],
+      "turns": [
+       "A-001"
+      ]
+     },
+     "next": [],
+     "pending_interrupts": []
+    },
+    {
+     "step": "t2_invoke",
+     "seconds": 0.001,
+     "interrupted": true,
+     "interrupt_payload": [
+      {
+       "proposal": "issue work order for alarm B-002",
+       "question": "approve work order?",
+       "alarm_id": "B-002"
+      }
+     ],
+     "values": {
+      "alarm_id": "B-002",
+      "proposal": "issue work order for alarm B-002",
+      "decision": "",
+      "audit": [
+       "work_order_issued:A-001"
+      ],
+      "turns": [
+       "A-001"
+      ]
+     },
+     "next": [
+      "approve"
+     ],
+     "pending_interrupts": [
+      {
+       "proposal": "issue work order for alarm B-002",
+       "question": "approve work order?",
+       "alarm_id": "B-002"
+      }
+     ]
+    },
+    {
+     "step": "t2_resume_reject",
+     "seconds": 0.005,
+     "values": {
+      "alarm_id": "B-002",
+      "proposal": "issue work order for alarm B-002",
+      "decision": "reject",
+      "audit": [
+       "work_order_issued:A-001",
+       "held:B-002:reject"
+      ],
+      "turns": [
+       "A-001",
+       "B-002"
+      ]
+     },
+     "next": [],
+     "pending_interrupts": []
+    }
+   ],
+   "n_checkpoints": 10,
+   "final_values": {
+    "alarm_id": "B-002",
+    "proposal": "issue work order for alarm B-002",
+    "decision": "reject",
+    "audit": [
+     "work_order_issued:A-001",
+     "held:B-002:reject"
+    ],
+    "turns": [
+     "A-001",
+     "B-002"
+    ]
+   },
+   "before_restart_next": [
+    "approve"
+   ]
+  }
+ ],
+ "checks": {
+  "t1_paused_with_payload": true,
+  "paused_state_survives_restart": true,
+  "t1_resume_issued_work_order": true,
+  "t2_paused_and_history_kept": true,
+  "t2_reject_held": true,
+  "two_turns_recorded": true,
+  "deterministic_across_threads": true,
+  "no_work_order_without_approval": true
+ },
+ "go": true
+}
