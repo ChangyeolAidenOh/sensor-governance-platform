@@ -1,5 +1,8 @@
 # Industrial Sensor Governance & Predictive Maintenance Platform
 
+> **v2 in progress (branch `v2`)** — Process Reliability Agent. Live chat spike: https://process-reliability-agent.streamlit.app/ (technical demo, no LLM/DB). v1 analysis platform is frozen at tag `v1.0`; see **Demos** at the bottom.
+
+
 **센서 데이터를 신뢰할 수 없는 상황에서, 예지정비 모델의 예측을 신뢰할 수 있는가?**
 
 대부분의 예지정비 프로젝트는 센서 데이터가 정상이라는 전제 위에서 RUL(잔여수명) 모델을 만든다. 이 프로젝트는 그 전제를 의심하는 데서 출발한다. 5가지 데이터 오염을 의도적으로 주입하고, 거버넌스 레이어가 피해를 얼마나 회복하는지를 정량화한다.
