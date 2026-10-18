@@ -4,16 +4,11 @@
 > - `main` — **v1 Sensor Governance Platform** (C-MAPSS quality gate, corruption experiments, anomaly detection). Frozen at tag [`v1.0`](https://github.com/ChangyeolAidenOh/sensor-governance-platform/releases/tag/v1.0); this README below describes v1.
 > - `v2` — **Process Reliability Agent** (in development, Stage 0): TEP process data + KOSHA guidance + LangGraph approval-flow agent. Live chat spike (no LLM/DB yet): https://process-reliability-agent.streamlit.app/ — see **Demos** at the bottom.
 
-
-> **v2 in progress (branch `v2`)** — Process Reliability Agent. Live chat spike: https://process-reliability-agent.streamlit.app/ (technical demo, no LLM/DB). v1 analysis platform is frozen at tag `v1.0`; see **Demos** at the bottom.
-
-
 **센서 데이터를 신뢰할 수 없는 상황에서, 예지정비 모델의 예측을 신뢰할 수 있는가?**
 
 대부분의 예지정비 프로젝트는 센서 데이터가 정상이라는 전제 위에서 RUL(잔여수명) 모델을 만든다. 이 프로젝트는 그 전제를 의심하는 데서 출발한다. 5가지 데이터 오염을 의도적으로 주입하고, 거버넌스 레이어가 피해를 얼마나 회복하는지를 정량화한다.
 
 **Dashboard:** [sensor-governance-platform.streamlit.app](https://sensor-governance-platform.streamlit.app/)
-
 
 ## Architecture
 
@@ -42,7 +37,6 @@ Raw Sensor Data (C-MAPSS FD001-FD004)
   +------------+
 ```
 
-
 ## Key Differentiator: Corruption Experiment
 
 5가지 데이터 오염 x 3단계 심각도 = 15개 시나리오. 거버넌스 전략이 없으면 최대 RMSE 2.4배 악화. **5회 반복 진화**를 통해 v1의 -1,488% 역효과 -> 최종 0/15 역효과를 달성.
@@ -70,7 +64,6 @@ Raw Sensor Data (C-MAPSS FD001-FD004)
 | Stuck-at Fault | Passthrough | 0% (safe) | Normal-range fixed values -- PSI/variance both unreliable |
 
 > **Core principle:** Governance is not "always intervene." Compare intervention cost vs damage. Only act when detection confidence is high AND benefit exceeds cost. Passthrough (0%) is a clear improvement over v1's -1,488%.
-
 
 ## Results
 
@@ -132,7 +125,6 @@ IF wins across all three evaluation frameworks, confirming the result is not met
 | IF score -> RUL feature | RMSE +0.046 (failed) | Same source, same signal -- information redundancy |
 | TFT importance -> targeted corruption | Noise 5.3x (success) | Importance predicts noise sensitivity, not drift sensitivity |
 
-
 ## ML Platform (Layer 3)
 
 ### MLflow
@@ -160,7 +152,6 @@ Auto-generated for all 3 models. Includes limitations, failure modes, recommende
 
 `.gitignore` required `data/raw/CMAPSSData/` (not `data/raw/`) to avoid blocking `.dvc` files.
 
-
 ## Dataset
 
 NASA C-MAPSS -- 4 subsets, 21 sensors, 508 engines total.
@@ -171,7 +162,6 @@ NASA C-MAPSS -- 4 subsets, 21 sensors, 508 engines total.
 | FD002 | 260/259 | 6 | 1 | Transfer + benchmark |
 | FD003 | 100/100 | 1 | 2 | Transfer + benchmark |
 | FD004 | 248/249 | 6 | 2 | Transfer + benchmark |
-
 
 ## Quick Start
 
@@ -204,7 +194,6 @@ streamlit run dashboard/app.py
 
 > **Apple Silicon (M2/M3):** `OMP_NUM_THREADS=1` required for MLflow + XGBoost.
 
-
 ## Project Structure
 
 ```
@@ -227,7 +216,6 @@ sensor-governance-platform/
 |-- docker-compose.yml
 ```
 
-
 ## Key Principles
 
 1. **Governance ≠ always intervene.** v1's -1,488% -> final 0/15 negative.
@@ -237,8 +225,6 @@ sensor-governance-platform/
 5. **TFT instability is structural.** RMSE 16-42. Multi-seed ensemble required.
 6. **Operating conditions dominate transfer.** +187% vs +16%. IF stable (0.947-0.955).
 7. **Corruption and transfer express one principle.** Distribution shift breaks models. Detect with PSI, retrain.
-
-
 
 ## Demos
 
