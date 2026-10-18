@@ -1,0 +1,57 @@
+{
+ "checked_at": "2026-10-18T20:28:30",
+ "vendors": {
+  "anthropic": {
+   "status": "ok",
+   "n_models": 14
+  },
+  "openai": {
+   "status": "ok",
+   "n_models": 127
+  },
+  "google": {
+   "status": "ok",
+   "n_models": 63
+  }
+ },
+ "candidates": {
+  "Claude Sonnet 5.5": {
+   "vendor": "anthropic",
+   "accessible": true,
+   "matching_ids": [
+    "claude-sonnet-5-5",
+    "claude-sonnet-5",
+    "claude-sonnet-4-5-20250929"
+   ],
+   "vendor_status": "ok"
+  },
+  "Claude Haiku 5.5": {
+   "vendor": "anthropic",
+   "accessible": true,
+   "matching_ids": [
+    "claude-haiku-5-5",
+    "claude-haiku-4-5-20251001"
+   ],
+   "vendor_status": "ok"
+  },
+  "GPT-6.1 Sol": {
+   "vendor": "openai",
+   "accessible": true,
+   "matching_ids": [
+    "gpt-6-sol",
+    "gpt-6.1-sol",
+    "gpt-6-luna",
+    "gpt-6-astra"
+   ],
+   "vendor_status": "ok"
+  },
+  "Gemini 4 Argon": {
+   "vendor": "google",
+   "accessible": true,
+   "matching_ids": [
+    "gemini-4-argon"
+   ],
+   "vendor_status": "ok"
+  }
+ }
+}
