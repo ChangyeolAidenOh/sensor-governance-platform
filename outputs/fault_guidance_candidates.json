@@ -1,0 +1,3116 @@
+{
+ "faults": [
+  {
+   "fault": 1,
+   "description": "A/C 피드 비율 변화, B 조성 일정 (스트림 4)",
+   "kind": "step",
+   "topic": "feed_composition",
+   "primary_guides": [
+    "P-132-2013",
+    "P-167-2020"
+   ],
+   "secondary_guides": [
+    "P-179-2022",
+    "P-129-2013"
+   ],
+   "keywords": [
+    "조성",
+    "혼합",
+    "원료",
+    "시료",
+    "분석",
+    "비율",
+    "농도",
+    "폭발하한"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-132-2013:0:4.1",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.1",
+     "title": "일반 사항",
+     "page": 4,
+     "n_chars": 3496,
+     "hits": [
+      "조성",
+      "혼합"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.2",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.2",
+     "title": "원료 투입",
+     "page": 8,
+     "n_chars": 1195,
+     "hits": [
+      "혼합",
+      "원료"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.4",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.4",
+     "title": "연속식 반응기",
+     "page": 11,
+     "n_chars": 925,
+     "hits": [
+      "원료",
+      "농도"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.8",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.8",
+     "title": "미반응 물질의 축적",
+     "page": 16,
+     "n_chars": 472,
+     "hits": [
+      "혼합",
+      "분석"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.3",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.3",
+     "title": "혼합 반응",
+     "page": 9,
+     "n_chars": 1683,
+     "hits": [
+      "혼합"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.5",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.5",
+     "title": "회분식 반응기",
+     "page": 12,
+     "n_chars": 727,
+     "hits": [
+      "원료"
+     ]
+    },
+    {
+     "clause_key": "P-167-2020:0:4",
+     "guide_no": "P-167-2020",
+     "clause_id": "4",
+     "title": "일반사항",
+     "page": 4,
+     "n_chars": 1272,
+     "hits": [
+      "시료"
+     ]
+    },
+    {
+     "clause_key": "P-167-2020:0:5",
+     "guide_no": "P-167-2020",
+     "clause_id": "5",
+     "title": "화학물질 취급 및 시료채취 작업",
+     "page": 6,
+     "n_chars": 453,
+     "hits": [
+      "시료"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-179-2022:0:5.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 6,
+     "n_chars": 216,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.2.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.2.1",
+     "title": "르샤틀리에 공식 적용방법",
+     "page": 6,
+     "n_chars": 380,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.2.2",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.2.2",
+     "title": "ISO 10156 계산식 적용방법",
+     "page": 7,
+     "n_chars": 1351,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.3.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.3.1",
+     "title": "일반사항",
+     "page": 9,
+     "n_chars": 930,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.3.2",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.3.2",
+     "title": "폭발하한계 산정과정",
+     "page": 10,
+     "n_chars": 3038,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 2,
+   "description": "B 조성 변화, A/C 비율 일정 (스트림 4)",
+   "kind": "step",
+   "topic": "feed_composition",
+   "primary_guides": [
+    "P-132-2013",
+    "P-167-2020"
+   ],
+   "secondary_guides": [
+    "P-179-2022",
+    "P-129-2013"
+   ],
+   "keywords": [
+    "조성",
+    "혼합",
+    "원료",
+    "시료",
+    "분석",
+    "비율",
+    "농도",
+    "폭발하한"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-132-2013:0:4.1",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.1",
+     "title": "일반 사항",
+     "page": 4,
+     "n_chars": 3496,
+     "hits": [
+      "조성",
+      "혼합"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.2",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.2",
+     "title": "원료 투입",
+     "page": 8,
+     "n_chars": 1195,
+     "hits": [
+      "혼합",
+      "원료"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.4",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.4",
+     "title": "연속식 반응기",
+     "page": 11,
+     "n_chars": 925,
+     "hits": [
+      "원료",
+      "농도"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.8",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.8",
+     "title": "미반응 물질의 축적",
+     "page": 16,
+     "n_chars": 472,
+     "hits": [
+      "혼합",
+      "분석"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.3",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.3",
+     "title": "혼합 반응",
+     "page": 9,
+     "n_chars": 1683,
+     "hits": [
+      "혼합"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.5",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.5",
+     "title": "회분식 반응기",
+     "page": 12,
+     "n_chars": 727,
+     "hits": [
+      "원료"
+     ]
+    },
+    {
+     "clause_key": "P-167-2020:0:4",
+     "guide_no": "P-167-2020",
+     "clause_id": "4",
+     "title": "일반사항",
+     "page": 4,
+     "n_chars": 1272,
+     "hits": [
+      "시료"
+     ]
+    },
+    {
+     "clause_key": "P-167-2020:0:5",
+     "guide_no": "P-167-2020",
+     "clause_id": "5",
+     "title": "화학물질 취급 및 시료채취 작업",
+     "page": 6,
+     "n_chars": 453,
+     "hits": [
+      "시료"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-179-2022:0:5.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 6,
+     "n_chars": 216,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.2.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.2.1",
+     "title": "르샤틀리에 공식 적용방법",
+     "page": 6,
+     "n_chars": 380,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.2.2",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.2.2",
+     "title": "ISO 10156 계산식 적용방법",
+     "page": 7,
+     "n_chars": 1351,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.3.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.3.1",
+     "title": "일반사항",
+     "page": 9,
+     "n_chars": 930,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.3.2",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.3.2",
+     "title": "폭발하한계 산정과정",
+     "page": 10,
+     "n_chars": 3038,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 3,
+   "description": "D 피드 온도 변화 (스트림 2)",
+   "kind": "step",
+   "topic": "feed_temperature",
+   "primary_guides": [
+    "P-38-2012",
+    "P-53-2012"
+   ],
+   "secondary_guides": [
+    "P-129-2013",
+    "P-116-2012"
+   ],
+   "keywords": [
+    "온도",
+    "발열",
+    "열량",
+    "안전운전 한계",
+    "계측",
+    "설정값"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-38-2012:0:4",
+     "guide_no": "P-38-2012",
+     "clause_id": "4",
+     "title": "화학반응의 위험요인",
+     "page": 3,
+     "n_chars": 189,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.3",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.3",
+     "title": "취득정보 해석",
+     "page": 7,
+     "n_chars": 529,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.4",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.4",
+     "title": "추가 검토",
+     "page": 8,
+     "n_chars": 421,
+     "hits": [
+      "발열",
+      "열량"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.6",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.6",
+     "title": "반응 열량 측정",
+     "page": 10,
+     "n_chars": 775,
+     "hits": [
+      "온도",
+      "열량"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.7",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.7",
+     "title": "안전운전 한계(Envelope)의 결정",
+     "page": 12,
+     "n_chars": 205,
+     "hits": [
+      "온도",
+      "안전운전 한계"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.2.1",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.2.1",
+     "title": "문헌조사",
+     "page": 5,
+     "n_chars": 385,
+     "hits": [
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.5",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.5",
+     "title": "검토자료의 해석",
+     "page": 8,
+     "n_chars": 845,
+     "hits": [
+      "온도"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.4",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.4",
+     "title": "경보 설정값의 결정",
+     "page": 8,
+     "n_chars": 141,
+     "hits": [
+      "설정값"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.1",
+     "title": "계측기 관리 구분 및 대상",
+     "page": 4,
+     "n_chars": 659,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.2",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.2",
+     "title": "계측기 교정 목적 및 대상",
+     "page": 4,
+     "n_chars": 327,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.3",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.3",
+     "title": "계측기 점검 목적 및 대상",
+     "page": 5,
+     "n_chars": 116,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.1",
+     "title": "교정 및 점검 시기",
+     "page": 5,
+     "n_chars": 512,
+     "hits": [
+      "계측"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 4,
+   "description": "반응기 냉각수 입구 온도 변화",
+   "kind": "step",
+   "topic": "reactor_cooling",
+   "primary_guides": [
+    "P-53-2012",
+    "P-38-2012",
+    "P-65-2012"
+   ],
+   "secondary_guides": [
+    "P-133-2013",
+    "P-116-2012"
+   ],
+   "keywords": [
+    "냉각",
+    "폭주",
+    "온도",
+    "압력",
+    "파열판",
+    "방호",
+    "인터록",
+    "긴급"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-53-2012:0:6",
+     "guide_no": "P-53-2012",
+     "clause_id": "6",
+     "title": "방호대책",
+     "page": 7,
+     "n_chars": 348,
+     "hits": [
+      "냉각",
+      "파열판",
+      "방호",
+      "긴급"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:4.1",
+     "guide_no": "P-65-2012",
+     "clause_id": "4.1",
+     "title": "일반 특성",
+     "page": 4,
+     "n_chars": 513,
+     "hits": [
+      "폭주",
+      "온도",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:5.1",
+     "guide_no": "P-65-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 323,
+     "hits": [
+      "폭주",
+      "온도",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.4",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.4",
+     "title": "파열판, 안전밸브, 벤트 및 덤핑",
+     "page": 8,
+     "n_chars": 740,
+     "hits": [
+      "폭주",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.7",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.7",
+     "title": "긴급배출 및 급랭",
+     "page": 10,
+     "n_chars": 242,
+     "hits": [
+      "냉각",
+      "온도",
+      "긴급"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:5.4",
+     "guide_no": "P-65-2012",
+     "clause_id": "5.4",
+     "title": "단순화된 도표 활용 방법",
+     "page": 8,
+     "n_chars": 1051,
+     "hits": [
+      "온도",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.3",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.3",
+     "title": "취득정보 해석",
+     "page": 7,
+     "n_chars": 529,
+     "hits": [
+      "폭주",
+      "온도"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "냉각",
+      "온도"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-133-2013:0:5.2.3",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.3",
+     "title": "긴급사항 발생 시 우회절차",
+     "page": 8,
+     "n_chars": 289,
+     "hits": [
+      "인터록",
+      "긴급"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:4.2",
+     "guide_no": "P-133-2013",
+     "clause_id": "4.2",
+     "title": "인터록의 신설, 수정 및 삭제 절차",
+     "page": 4,
+     "n_chars": 606,
+     "hits": [
+      "인터록"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:4.3",
+     "guide_no": "P-133-2013",
+     "clause_id": "4.3",
+     "title": "인터록의 설정값 변경절차",
+     "page": 5,
+     "n_chars": 606,
+     "hits": [
+      "인터록"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:4.4",
+     "guide_no": "P-133-2013",
+     "clause_id": "4.4",
+     "title": "기록 관리",
+     "page": 6,
+     "n_chars": 197,
+     "hits": [
+      "인터록"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.1",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.1",
+     "title": "대상 및 사유",
+     "page": 6,
+     "n_chars": 362,
+     "hits": [
+      "인터록"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 5,
+   "description": "응축기 냉각수 입구 온도 변화",
+   "kind": "step",
+   "topic": "condenser_cooling",
+   "primary_guides": [
+    "P-60-2012",
+    "P-53-2012"
+   ],
+   "secondary_guides": [
+    "P-129-2013"
+   ],
+   "keywords": [
+    "냉각",
+    "냉매",
+    "응축",
+    "온도",
+    "압력",
+    "점검"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-53-2012:0:6.5",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.5",
+     "title": "추가 냉각",
+     "page": 9,
+     "n_chars": 163,
+     "hits": [
+      "냉각",
+      "냉매",
+      "응축"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "냉각",
+      "온도"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.3",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.3",
+     "title": "반응 시스템의 봉쇄",
+     "page": 8,
+     "n_chars": 200,
+     "hits": [
+      "응축",
+      "압력"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.7",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.7",
+     "title": "긴급배출 및 급랭",
+     "page": 10,
+     "n_chars": 242,
+     "hits": [
+      "냉각",
+      "온도"
+     ]
+    },
+    {
+     "clause_key": "P-60-2012:0:5.2",
+     "guide_no": "P-60-2012",
+     "clause_id": "5.2",
+     "title": "유지보수 중 안전관리",
+     "page": 7,
+     "n_chars": 365,
+     "hits": [
+      "냉매",
+      "압력"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.2",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.2",
+     "title": "반응속도 제어",
+     "page": 5,
+     "n_chars": 737,
+     "hits": [
+      "냉각"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6",
+     "guide_no": "P-53-2012",
+     "clause_id": "6",
+     "title": "방호대책",
+     "page": 7,
+     "n_chars": 348,
+     "hits": [
+      "냉각"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.4",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.4",
+     "title": "파열판, 안전밸브, 벤트 및 덤핑",
+     "page": 8,
+     "n_chars": 740,
+     "hits": [
+      "압력"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-129-2013:0:4.3",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.3",
+     "title": "계측기 점검 목적 및 대상",
+     "page": 5,
+     "n_chars": 116,
+     "hits": [
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.1",
+     "title": "교정 및 점검 시기",
+     "page": 5,
+     "n_chars": 512,
+     "hits": [
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.2.2",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.2.2",
+     "title": "점검방법",
+     "page": 7,
+     "n_chars": 1022,
+     "hits": [
+      "점검"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 6,
+   "description": "A 피드 손실 (스트림 1)",
+   "kind": "step",
+   "topic": "feed_loss",
+   "primary_guides": [
+    "P-18-2012",
+    "P-52-2012",
+    "P-77-2011"
+   ],
+   "secondary_guides": [
+    "P-58-2012"
+   ],
+   "keywords": [
+    "누출",
+    "차단",
+    "격리",
+    "비상",
+    "공급",
+    "밸브",
+    "조치"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-77-2011:0:4",
+     "guide_no": "P-77-2011",
+     "clause_id": "4",
+     "title": "일반사항",
+     "page": 4,
+     "n_chars": 699,
+     "hits": [
+      "누출",
+      "차단",
+      "밸브"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:6.4",
+     "guide_no": "P-77-2011",
+     "clause_id": "6.4",
+     "title": "페일 모드(Fail mode)",
+     "page": 8,
+     "n_chars": 139,
+     "hits": [
+      "차단",
+      "공급",
+      "밸브"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:6.5",
+     "guide_no": "P-77-2011",
+     "clause_id": "6.5",
+     "title": "이중기능차단밸브",
+     "page": 8,
+     "n_chars": 171,
+     "hits": [
+      "차단",
+      "비상",
+      "밸브"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:7.2",
+     "guide_no": "P-77-2011",
+     "clause_id": "7.2",
+     "title": "비상차단시스템의 실패요인",
+     "page": 9,
+     "n_chars": 271,
+     "hits": [
+      "차단",
+      "비상",
+      "밸브"
+     ]
+    },
+    {
+     "clause_key": "P-18-2012:0:4.1",
+     "guide_no": "P-18-2012",
+     "clause_id": "4.1",
+     "title": "인화성 액체 및 가스 누출의 위험성",
+     "page": 3,
+     "n_chars": 1468,
+     "hits": [
+      "누출",
+      "조치"
+     ]
+    },
+    {
+     "clause_key": "P-18-2012:0:6.3",
+     "guide_no": "P-18-2012",
+     "clause_id": "6.3",
+     "title": "누출원인의 확인 절차",
+     "page": 18,
+     "n_chars": 375,
+     "hits": [
+      "누출",
+      "조치"
+     ]
+    },
+    {
+     "clause_key": "P-18-2012:0:7.5.1",
+     "guide_no": "P-18-2012",
+     "clause_id": "7.5.1",
+     "title": "배관의 수압시험(Hydraulic test)",
+     "page": 24,
+     "n_chars": 340,
+     "hits": [
+      "누출",
+      "격리"
+     ]
+    },
+    {
+     "clause_key": "P-52-2012:0:4",
+     "guide_no": "P-52-2012",
+     "clause_id": "4",
+     "title": "격리작업의 주요 단계",
+     "page": 4,
+     "n_chars": 197,
+     "hits": [
+      "격리",
+      "조치"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-58-2012:0:7.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "7.1",
+     "title": "통제",
+     "page": 13,
+     "n_chars": 168,
+     "hits": [
+      "누출",
+      "조치"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:4.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "4.1",
+     "title": "대응계획",
+     "page": 3,
+     "n_chars": 190,
+     "hits": [
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:5.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "5.1",
+     "title": "비상사고 시의 작업",
+     "page": 5,
+     "n_chars": 203,
+     "hits": [
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:5.2",
+     "guide_no": "P-58-2012",
+     "clause_id": "5.2",
+     "title": "점화원",
+     "page": 5,
+     "n_chars": 121,
+     "hits": [
+      "누출"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:5.3",
+     "guide_no": "P-58-2012",
+     "clause_id": "5.3",
+     "title": "통제지역",
+     "page": 5,
+     "n_chars": 65,
+     "hits": [
+      "비상"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 7,
+   "description": "C 헤더 압력 손실 — 공급 가용성 저하 (스트림 4)",
+   "kind": "step",
+   "topic": "header_pressure",
+   "primary_guides": [
+    "P-18-2012",
+    "P-65-2012",
+    "P-159-2017"
+   ],
+   "secondary_guides": [
+    "P-121-2012"
+   ],
+   "keywords": [
+    "압력",
+    "벤트",
+    "방출",
+    "누출",
+    "공급",
+    "운전"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-159-2017:0:6",
+     "guide_no": "P-159-2017",
+     "clause_id": "6",
+     "title": "초저온 액체 배출",
+     "page": 10,
+     "n_chars": 509,
+     "hits": [
+      "벤트",
+      "누출"
+     ]
+    },
+    {
+     "clause_key": "P-18-2012:0:7.5.1",
+     "guide_no": "P-18-2012",
+     "clause_id": "7.5.1",
+     "title": "배관의 수압시험(Hydraulic test)",
+     "page": 24,
+     "n_chars": 340,
+     "hits": [
+      "압력",
+      "누출"
+     ]
+    },
+    {
+     "clause_key": "P-18-2012:0:7.6.4",
+     "guide_no": "P-18-2012",
+     "clause_id": "7.6.4",
+     "title": "불활성가스 압력시험법",
+     "page": 25,
+     "n_chars": 134,
+     "hits": [
+      "압력",
+      "누출"
+     ]
+    },
+    {
+     "clause_key": "P-18-2012:0:9.1",
+     "guide_no": "P-18-2012",
+     "clause_id": "9.1",
+     "title": "개요",
+     "page": 28,
+     "n_chars": 672,
+     "hits": [
+      "벤트",
+      "누출"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:5.1",
+     "guide_no": "P-65-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 323,
+     "hits": [
+      "압력",
+      "방출"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:5.4",
+     "guide_no": "P-65-2012",
+     "clause_id": "5.4",
+     "title": "단순화된 도표 활용 방법",
+     "page": 8,
+     "n_chars": 1051,
+     "hits": [
+      "압력",
+      "방출"
+     ]
+    },
+    {
+     "clause_key": "P-159-2017:0:4.2",
+     "guide_no": "P-159-2017",
+     "clause_id": "4.2",
+     "title": "벤트 설계시 고려사항",
+     "page": 4,
+     "n_chars": 874,
+     "hits": [
+      "벤트"
+     ]
+    },
+    {
+     "clause_key": "P-159-2017:0:4.3",
+     "guide_no": "P-159-2017",
+     "clause_id": "4.3",
+     "title": "벤트 설치시 고려사항",
+     "page": 5,
+     "n_chars": 1466,
+     "hits": [
+      "벤트"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-121-2012:0:5.4",
+     "guide_no": "P-121-2012",
+     "clause_id": "5.4",
+     "title": "산소 압축기의 안전관리",
+     "page": 13,
+     "n_chars": 2073,
+     "hits": [
+      "압력",
+      "공급"
+     ]
+    },
+    {
+     "clause_key": "P-121-2012:0:5.9",
+     "guide_no": "P-121-2012",
+     "clause_id": "5.9",
+     "title": "초저온 배관 트랩(Trap)에 의한 과압",
+     "page": 19,
+     "n_chars": 228,
+     "hits": [
+      "압력",
+      "방출"
+     ]
+    },
+    {
+     "clause_key": "P-121-2012:0:5.2",
+     "guide_no": "P-121-2012",
+     "clause_id": "5.2",
+     "title": "재비기의 안전관리",
+     "page": 11,
+     "n_chars": 930,
+     "hits": [
+      "운전"
+     ]
+    },
+    {
+     "clause_key": "P-121-2012:0:5.3",
+     "guide_no": "P-121-2012",
+     "clause_id": "5.3",
+     "title": "펌프 LOX 열교환기의 안전관리",
+     "page": 12,
+     "n_chars": 1036,
+     "hits": [
+      "압력"
+     ]
+    },
+    {
+     "clause_key": "P-121-2012:0:5.5",
+     "guide_no": "P-121-2012",
+     "clause_id": "5.5",
+     "title": "공기 분리설비의 공정안전 인자",
+     "page": 15,
+     "n_chars": 171,
+     "hits": [
+      "운전"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 8,
+   "description": "A, B, C 피드 조성 변동 (스트림 4)",
+   "kind": "random",
+   "topic": "feed_composition",
+   "primary_guides": [
+    "P-132-2013",
+    "P-167-2020"
+   ],
+   "secondary_guides": [
+    "P-179-2022",
+    "P-129-2013"
+   ],
+   "keywords": [
+    "조성",
+    "혼합",
+    "원료",
+    "시료",
+    "분석",
+    "비율",
+    "농도",
+    "폭발하한"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-132-2013:0:4.1",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.1",
+     "title": "일반 사항",
+     "page": 4,
+     "n_chars": 3496,
+     "hits": [
+      "조성",
+      "혼합"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.2",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.2",
+     "title": "원료 투입",
+     "page": 8,
+     "n_chars": 1195,
+     "hits": [
+      "혼합",
+      "원료"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.4",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.4",
+     "title": "연속식 반응기",
+     "page": 11,
+     "n_chars": 925,
+     "hits": [
+      "원료",
+      "농도"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.8",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.8",
+     "title": "미반응 물질의 축적",
+     "page": 16,
+     "n_chars": 472,
+     "hits": [
+      "혼합",
+      "분석"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.3",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.3",
+     "title": "혼합 반응",
+     "page": 9,
+     "n_chars": 1683,
+     "hits": [
+      "혼합"
+     ]
+    },
+    {
+     "clause_key": "P-132-2013:0:4.5",
+     "guide_no": "P-132-2013",
+     "clause_id": "4.5",
+     "title": "회분식 반응기",
+     "page": 12,
+     "n_chars": 727,
+     "hits": [
+      "원료"
+     ]
+    },
+    {
+     "clause_key": "P-167-2020:0:4",
+     "guide_no": "P-167-2020",
+     "clause_id": "4",
+     "title": "일반사항",
+     "page": 4,
+     "n_chars": 1272,
+     "hits": [
+      "시료"
+     ]
+    },
+    {
+     "clause_key": "P-167-2020:0:5",
+     "guide_no": "P-167-2020",
+     "clause_id": "5",
+     "title": "화학물질 취급 및 시료채취 작업",
+     "page": 6,
+     "n_chars": 453,
+     "hits": [
+      "시료"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-179-2022:0:5.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 6,
+     "n_chars": 216,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.2.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.2.1",
+     "title": "르샤틀리에 공식 적용방법",
+     "page": 6,
+     "n_chars": 380,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.2.2",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.2.2",
+     "title": "ISO 10156 계산식 적용방법",
+     "page": 7,
+     "n_chars": 1351,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.3.1",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.3.1",
+     "title": "일반사항",
+     "page": 9,
+     "n_chars": 930,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    },
+    {
+     "clause_key": "P-179-2022:0:5.3.2",
+     "guide_no": "P-179-2022",
+     "clause_id": "5.3.2",
+     "title": "폭발하한계 산정과정",
+     "page": 10,
+     "n_chars": 3038,
+     "hits": [
+      "혼합",
+      "폭발하한"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 9,
+   "description": "D 피드 온도 변동 (스트림 2)",
+   "kind": "random",
+   "topic": "feed_temperature",
+   "primary_guides": [
+    "P-38-2012",
+    "P-53-2012"
+   ],
+   "secondary_guides": [
+    "P-129-2013",
+    "P-116-2012"
+   ],
+   "keywords": [
+    "온도",
+    "발열",
+    "열량",
+    "안전운전 한계",
+    "계측",
+    "설정값"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-38-2012:0:4",
+     "guide_no": "P-38-2012",
+     "clause_id": "4",
+     "title": "화학반응의 위험요인",
+     "page": 3,
+     "n_chars": 189,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.3",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.3",
+     "title": "취득정보 해석",
+     "page": 7,
+     "n_chars": 529,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.4",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.4",
+     "title": "추가 검토",
+     "page": 8,
+     "n_chars": 421,
+     "hits": [
+      "발열",
+      "열량"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.6",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.6",
+     "title": "반응 열량 측정",
+     "page": 10,
+     "n_chars": 775,
+     "hits": [
+      "온도",
+      "열량"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.7",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.7",
+     "title": "안전운전 한계(Envelope)의 결정",
+     "page": 12,
+     "n_chars": 205,
+     "hits": [
+      "온도",
+      "안전운전 한계"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.2.1",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.2.1",
+     "title": "문헌조사",
+     "page": 5,
+     "n_chars": 385,
+     "hits": [
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.5",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.5",
+     "title": "검토자료의 해석",
+     "page": 8,
+     "n_chars": 845,
+     "hits": [
+      "온도"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.4",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.4",
+     "title": "경보 설정값의 결정",
+     "page": 8,
+     "n_chars": 141,
+     "hits": [
+      "설정값"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.1",
+     "title": "계측기 관리 구분 및 대상",
+     "page": 4,
+     "n_chars": 659,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.2",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.2",
+     "title": "계측기 교정 목적 및 대상",
+     "page": 4,
+     "n_chars": 327,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.3",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.3",
+     "title": "계측기 점검 목적 및 대상",
+     "page": 5,
+     "n_chars": 116,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.1",
+     "title": "교정 및 점검 시기",
+     "page": 5,
+     "n_chars": 512,
+     "hits": [
+      "계측"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 10,
+   "description": "C 피드 온도 변동 (스트림 4)",
+   "kind": "random",
+   "topic": "feed_temperature",
+   "primary_guides": [
+    "P-38-2012",
+    "P-53-2012"
+   ],
+   "secondary_guides": [
+    "P-129-2013",
+    "P-116-2012"
+   ],
+   "keywords": [
+    "온도",
+    "발열",
+    "열량",
+    "안전운전 한계",
+    "계측",
+    "설정값"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-38-2012:0:4",
+     "guide_no": "P-38-2012",
+     "clause_id": "4",
+     "title": "화학반응의 위험요인",
+     "page": 3,
+     "n_chars": 189,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.3",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.3",
+     "title": "취득정보 해석",
+     "page": 7,
+     "n_chars": 529,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.4",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.4",
+     "title": "추가 검토",
+     "page": 8,
+     "n_chars": 421,
+     "hits": [
+      "발열",
+      "열량"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.6",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.6",
+     "title": "반응 열량 측정",
+     "page": 10,
+     "n_chars": 775,
+     "hits": [
+      "온도",
+      "열량"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.7",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.7",
+     "title": "안전운전 한계(Envelope)의 결정",
+     "page": 12,
+     "n_chars": 205,
+     "hits": [
+      "온도",
+      "안전운전 한계"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "온도",
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.2.1",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.2.1",
+     "title": "문헌조사",
+     "page": 5,
+     "n_chars": 385,
+     "hits": [
+      "발열"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.5",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.5",
+     "title": "검토자료의 해석",
+     "page": 8,
+     "n_chars": 845,
+     "hits": [
+      "온도"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.4",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.4",
+     "title": "경보 설정값의 결정",
+     "page": 8,
+     "n_chars": 141,
+     "hits": [
+      "설정값"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.1",
+     "title": "계측기 관리 구분 및 대상",
+     "page": 4,
+     "n_chars": 659,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.2",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.2",
+     "title": "계측기 교정 목적 및 대상",
+     "page": 4,
+     "n_chars": 327,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.3",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.3",
+     "title": "계측기 점검 목적 및 대상",
+     "page": 5,
+     "n_chars": 116,
+     "hits": [
+      "계측"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.1",
+     "title": "교정 및 점검 시기",
+     "page": 5,
+     "n_chars": 512,
+     "hits": [
+      "계측"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 11,
+   "description": "반응기 냉각수 입구 온도 변동",
+   "kind": "random",
+   "topic": "reactor_cooling",
+   "primary_guides": [
+    "P-53-2012",
+    "P-38-2012",
+    "P-65-2012"
+   ],
+   "secondary_guides": [
+    "P-133-2013",
+    "P-116-2012"
+   ],
+   "keywords": [
+    "냉각",
+    "폭주",
+    "온도",
+    "압력",
+    "파열판",
+    "방호",
+    "인터록",
+    "긴급"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-53-2012:0:6",
+     "guide_no": "P-53-2012",
+     "clause_id": "6",
+     "title": "방호대책",
+     "page": 7,
+     "n_chars": 348,
+     "hits": [
+      "냉각",
+      "파열판",
+      "방호",
+      "긴급"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:4.1",
+     "guide_no": "P-65-2012",
+     "clause_id": "4.1",
+     "title": "일반 특성",
+     "page": 4,
+     "n_chars": 513,
+     "hits": [
+      "폭주",
+      "온도",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:5.1",
+     "guide_no": "P-65-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 323,
+     "hits": [
+      "폭주",
+      "온도",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.4",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.4",
+     "title": "파열판, 안전밸브, 벤트 및 덤핑",
+     "page": 8,
+     "n_chars": 740,
+     "hits": [
+      "폭주",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.7",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.7",
+     "title": "긴급배출 및 급랭",
+     "page": 10,
+     "n_chars": 242,
+     "hits": [
+      "냉각",
+      "온도",
+      "긴급"
+     ]
+    },
+    {
+     "clause_key": "P-65-2012:0:5.4",
+     "guide_no": "P-65-2012",
+     "clause_id": "5.4",
+     "title": "단순화된 도표 활용 방법",
+     "page": 8,
+     "n_chars": 1051,
+     "hits": [
+      "온도",
+      "압력",
+      "파열판"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.3",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.3",
+     "title": "취득정보 해석",
+     "page": 7,
+     "n_chars": 529,
+     "hits": [
+      "폭주",
+      "온도"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "냉각",
+      "온도"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-133-2013:0:5.2.3",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.3",
+     "title": "긴급사항 발생 시 우회절차",
+     "page": 8,
+     "n_chars": 289,
+     "hits": [
+      "인터록",
+      "긴급"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:4.2",
+     "guide_no": "P-133-2013",
+     "clause_id": "4.2",
+     "title": "인터록의 신설, 수정 및 삭제 절차",
+     "page": 4,
+     "n_chars": 606,
+     "hits": [
+      "인터록"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:4.3",
+     "guide_no": "P-133-2013",
+     "clause_id": "4.3",
+     "title": "인터록의 설정값 변경절차",
+     "page": 5,
+     "n_chars": 606,
+     "hits": [
+      "인터록"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:4.4",
+     "guide_no": "P-133-2013",
+     "clause_id": "4.4",
+     "title": "기록 관리",
+     "page": 6,
+     "n_chars": 197,
+     "hits": [
+      "인터록"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.1",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.1",
+     "title": "대상 및 사유",
+     "page": 6,
+     "n_chars": 362,
+     "hits": [
+      "인터록"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 12,
+   "description": "응축기 냉각수 입구 온도 변동",
+   "kind": "random",
+   "topic": "condenser_cooling",
+   "primary_guides": [
+    "P-60-2012",
+    "P-53-2012"
+   ],
+   "secondary_guides": [
+    "P-129-2013"
+   ],
+   "keywords": [
+    "냉각",
+    "냉매",
+    "응축",
+    "온도",
+    "압력",
+    "점검"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-53-2012:0:6.5",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.5",
+     "title": "추가 냉각",
+     "page": 9,
+     "n_chars": 163,
+     "hits": [
+      "냉각",
+      "냉매",
+      "응축"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "냉각",
+      "온도"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.3",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.3",
+     "title": "반응 시스템의 봉쇄",
+     "page": 8,
+     "n_chars": 200,
+     "hits": [
+      "응축",
+      "압력"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.7",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.7",
+     "title": "긴급배출 및 급랭",
+     "page": 10,
+     "n_chars": 242,
+     "hits": [
+      "냉각",
+      "온도"
+     ]
+    },
+    {
+     "clause_key": "P-60-2012:0:5.2",
+     "guide_no": "P-60-2012",
+     "clause_id": "5.2",
+     "title": "유지보수 중 안전관리",
+     "page": 7,
+     "n_chars": 365,
+     "hits": [
+      "냉매",
+      "압력"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.2",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.2",
+     "title": "반응속도 제어",
+     "page": 5,
+     "n_chars": 737,
+     "hits": [
+      "냉각"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6",
+     "guide_no": "P-53-2012",
+     "clause_id": "6",
+     "title": "방호대책",
+     "page": 7,
+     "n_chars": 348,
+     "hits": [
+      "냉각"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.4",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.4",
+     "title": "파열판, 안전밸브, 벤트 및 덤핑",
+     "page": 8,
+     "n_chars": 740,
+     "hits": [
+      "압력"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-129-2013:0:4.3",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.3",
+     "title": "계측기 점검 목적 및 대상",
+     "page": 5,
+     "n_chars": 116,
+     "hits": [
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.1",
+     "title": "교정 및 점검 시기",
+     "page": 5,
+     "n_chars": 512,
+     "hits": [
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.2.2",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.2.2",
+     "title": "점검방법",
+     "page": 7,
+     "n_chars": 1022,
+     "hits": [
+      "점검"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 13,
+   "description": "반응 속도론 완만한 드리프트",
+   "kind": "drift",
+   "topic": "reaction_kinetics",
+   "primary_guides": [
+    "P-38-2012",
+    "P-53-2012"
+   ],
+   "secondary_guides": [
+    "P-120-2012"
+   ],
+   "keywords": [
+    "반응",
+    "열량",
+    "위험확인",
+    "설계",
+    "변경",
+    "검토",
+    "한계"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-38-2012:0:5.3",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.3",
+     "title": "취득정보 해석",
+     "page": 7,
+     "n_chars": 529,
+     "hits": [
+      "반응",
+      "설계",
+      "검토"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.6",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.6",
+     "title": "반응 열량 측정",
+     "page": 10,
+     "n_chars": 775,
+     "hits": [
+      "반응",
+      "열량",
+      "설계"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.7",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.7",
+     "title": "안전운전 한계(Envelope)의 결정",
+     "page": 12,
+     "n_chars": 205,
+     "hits": [
+      "반응",
+      "설계",
+      "한계"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:4",
+     "guide_no": "P-53-2012",
+     "clause_id": "4",
+     "title": "발열반응 공정의 설계 시 고려사항",
+     "page": 4,
+     "n_chars": 842,
+     "hits": [
+      "반응",
+      "설계",
+      "검토"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:5.1",
+     "guide_no": "P-53-2012",
+     "clause_id": "5.1",
+     "title": "일반사항",
+     "page": 5,
+     "n_chars": 471,
+     "hits": [
+      "반응",
+      "설계",
+      "한계"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.2",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.2",
+     "title": "초기조사 및 반응정보 수집",
+     "page": 5,
+     "n_chars": 158,
+     "hits": [
+      "반응",
+      "설계"
+     ]
+    },
+    {
+     "clause_key": "P-38-2012:0:5.4",
+     "guide_no": "P-38-2012",
+     "clause_id": "5.4",
+     "title": "추가 검토",
+     "page": 8,
+     "n_chars": 421,
+     "hits": [
+      "열량",
+      "검토"
+     ]
+    },
+    {
+     "clause_key": "P-53-2012:0:6.3",
+     "guide_no": "P-53-2012",
+     "clause_id": "6.3",
+     "title": "반응 시스템의 봉쇄",
+     "page": 8,
+     "n_chars": 200,
+     "hits": [
+      "반응",
+      "설계"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-120-2012:0:4",
+     "guide_no": "P-120-2012",
+     "clause_id": "4",
+     "title": "설계 및 재설계 시에 안전보건의 검토 필요성",
+     "page": 3,
+     "n_chars": 145,
+     "hits": [
+      "설계",
+      "변경",
+      "검토"
+     ]
+    },
+    {
+     "clause_key": "P-120-2012:0:6",
+     "guide_no": "P-120-2012",
+     "clause_id": "6",
+     "title": "공급자와의 관계",
+     "page": 5,
+     "n_chars": 575,
+     "hits": [
+      "설계",
+      "변경"
+     ]
+    },
+    {
+     "clause_key": "P-120-2012:0:7",
+     "guide_no": "P-120-2012",
+     "clause_id": "7",
+     "title": "설계단계에서 안전 검토",
+     "page": 6,
+     "n_chars": 729,
+     "hits": [
+      "설계",
+      "검토"
+     ]
+    },
+    {
+     "clause_key": "P-120-2012:0:5",
+     "guide_no": "P-120-2012",
+     "clause_id": "5",
+     "title": "경영층의 역할 및 책임",
+     "page": 4,
+     "n_chars": 1466,
+     "hits": [
+      "설계"
+     ]
+    },
+    {
+     "clause_key": "P-120-2012:0:8.11",
+     "guide_no": "P-120-2012",
+     "clause_id": "8.11",
+     "title": "잔여 리스크 평가",
+     "page": 11,
+     "n_chars": 182,
+     "hits": [
+      "검토"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 14,
+   "description": "반응기 냉각수 밸브 고착",
+   "kind": "sticking",
+   "topic": "valve_sticking",
+   "primary_guides": [
+    "P-77-2011",
+    "P-129-2013"
+   ],
+   "secondary_guides": [
+    "P-133-2013"
+   ],
+   "keywords": [
+    "밸브",
+    "작동",
+    "페일",
+    "정비",
+    "검사",
+    "테스트",
+    "계측기",
+    "점검",
+    "불량",
+    "우회"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-77-2011:0:7.2",
+     "guide_no": "P-77-2011",
+     "clause_id": "7.2",
+     "title": "비상차단시스템의 실패요인",
+     "page": 9,
+     "n_chars": 271,
+     "hits": [
+      "밸브",
+      "작동",
+      "정비",
+      "테스트"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:7.3",
+     "guide_no": "P-77-2011",
+     "clause_id": "7.3",
+     "title": "정비, 검사 및 테스트",
+     "page": 10,
+     "n_chars": 256,
+     "hits": [
+      "밸브",
+      "정비",
+      "검사",
+      "테스트"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.3",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.3",
+     "title": "계측기 점검 목적 및 대상",
+     "page": 5,
+     "n_chars": 116,
+     "hits": [
+      "작동",
+      "계측기",
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.2.2",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.2.2",
+     "title": "점검방법",
+     "page": 7,
+     "n_chars": 1022,
+     "hits": [
+      "작동",
+      "계측기",
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:7.1",
+     "guide_no": "P-77-2011",
+     "clause_id": "7.1",
+     "title": "원격차단밸브의 위험",
+     "page": 9,
+     "n_chars": 325,
+     "hits": [
+      "밸브",
+      "정비",
+      "테스트"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.1",
+     "title": "교정 및 점검 시기",
+     "page": 5,
+     "n_chars": 512,
+     "hits": [
+      "계측기",
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:4",
+     "guide_no": "P-77-2011",
+     "clause_id": "4",
+     "title": "일반사항",
+     "page": 4,
+     "n_chars": 699,
+     "hits": [
+      "밸브",
+      "작동"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:6.3",
+     "guide_no": "P-77-2011",
+     "clause_id": "6.3",
+     "title": "밸브 작동장치(Actuator)",
+     "page": 7,
+     "n_chars": 452,
+     "hits": [
+      "밸브",
+      "작동"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-133-2013:0:5.1",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.1",
+     "title": "대상 및 사유",
+     "page": 6,
+     "n_chars": 362,
+     "hits": [
+      "작동",
+      "검사",
+      "불량"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.2.2",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.2",
+     "title": "정상운전 시 우회절차",
+     "page": 7,
+     "n_chars": 526,
+     "hits": [
+      "작동",
+      "우회"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.2.4",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.4",
+     "title": "인터록 우회 해지절차",
+     "page": 8,
+     "n_chars": 906,
+     "hits": [
+      "작동",
+      "우회"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:6",
+     "guide_no": "P-133-2013",
+     "clause_id": "6",
+     "title": "인터록 보안",
+     "page": 11,
+     "n_chars": 356,
+     "hits": [
+      "작동",
+      "계측기"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.2.1",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.1",
+     "title": "인터록 우회 승인의 책임 및 권한",
+     "page": 7,
+     "n_chars": 58,
+     "hits": [
+      "우회"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 15,
+   "description": "응축기 냉각수 밸브 고착",
+   "kind": "sticking",
+   "topic": "valve_sticking",
+   "primary_guides": [
+    "P-77-2011",
+    "P-129-2013"
+   ],
+   "secondary_guides": [
+    "P-133-2013"
+   ],
+   "keywords": [
+    "밸브",
+    "작동",
+    "페일",
+    "정비",
+    "검사",
+    "테스트",
+    "계측기",
+    "점검",
+    "불량",
+    "우회"
+   ],
+   "primary_candidates": [
+    {
+     "clause_key": "P-77-2011:0:7.2",
+     "guide_no": "P-77-2011",
+     "clause_id": "7.2",
+     "title": "비상차단시스템의 실패요인",
+     "page": 9,
+     "n_chars": 271,
+     "hits": [
+      "밸브",
+      "작동",
+      "정비",
+      "테스트"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:7.3",
+     "guide_no": "P-77-2011",
+     "clause_id": "7.3",
+     "title": "정비, 검사 및 테스트",
+     "page": 10,
+     "n_chars": 256,
+     "hits": [
+      "밸브",
+      "정비",
+      "검사",
+      "테스트"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:4.3",
+     "guide_no": "P-129-2013",
+     "clause_id": "4.3",
+     "title": "계측기 점검 목적 및 대상",
+     "page": 5,
+     "n_chars": 116,
+     "hits": [
+      "작동",
+      "계측기",
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.2.2",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.2.2",
+     "title": "점검방법",
+     "page": 7,
+     "n_chars": 1022,
+     "hits": [
+      "작동",
+      "계측기",
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:7.1",
+     "guide_no": "P-77-2011",
+     "clause_id": "7.1",
+     "title": "원격차단밸브의 위험",
+     "page": 9,
+     "n_chars": 325,
+     "hits": [
+      "밸브",
+      "정비",
+      "테스트"
+     ]
+    },
+    {
+     "clause_key": "P-129-2013:0:5.1",
+     "guide_no": "P-129-2013",
+     "clause_id": "5.1",
+     "title": "교정 및 점검 시기",
+     "page": 5,
+     "n_chars": 512,
+     "hits": [
+      "계측기",
+      "점검"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:4",
+     "guide_no": "P-77-2011",
+     "clause_id": "4",
+     "title": "일반사항",
+     "page": 4,
+     "n_chars": 699,
+     "hits": [
+      "밸브",
+      "작동"
+     ]
+    },
+    {
+     "clause_key": "P-77-2011:0:6.3",
+     "guide_no": "P-77-2011",
+     "clause_id": "6.3",
+     "title": "밸브 작동장치(Actuator)",
+     "page": 7,
+     "n_chars": 452,
+     "hits": [
+      "밸브",
+      "작동"
+     ]
+    }
+   ],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-133-2013:0:5.1",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.1",
+     "title": "대상 및 사유",
+     "page": 6,
+     "n_chars": 362,
+     "hits": [
+      "작동",
+      "검사",
+      "불량"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.2.2",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.2",
+     "title": "정상운전 시 우회절차",
+     "page": 7,
+     "n_chars": 526,
+     "hits": [
+      "작동",
+      "우회"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.2.4",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.4",
+     "title": "인터록 우회 해지절차",
+     "page": 8,
+     "n_chars": 906,
+     "hits": [
+      "작동",
+      "우회"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:6",
+     "guide_no": "P-133-2013",
+     "clause_id": "6",
+     "title": "인터록 보안",
+     "page": 11,
+     "n_chars": 356,
+     "hits": [
+      "작동",
+      "계측기"
+     ]
+    },
+    {
+     "clause_key": "P-133-2013:0:5.2.1",
+     "guide_no": "P-133-2013",
+     "clause_id": "5.2.1",
+     "title": "인터록 우회 승인의 책임 및 권한",
+     "page": 7,
+     "n_chars": 58,
+     "hits": [
+      "우회"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 16,
+   "description": "미공개 결함",
+   "kind": "unknown",
+   "topic": "unknown",
+   "primary_guides": [],
+   "secondary_guides": [
+    "P-116-2012",
+    "P-129-2013",
+    "P-58-2012"
+   ],
+   "keywords": [
+    "경보",
+    "우선순위",
+    "점검",
+    "사고대응",
+    "비상"
+   ],
+   "primary_candidates": [],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.2",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.2",
+     "title": "경보의 선정 및 우선순위 부여",
+     "page": 8,
+     "n_chars": 308,
+     "hits": [
+      "경보",
+      "우선순위",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.1",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.1",
+     "title": "적정한 경보 발생비율",
+     "page": 8,
+     "n_chars": 154,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.5",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.5",
+     "title": "경보시스템의 지속적인 관리",
+     "page": 9,
+     "n_chars": 185,
+     "hits": [
+      "경보",
+      "우선순위"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.3",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.3",
+     "title": "교육 훈련",
+     "page": 9,
+     "n_chars": 201,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:4.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "4.1",
+     "title": "대응계획",
+     "page": 3,
+     "n_chars": 190,
+     "hits": [
+      "사고대응",
+      "비상"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 17,
+   "description": "미공개 결함",
+   "kind": "unknown",
+   "topic": "unknown",
+   "primary_guides": [],
+   "secondary_guides": [
+    "P-116-2012",
+    "P-129-2013",
+    "P-58-2012"
+   ],
+   "keywords": [
+    "경보",
+    "우선순위",
+    "점검",
+    "사고대응",
+    "비상"
+   ],
+   "primary_candidates": [],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.2",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.2",
+     "title": "경보의 선정 및 우선순위 부여",
+     "page": 8,
+     "n_chars": 308,
+     "hits": [
+      "경보",
+      "우선순위",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.1",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.1",
+     "title": "적정한 경보 발생비율",
+     "page": 8,
+     "n_chars": 154,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.5",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.5",
+     "title": "경보시스템의 지속적인 관리",
+     "page": 9,
+     "n_chars": 185,
+     "hits": [
+      "경보",
+      "우선순위"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.3",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.3",
+     "title": "교육 훈련",
+     "page": 9,
+     "n_chars": 201,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:4.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "4.1",
+     "title": "대응계획",
+     "page": 3,
+     "n_chars": 190,
+     "hits": [
+      "사고대응",
+      "비상"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 18,
+   "description": "미공개 결함",
+   "kind": "unknown",
+   "topic": "unknown",
+   "primary_guides": [],
+   "secondary_guides": [
+    "P-116-2012",
+    "P-129-2013",
+    "P-58-2012"
+   ],
+   "keywords": [
+    "경보",
+    "우선순위",
+    "점검",
+    "사고대응",
+    "비상"
+   ],
+   "primary_candidates": [],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.2",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.2",
+     "title": "경보의 선정 및 우선순위 부여",
+     "page": 8,
+     "n_chars": 308,
+     "hits": [
+      "경보",
+      "우선순위",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.1",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.1",
+     "title": "적정한 경보 발생비율",
+     "page": 8,
+     "n_chars": 154,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.5",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.5",
+     "title": "경보시스템의 지속적인 관리",
+     "page": 9,
+     "n_chars": 185,
+     "hits": [
+      "경보",
+      "우선순위"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.3",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.3",
+     "title": "교육 훈련",
+     "page": 9,
+     "n_chars": 201,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:4.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "4.1",
+     "title": "대응계획",
+     "page": 3,
+     "n_chars": 190,
+     "hits": [
+      "사고대응",
+      "비상"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 19,
+   "description": "미공개 결함",
+   "kind": "unknown",
+   "topic": "unknown",
+   "primary_guides": [],
+   "secondary_guides": [
+    "P-116-2012",
+    "P-129-2013",
+    "P-58-2012"
+   ],
+   "keywords": [
+    "경보",
+    "우선순위",
+    "점검",
+    "사고대응",
+    "비상"
+   ],
+   "primary_candidates": [],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.2",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.2",
+     "title": "경보의 선정 및 우선순위 부여",
+     "page": 8,
+     "n_chars": 308,
+     "hits": [
+      "경보",
+      "우선순위",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.1",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.1",
+     "title": "적정한 경보 발생비율",
+     "page": 8,
+     "n_chars": 154,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.5",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.5",
+     "title": "경보시스템의 지속적인 관리",
+     "page": 9,
+     "n_chars": 185,
+     "hits": [
+      "경보",
+      "우선순위"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.3",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.3",
+     "title": "교육 훈련",
+     "page": 9,
+     "n_chars": 201,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:4.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "4.1",
+     "title": "대응계획",
+     "page": 3,
+     "n_chars": 190,
+     "hits": [
+      "사고대응",
+      "비상"
+     ]
+    }
+   ]
+  },
+  {
+   "fault": 20,
+   "description": "미공개 결함",
+   "kind": "unknown",
+   "topic": "unknown",
+   "primary_guides": [],
+   "secondary_guides": [
+    "P-116-2012",
+    "P-129-2013",
+    "P-58-2012"
+   ],
+   "keywords": [
+    "경보",
+    "우선순위",
+    "점검",
+    "사고대응",
+    "비상"
+   ],
+   "primary_candidates": [],
+   "secondary_candidates": [
+    {
+     "clause_key": "P-116-2012:0:5.2.2",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.2",
+     "title": "경보의 선정 및 우선순위 부여",
+     "page": 8,
+     "n_chars": 308,
+     "hits": [
+      "경보",
+      "우선순위",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.1",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.1",
+     "title": "적정한 경보 발생비율",
+     "page": 8,
+     "n_chars": 154,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.2.5",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.2.5",
+     "title": "경보시스템의 지속적인 관리",
+     "page": 9,
+     "n_chars": 185,
+     "hits": [
+      "경보",
+      "우선순위"
+     ]
+    },
+    {
+     "clause_key": "P-116-2012:0:5.3",
+     "guide_no": "P-116-2012",
+     "clause_id": "5.3",
+     "title": "교육 훈련",
+     "page": 9,
+     "n_chars": 201,
+     "hits": [
+      "경보",
+      "비상"
+     ]
+    },
+    {
+     "clause_key": "P-58-2012:0:4.1",
+     "guide_no": "P-58-2012",
+     "clause_id": "4.1",
+     "title": "대응계획",
+     "page": 3,
+     "n_chars": 190,
+     "hits": [
+      "사고대응",
+      "비상"
+     ]
+    }
+   ]
+  }
+ ],
+ "cross_cutting": {
+  "P-116-2012": [
+   "P-116-2012:0:5.1",
+   "P-116-2012:0:5.2.2",
+   "P-116-2012:0:5.2.4",
+   "P-116-2012:0:5.2.5"
+  ],
+  "P-129-2013": [
+   "P-129-2013:0:4.1",
+   "P-129-2013:0:4.3",
+   "P-129-2013:0:5.2.2"
+  ],
+  "P-133-2013": [
+   "P-133-2013:0:5.1",
+   "P-133-2013:0:5.2.2",
+   "P-133-2013:0:5.2.3"
+  ]
+ }
+}
