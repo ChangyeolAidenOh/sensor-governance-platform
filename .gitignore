@@ -23,4 +23,3 @@ data/raw/kosha/index_*.json
 data/raw/kosha/index_*.csv
 data/raw/kosha/files_manifest.json
 !docs/llm_selection.md
-!docs/llm_selection.md
