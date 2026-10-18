@@ -48,6 +48,7 @@ lightgbm>=4.0
 # documents / retrieval
 chromadb>=0.5
 rank-bm25>=0.2
+pymupdf>=1.26
 
 # llm clients
 ollama>=0.3

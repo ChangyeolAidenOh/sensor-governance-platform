@@ -15,3 +15,7 @@ test_mlflow.db
 docs/*.md
 !docs/v1_report.md
 docs/install_*.log
+
+# secrets
+.env
+.venv-docling/

@@ -1,0 +1,31 @@
+P-114-2020   p 13 gt  0 | pymupdf clauses  11 cov 1.00 gt - sp/ha 0.28 tables 2/0 | docling clauses  11 cov 1.00 gt - sp/ha 0.53 label 0.91 tables 2/0
+P-116-2012   p 12 gt 18 | pymupdf clauses  18 cov 1.00 gt 1.00 sp/ha 0.13 tables 1/0 | docling clauses  18 cov 1.00 gt 1.00 sp/ha 0.45 label 0.89 tables 1/0
+P-120-2012   p 19 gt  0 | pymupdf clauses  24 cov 1.00 gt - sp/ha 0.12 tables 5/0 | docling clauses  24 cov 1.00 gt - sp/ha 0.56 label 1.00 tables 5/0
+P-121-2012   p 24 gt  0 | pymupdf clauses  21 cov 1.00 gt - sp/ha 0.22 tables 9/3 | docling clauses  17 cov 0.81 gt - sp/ha 0.59 label 0.94 tables 6/0
+P-123-2012   p 16 gt  0 | pymupdf clauses  19 cov 1.00 gt - sp/ha 0.05 tables 0/0 | docling clauses  18 cov 0.95 gt - sp/ha 0.37 label 0.83 tables 0/0
+P-129-2013   p 10 gt  0 | pymupdf clauses  13 cov 1.00 gt - sp/ha 0.06 tables 0/0 | docling clauses  13 cov 1.00 gt - sp/ha 0.36 label 0.77 tables 0/0
+P-132-2013   p 16 gt  0 | pymupdf clauses  12 cov 1.00 gt - sp/ha 0.05 tables 0/0 | docling clauses  12 cov 1.00 gt - sp/ha 0.36 label 1.00 tables 0/0
+P-133-2013   p 11 gt 18 | pymupdf clauses  18 cov 1.00 gt 1.00 sp/ha 0.09 tables 2/0 | docling clauses  18 cov 1.00 gt 1.00 sp/ha 0.43 label 0.89 tables 2/0
+P-137-2018   p 19 gt  0 | pymupdf clauses  24 cov 1.00 gt - sp/ha 0.12 tables 7/3 | docling clauses  19 cov 0.79 gt - sp/ha 0.57 label 1.00 tables 6/0
+P-153-2016   p 27 gt  0 | pymupdf clauses  47 cov 1.00 gt - sp/ha 0.17 tables 3/0 | docling clauses  47 cov 1.00 gt - sp/ha 0.71 label 0.66 tables 3/0
+P-159-2017   p 20 gt  0 | pymupdf clauses  22 cov 1.00 gt - sp/ha 1.73 tables 21/0 | docling clauses  18 cov 0.82 gt - sp/ha 4.84 label 0.61 tables 21/0
+P-164-2018   p 27 gt  0 | pymupdf clauses  80 cov 1.00 gt - sp/ha 0.55 tables 18/18 | docling clauses  48 cov 0.60 gt - sp/ha 1.26 label 0.29 tables 9/6
+P-167-2020   p 14 gt  0 | pymupdf clauses  15 cov 1.00 gt - sp/ha 0.06 tables 0/0 | docling clauses  15 cov 1.00 gt - sp/ha 0.37 label 1.00 tables 0/0
+P-171-2021   p 22 gt  0 | pymupdf clauses  21 cov 1.00 gt - sp/ha 0.17 tables 2/0 | docling clauses  21 cov 1.00 gt - sp/ha 0.60 label 0.91 tables 2/0
+P-178-2022   p 21 gt  0 | pymupdf clauses  54 cov 1.00 gt - sp/ha 0.08 tables 0/0 | docling clauses  54 cov 1.00 gt - sp/ha 0.41 label 0.83 tables 0/0
+P-179-2022   p 26 gt  0 | pymupdf clauses  12 cov 1.00 gt - sp/ha 2.09 tables 10/4 | docling clauses  12 cov 1.00 gt - sp/ha 2.69 label 1.00 tables 10/0
+P-18-2012    p 30 gt  0 | pymupdf clauses  47 cov 1.00 gt - sp/ha 0.16 tables 1/0 | docling clauses  47 cov 1.00 gt - sp/ha 0.50 label 0.92 tables 1/0
+P-22-2012    p 14 gt  0 | pymupdf clauses  42 cov 1.00 gt - sp/ha 0.20 tables 1/0 | docling clauses  28 cov 0.67 gt - sp/ha 0.55 label 0.86 tables 2/0
+P-38-2012    p 12 gt  0 | pymupdf clauses  15 cov 1.00 gt - sp/ha 0.09 tables 0/0 | docling clauses  15 cov 1.00 gt - sp/ha 0.39 label 1.00 tables 0/0
+P-44-2012    p  6 gt  0 | pymupdf clauses   7 cov 1.00 gt - sp/ha 0.07 tables 0/0 | docling clauses   7 cov 1.00 gt - sp/ha 0.39 label 1.00 tables 0/0
+P-52-2012    p 19 gt  0 | pymupdf clauses  20 cov 1.00 gt - sp/ha 0.16 tables 2/0 | docling clauses  20 cov 1.00 gt - sp/ha 0.45 label 0.90 tables 1/0
+P-53-2012    p 14 gt  0 | pymupdf clauses  16 cov 1.00 gt - sp/ha 0.06 tables 0/0 | docling clauses  16 cov 1.00 gt - sp/ha 0.37 label 1.00 tables 0/0
+P-58-2012    p 20 gt  0 | pymupdf clauses  43 cov 1.00 gt - sp/ha 0.21 tables 3/0 | docling clauses  43 cov 1.00 gt - sp/ha 0.92 label 0.88 tables 3/0
+P-60-2012    p 13 gt  0 | pymupdf clauses  15 cov 1.00 gt - sp/ha 0.12 tables 2/0 | docling clauses  15 cov 1.00 gt - sp/ha 0.44 label 0.87 tables 2/0
+P-65-2012    p 14 gt 13 | pymupdf clauses  13 cov 1.00 gt 1.00 sp/ha 0.33 tables 1/0 | docling clauses  13 cov 1.00 gt 1.00 sp/ha 0.47 label 0.77 tables 1/0
+P-75-2011    p 16 gt  0 | pymupdf clauses  30 cov 1.00 gt - sp/ha 0.06 tables 0/0 | docling clauses  30 cov 1.00 gt - sp/ha 0.37 label 1.00 tables 0/0
+P-77-2011    p 16 gt  0 | pymupdf clauses  19 cov 1.00 gt - sp/ha 0.10 tables 2/0 | docling clauses  19 cov 1.00 gt - sp/ha 0.47 label 1.00 tables 3/0
+P-79-2011    p 45 gt  0 | pymupdf clauses  17 cov 1.00 gt - sp/ha 0.88 tables 43/1 | docling clauses  11 cov 0.65 gt - sp/ha 1.83 label 0.91 tables 49/3
+
+[summary] {"n_docs": 28, "docs_with_gt": 3, "docs_with_scanned_pages": 0, "pymupdf": {"docs": 28, "clause_cov_union_mean": 1.0, "docs_cov_ge_0.8": 28, "gt_docs": 3, "clause_recall_gt_mean": 1.0, "gt_docs_ge_0.8": 3, "space_per_hangul_mean": 0.3, "label_recall_mean": null, "tables": 135, "tables_broken": 29, "table_broken_rate": 0.215, "seconds_total": 6.0}, "docling": {"docs": 28, "clause_cov_union_mean": 0.939, "docs_cov_ge_0.8": 24, "gt_docs": 3, "clause_recall_gt_mean": 1.0, "gt_docs_ge_0.8": 3, "space_per_hangul_mean": 0.794, "label_recall_mean": 0.88, "tables": 129, "tables_broken": 9, "table_broken_rate": 0.07, "seconds_total": 0}}
+[done] report docs/pdf_parser_spike.md, json outputs/pdf_parser_spike.json, excerpts data/processed/kosha_spike/compare
