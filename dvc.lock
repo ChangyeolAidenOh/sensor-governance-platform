@@ -1,35 +1,21 @@
 schema: '2.0'
 stages:
-  preprocess:
-    cmd: python -m core_pipeline.data.preprocess --data-dir data/raw/CMAPSSData 
-      --subset FD001 --output-dir data/processed
+  preprocess_tep:
+    cmd: python -m core_pipeline.data.tep_loader --data-dir data/raw/TEP 
+      --output-dir data/processed/TEP
     deps:
-    - path: core_pipeline/data/preprocess.py
+    - path: core_pipeline/data/tep_loader.py
       hash: md5
-      md5: db521ae406f207399e0a06de861d24cb
-      size: 8255
-    - path: data/raw/CMAPSSData/RUL_FD001.txt
+      md5: c4a6087c472e92483e0851dc9708ff47
+      size: 25027
+    - path: data/raw/TEP
       hash: md5
-      md5: 8f4a8b3d2692b2f7d8e72b344927bf4b
-      size: 429
-    - path: data/raw/CMAPSSData/test_FD001.txt
-      hash: md5
-      md5: 62316d1dd70f88a9a43a1e2690765437
-      size: 2228855
-    - path: data/raw/CMAPSSData/train_FD001.txt
-      hash: md5
-      md5: 259f340bac32ce6fa8894815600fa757
-      size: 3515356
+      md5: 8383f93ed052d1759f51b9b20ced8274.dir
+      size: 1402950911
+      nfiles: 4
     outs:
-    - path: data/processed/FD001/rul_true.parquet
+    - path: data/processed/TEP
       hash: md5
-      md5: 3660643bc37c1788b3b05d856b6f2686
-      size: 1582
-    - path: data/processed/FD001/test.parquet
-      hash: md5
-      md5: fffb5212355d9cba0be99ec9aa8b5401
-      size: 7511541
-    - path: data/processed/FD001/train.parquet
-      hash: md5
-      md5: 8aa931bfa21424575120813b76cdbfc6
-      size: 11857625
+      md5: 605ef974a6bf54e1f30c22335382319c.dir
+      size: 1429258004
+      nfiles: 11
