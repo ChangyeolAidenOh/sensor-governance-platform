@@ -7,3 +7,12 @@ stages:
     - data/raw/TEP
     outs:
     - data/processed/TEP
+  parse_kosha_docling:
+    cmd: .venv-docling/bin/docling convert data/raw/kosha/files --to md --to 
+      json --no-ocr --tables --table-mode accurate --device cpu --output 
+      data/processed/kosha/docling
+    deps:
+    - data/raw/kosha/files
+    - requirements_docling.txt
+    outs:
+    - data/processed/kosha/docling

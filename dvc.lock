@@ -19,3 +19,23 @@ stages:
       md5: 605ef974a6bf54e1f30c22335382319c.dir
       size: 1429258004
       nfiles: 11
+  parse_kosha_docling:
+    cmd: .venv-docling/bin/docling convert data/raw/kosha/files --to md --to 
+      json --no-ocr --tables --table-mode accurate --device cpu --output 
+      data/processed/kosha/docling
+    deps:
+    - path: data/raw/kosha/files
+      hash: md5
+      md5: 323a1455780b79a64b4aead3c2df7ed5.dir
+      size: 6412136
+      nfiles: 28
+    - path: requirements_docling.txt
+      hash: md5
+      md5: 443ece46206e45348346e1324d20593e
+      size: 17
+    outs:
+    - path: data/processed/kosha/docling
+      hash: md5
+      md5: bb06921edd2253ae74dd46bae4a26cf4.dir
+      size: 178999149
+      nfiles: 56
