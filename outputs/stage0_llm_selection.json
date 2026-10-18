@@ -82,7 +82,8 @@
   }
  },
  "decision": {
-  "rule": "zero format errors and zero exceptions -> min cost per request -> min latency per request",
+  "rule": "zero tool-call format errors -> min cost per turn (per run) -> min latency per turn (wall per run)",
+  "unit_note": "turn = one agent run (one user message); per-request figures are reported, not used by the rule",
   "eligible": [
    "claude-haiku-5-5",
    "claude-sonnet-5-5",
@@ -98,7 +99,8 @@
   "selected": "claude-haiku-5-5",
   "judge": "gpt-6.1-sol",
   "all_failed": false,
-  "note": "runs with needs_judge still require the semantic judge pass before the OOS metric is final"
+  "oos_note": "oos_refusal_rate is a deterministic criterion (no tool call + refusal vocabulary); it is not a semantic adequacy judgment",
+  "needs_judge_total": 0
  },
  "n_runs": 120
 }

@@ -2,10 +2,11 @@
 
     python spikes/llm_spike/report.py --runs outputs/stage0_llm_spike/runs.jsonl
 
-Decision rule (plan §4.1, ST0-22): among candidates with zero format errors over all runs,
-pick the lowest mean cost per request; tie -> lowest mean latency per request. Candidates
-with any exception (transport) are reported but not excluded on that basis alone; runs
-flagged needs_judge are listed for the semantic judge (separate step, separate cost).
+Decision rule (frozen plan v1.1 §4.1 0-F, restated in ST0-22): among candidates with zero
+tool-call format errors over all runs, pick the lowest mean cost PER TURN (one agent run =
+one user turn); tie -> lowest mean latency per turn (wall seconds per run). Exceptions,
+interrupt/OOS rates and per-request figures are reported alongside but are not part of the
+rule. Runs flagged needs_judge keep the OOS metric provisional until a semantic judge pass.
 """
 
 from __future__ import annotations
@@ -56,21 +57,24 @@ def main() -> None:
             "latency_per_request_mean": mean([r["latency_per_request_mean"] for r in rs]),
             "wall_per_run_mean": mean([r["wall_seconds"] for r in rs]),
         }
-    eligible = [m for m in models if per[m]["format_error_runs"] == 0 and per[m]["exceptions"] == 0]
-    ranked = sorted(eligible, key=lambda m: (per[m]["cost_per_request_usd"], per[m]["latency_per_request_mean"] or 1e9))
+    eligible = [m for m in models if per[m]["format_error_runs"] == 0]
+    ranked = sorted(eligible, key=lambda m: (per[m]["cost_per_run_usd"], per[m]["wall_per_run_mean"] or 1e9))
     selected = ranked[0] if ranked else None
     judge_candidates = [m for m in models if m != selected and m.split("-")[0] != (selected or "").split("-")[0]] if selected else []
-    judge = min(judge_candidates, key=lambda m: per[m]["cost_per_request_usd"]) if judge_candidates else None
-    decision = {"rule": "zero format errors and zero exceptions -> min cost per request -> min latency per request",
+    judge = min(judge_candidates, key=lambda m: per[m]["cost_per_run_usd"]) if judge_candidates else None
+    decision = {"rule": "zero tool-call format errors -> min cost per turn (per run) -> min latency per turn (wall per run)",
+                "unit_note": "turn = one agent run (one user message); per-request figures are reported, not used by the rule",
                 "eligible": eligible, "ranking": ranked, "selected": selected, "judge": judge,
-                "all_failed": not eligible, "note": "runs with needs_judge still require the semantic judge pass before the OOS metric is final"}
+                "all_failed": not eligible,
+                "oos_note": "oos_refusal_rate is a deterministic criterion (no tool call + refusal vocabulary); it is not a semantic adequacy judgment",
+                "needs_judge_total": sum(len(per[m]["needs_judge_runs"]) for m in models)}
     out = {"per_model": per, "decision": decision, "n_runs": len(rows)}
     Path(args.out_json).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out_json).write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 
     cols = ["runs", "pass_rate", "format_error_rate", "expected_tools_rate", "forbidden_tool_runs", "interrupt_resume_rate",
-            "oos_refusal_rate", "exceptions", "cost_per_request_usd", "cost_per_run_usd", "requests_per_run",
-            "output_tokens_per_request", "latency_per_request_mean"]
+            "oos_refusal_rate", "exceptions", "cost_per_run_usd", "wall_per_run_mean", "cost_per_request_usd",
+            "requests_per_run", "output_tokens_per_request", "latency_per_request_mean"]
     md = ["# 0-F LLM selection (spike result)", "",
           f"Runs: {len(rows)} · rule: {decision['rule']}", "",
           "| model | " + " | ".join(cols) + " |", "|---|" + "---|" * len(cols)]
