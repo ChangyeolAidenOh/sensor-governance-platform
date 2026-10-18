@@ -231,3 +231,12 @@ sensor-governance-platform/
 7. **Corruption and transfer express one principle.** Distribution shift breaks models. Detect with PSI, retrain.
 
 
+
+## Demos
+
+| App | What it shows | Status | How to open |
+|---|---|---|---|
+| Analysis dashboard (v1) | Sensor quality gate, corruption experiments, anomaly detection results on C-MAPSS | Frozen at tag `v1.0` | Local: `docker compose up -d dashboard` → http://localhost:8501 (see v1 README section above) |
+| Process Reliability Agent — chat spike (v2, 0-D) | Streaming multi-turn chat UI with an approval gate; **technical spike only: no LLM, no database connected** | In development (Stage 0) | https://process-reliability-agent.streamlit.app/ (branch `v2`, `spikes/streamlit_stream_spike.py`) |
+
+The agent link will replace the spike with the real alarm → evidence → proposal → approval flow after Stage 4; until then the v1 dashboard is the reference for delivered functionality.
