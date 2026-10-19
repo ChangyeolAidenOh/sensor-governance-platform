@@ -23,3 +23,15 @@ data/raw/kosha/index_*.json
 data/raw/kosha/index_*.csv
 data/raw/kosha/files_manifest.json
 !docs/llm_selection.md
+# ST0-28: pre-registration artefacts are tracked (timestamp fixing); everything else under docs/ stays local
+!docs/preregistration.md
+!docs/skill_contract.md
+!docs/maturity_checklist.md
+!docs/fault_to_guidance_map.md
+!docs/decision_definition.md
+!docs/asis_decision_journey.md
+!docs/llm_selection.md
+!outputs/fault_to_guidance_map.json
+!outputs/stage0_episode_split.json
+!outputs/stage0_llm_selection.json
+!outputs/stage0_conformal_toy.json

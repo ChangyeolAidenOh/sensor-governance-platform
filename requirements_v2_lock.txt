@@ -1,0 +1,54 @@
+# requirements_v2_lock.txt — Python 3.11.17 `.venv`, frozen at tag prereg-v1 (2026-10-19)
+# Layer 1 = constraints_v2.txt (20 pins, identical to requirements_v1_lock.txt).
+# Layer 2 = resolved versions of requirements_v2.txt lower bounds.
+# Regenerate with: bash scripts/freeze_v2_lock.sh   (fails if any Layer-1 pin drifted)
+# Install with:    pip install -r requirements_v2_lock.txt -c constraints_v2.txt
+# docling lives in .venv-docling (requirements_docling.txt), never here (ST0-16).
+
+# ---- Layer 1 (constraints_v2.txt) ----
+numpy==1.26.4
+pandas==2.3.3
+scipy==1.15.3
+scikit-learn==1.7.2
+torch==2.11.0
+xgboost==3.2.0
+alibi-detect==0.13.0
+shap==0.49.1
+mlflow==3.12.0
+dvc==3.67.1
+fastapi==0.136.1
+uvicorn==0.46.0
+pydantic==2.13.4
+streamlit==1.57.0
+plotly==6.7.0
+matplotlib==3.10.9
+seaborn==0.13.2
+pyarrow==23.0.1
+tqdm==4.67.3
+PyYAML==6.0.3
+
+# ---- Layer 2 (resolved) ----
+# agent — versions recorded in ST0-07 / ST0-17
+langgraph==1.2.16
+langgraph-checkpoint-postgres==3.2.0
+psycopg[binary,pool]==3.3.6
+fastmcp==3.4.0
+
+# data — FILL from `pip freeze` (not recorded in the decision log)
+duckdb==1.5.6
+pyreadr==0.5.7
+
+# detection / diagnosis
+lightgbm==4.7.0
+
+# documents / retrieval
+chromadb==1.5.9
+rank-bm25==0.2.2
+pymupdf==1.28.2
+
+# llm clients
+ollama==0.6.3
+anthropic==1.15.0
+langchain-anthropic==1.7.6
+langchain-openai==1.7.2
+langchain-google-genai==4.4.2
