@@ -9,8 +9,11 @@ Rules (ST1-01..03):
   * only the derived tables are rebuilt (episodes, windows, labels). If the derived grid would change and any
     execution table already references it, the load is REFUSED (logged, exit 2). If the grid is unchanged the
     load is a no-op that only appends a load_log row (action='unchanged'). Checkpointer tables are never touched;
-  * the parquet identity (manifest sha256, per-file sidecar size/written_at/raw identity, loader version, DVC md5)
-    is recorded in raw.tep_files and mart.load_log so a replay can verify its inputs (scripts/check_mart_inputs.py).
+  * the parquet identity AND content (sha256 of every parquet's bytes) are recorded in raw.tep_files; mart.load_log
+    stores input_contract_sha256 = sha256(grid, split, manifest, content shas, loader/schema/prereg versions,
+    window/stride, n). "unchanged" means the whole contract is equal to the last ok load, not just the grid;
+    a contract change with existing execution rows is refused (old alarms must not attach to new data);
+  * --n-reduction-decision must name a real entry in docs/decision_log.md that records the 60→40 time contract.
 
 Usage: python scripts/load_mart.py --dsn $SGP_PG_DSN [--n 40 --n-reduction-decision ST5-01]
 """
@@ -20,6 +23,7 @@ import argparse
 import hashlib
 import io
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -28,7 +32,7 @@ import psycopg
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from core_pipeline import prereg_constants as P  # noqa: E402
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 EXECUTION_TABLES = ["mart.alarms", "mart.proposals", "mart.approvals", "mart.work_orders",
                     "mart.replay_runs", "mart.replay_window_log", "mart.agent_steps"]
 
@@ -80,6 +84,41 @@ def copy_rows(cur, table, cols, rows):
         cp.write(buf.read())
 
 
+def dvc_lock_md5(out_dir: Path):
+    """md5 DVC recorded for the processed out directory in dvc.lock (provenance only; content check is sha256)."""
+    lock = Path("dvc.lock")
+    if not lock.exists():
+        return None
+    try:
+        import yaml
+        doc = yaml.safe_load(lock.read_text())
+        for st in doc.get("stages", {}).values():
+            for o in st.get("outs", []):
+                if Path(o.get("path", "")).resolve() == out_dir.resolve():
+                    return o.get("md5")
+    except Exception:
+        return None
+    return None
+
+
+def input_contract_sha(grid_sha, split_sha, ident, n):
+    h = hashlib.sha256()
+    for part in [grid_sha, split_sha, ident["manifest_sha256"] if ident else "", ident["loader_version"] if ident else "",
+                 *(f["file_name"] + ":" + f["content_sha256"] for f in (ident["files"] if ident else [])),
+                 str(SCHEMA_VERSION), P.PREREG_COMMIT, str(P.WINDOW_SIZE), str(P.STRIDE), str(n)]:
+        h.update(str(part).encode() + b"\x00")
+    return h.hexdigest()
+
+
+def decision_authorises_reduction(decision_id: str, log_path: Path) -> bool:
+    """The ID must head a real decision-log entry whose body records the 60→40 time contract."""
+    if not log_path.exists():
+        return False
+    text = log_path.read_text()
+    m = re.search(rf"^### {re.escape(decision_id)} \|.*?(?=^### |\Z)", text, re.S | re.M)
+    return bool(m) and "40" in m.group(0) and "시간 계약" in m.group(0)
+
+
 def parquet_identity(manifest_path: Path, dvc_file: Path):
     """Identity of the processed parquet set: manifest sha, per-file sidecars, DVC outs md5."""
     if not manifest_path.exists():
@@ -92,15 +131,15 @@ def parquet_identity(manifest_path: Path, dvc_file: Path):
             continue
         sc_path = out_dir / f"{fname}.done.json"
         sc = json.loads(sc_path.read_text()) if sc_path.exists() else {}
+        pq = out_dir / fname
+        if not pq.exists():
+            raise FileNotFoundError(f"manifest lists {fname} but it is missing in {out_dir}")
         files.append({"file_name": fname, "split": "training" if "training" in fname else "testing",
                       "faulty": fname.startswith("faulty"), "rows": st.get("rows"), "episodes": st.get("engines"),
                       "size_bytes": sc.get("size_bytes"), "written_at": sc.get("written_at"),
-                      "raw_size": sc.get("raw_size"), "raw_mtime": sc.get("raw_mtime")})
-    dvc_md5 = None
-    if dvc_file.exists():
-        for line in dvc_file.read_text().splitlines():
-            if line.strip().startswith("- md5:") or line.strip().startswith("md5:"):
-                dvc_md5 = line.split(":", 1)[1].strip(); break
+                      "raw_size": sc.get("raw_size"), "raw_mtime": sc.get("raw_mtime"),
+                      "content_sha256": sha256_file(pq)})            # full-file hash: once per load, not per window
+    dvc_md5 = dvc_lock_md5(out_dir)
     return {"manifest_sha256": sha256_file(manifest_path), "loader_version": manifest.get("loader_version"),
             "dvc_md5": dvc_md5, "files": files}
 
@@ -115,6 +154,7 @@ def main() -> int:
     ap.add_argument("--n", type=int, default=P.N_EVAL_DEFAULT)
     ap.add_argument("--n-reduction-decision", default=None, help="decision ID authorising n=40 (§3.1 time contract)")
     ap.add_argument("--receipt", default=None, help="write the load_log row as JSON here (DVC out)")
+    ap.add_argument("--decision-log", default="docs/decision_log.md")
     a = ap.parse_args()
 
     if a.n not in P.N_EVAL_ALLOWED:
@@ -123,6 +163,8 @@ def main() -> int:
         print("refuse: n=40 requires --n-reduction-decision <decision ID> (prereg §3.1)"); return 2
     if a.n == P.N_EVAL_DEFAULT and a.n_reduction_decision:
         print("refuse: --n-reduction-decision given but n is the default"); return 2
+    if a.n_reduction_decision and not decision_authorises_reduction(a.n_reduction_decision, Path(a.decision_log)):
+        print(f"refuse: {a.n_reduction_decision} is not a decision-log entry recording the 60→40 시간 계약 ({a.decision_log})"); return 2
 
     split_path = Path(a.split)
     split_doc = json.loads(split_path.read_text())
@@ -130,6 +172,8 @@ def main() -> int:
     if ident is None:
         print(f"[warn] manifest not found at {a.manifest}; parquet identity NOT recorded (dev only)")
     episodes, windows, labels, grid_sha = derive(split_doc, a.n)
+    split_sha = sha256_file(split_path)
+    contract_sha = input_contract_sha(grid_sha, split_sha, ident, a.n)
 
     with psycopg.connect(a.dsn) as conn, conn.cursor() as cur:
         cur.execute(Path(a.schema).read_text())
@@ -141,16 +185,16 @@ def main() -> int:
         cur.execute("SELECT count(*) FROM staging.episode_keys")
         n_keys = cur.fetchone()[0]
 
-        cur.execute("SELECT grid_sha256, prereg_n FROM mart.load_log WHERE ok ORDER BY load_id DESC LIMIT 1")
+        cur.execute("SELECT input_contract_sha256 FROM mart.load_log WHERE ok ORDER BY load_id DESC LIMIT 1")
         last = cur.fetchone()
         cur.execute(" UNION ALL ".join(f"SELECT '{t}', count(*) FROM {t}" for t in EXECUTION_TABLES))
         exec_counts = dict(cur.fetchall())
         exec_rows = sum(exec_counts.values())
 
-        if last and last[0] == grid_sha and last[1] == a.n:
-            action = "unchanged"                      # idempotent re-run: no DDL/DML on derived tables
+        if last and last[0] == contract_sha:
+            action = "unchanged"                      # whole input contract equal: no DML on derived tables
         elif exec_rows > 0:
-            action = "refused"
+            action = "refused"                        # contract changed (data, split, grid, versions or n) while execution rows reference it
         else:
             action = "rebuilt"
             # derived tables only (DELETE, not TRUNCATE: execution tables hold FKs to windows and must be untouched)
@@ -176,9 +220,9 @@ def main() -> int:
                 cur.execute("DELETE FROM raw.tep_files")
                 for f in ident["files"]:
                     cur.execute("""INSERT INTO raw.tep_files (file_name, split, faulty, rows, episodes, size_bytes, written_at,
-                                     raw_size, raw_mtime, loader_version, manifest_sha256, dvc_md5)
+                                     raw_size, raw_mtime, loader_version, manifest_sha256, content_sha256, dvc_md5)
                                    VALUES (%(file_name)s,%(split)s,%(faulty)s,%(rows)s,%(episodes)s,%(size_bytes)s,%(written_at)s,
-                                           %(raw_size)s,%(raw_mtime)s,%(lv)s,%(ms)s,%(dm)s)""",
+                                           %(raw_size)s,%(raw_mtime)s,%(lv)s,%(ms)s,%(content_sha256)s,%(dm)s)""",
                                 {**f, "lv": ident["loader_version"], "ms": ident["manifest_sha256"], "dm": ident["dvc_md5"]})
 
         cur.execute("""SELECT e."group", e.eval_selected, count(DISTINCT e.episode_id), count(w.*)
@@ -194,16 +238,17 @@ def main() -> int:
             assert cur.fetchone()[0] == 0, "windows without labels"
 
         cur.execute("""INSERT INTO mart.load_log (schema_version, prereg_commit, split_json_sha256, split_seed, manifest_sha256,
-                         loader_version, dvc_md5, grid_sha256, prereg_n, n_reduction_decision, window_size, stride, action, counts, ok)
-                       VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING load_id, loaded_at""",
-                    (SCHEMA_VERSION, P.PREREG_COMMIT, sha256_file(split_path), split_doc["seed"],
+                         loader_version, dvc_md5, grid_sha256, input_contract_sha256, prereg_n, n_reduction_decision, window_size, stride, action, counts, ok)
+                       VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING load_id, loaded_at""",
+                    (SCHEMA_VERSION, P.PREREG_COMMIT, split_sha, split_doc["seed"],
                      ident["manifest_sha256"] if ident else None, ident["loader_version"] if ident else None,
-                     ident["dvc_md5"] if ident else None, grid_sha, a.n, a.n_reduction_decision,
+                     ident["dvc_md5"] if ident else None, grid_sha, contract_sha, a.n, a.n_reduction_decision,
                      P.WINDOW_SIZE, P.STRIDE, action, json.dumps(counts), ok))
         load_id, loaded_at = cur.fetchone()
         conn.commit()
 
     receipt = {"load_id": load_id, "loaded_at": str(loaded_at), "action": action, "ok": ok, "grid_sha256": grid_sha,
+               "input_contract_sha256": contract_sha,
                "prereg_n": a.n, "n_reduction_decision": a.n_reduction_decision, "counts": counts,
                "manifest_sha256": ident["manifest_sha256"] if ident else None}
     if a.receipt:
@@ -211,8 +256,8 @@ def main() -> int:
         Path(a.receipt).write_text(json.dumps(receipt, indent=2))
     print(json.dumps(receipt))
     if action == "refused":
-        print("REFUSED: derived grid would change but execution tables hold rows", exec_counts,
-              "\n  → archive/clear execution tables deliberately (decision log), or keep the old grid.")
+        print("REFUSED: input contract changed (data/split/grid/version/n) but execution tables hold rows", exec_counts,
+              "\n  → archive/clear execution tables deliberately (decision log), or load as a new data version.")
         return 2
     return 0
 

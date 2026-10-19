@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS mart.schema_version (
 INSERT INTO mart.schema_version (version, note)
 VALUES (2, 'S1-02 rev2: opaque episode_id, agent role, derived/execution separation')
 ON CONFLICT (version) DO NOTHING;
+INSERT INTO mart.schema_version (version, note)
+VALUES (3, 'S1-02 rev3: parquet content sha256, input_contract_sha256 for unchanged/refused decisions')
+ON CONFLICT (version) DO NOTHING;
 
 -- ------------------------------------------------------------ raw: identity of the parquet actually used (ST1-01)
 CREATE TABLE IF NOT EXISTS raw.tep_files (
@@ -30,7 +33,8 @@ CREATE TABLE IF NOT EXISTS raw.tep_files (
   raw_size        bigint, raw_mtime bigint, -- identity of the RData the parquet was derived from
   loader_version  text,
   manifest_sha256 text NOT NULL,
-  dvc_md5         text,                     -- outs md5 of data/processed/TEP.dvc if present
+  content_sha256  text NOT NULL,            -- sha256 of the parquet bytes actually loaded (recomputed by check_mart_inputs)
+  dvc_md5         text,                     -- md5 recorded by DVC for the processed out (dvc.lock) — provenance only
   registered_at   timestamptz NOT NULL DEFAULT now()
 );
 
@@ -96,6 +100,7 @@ CREATE TABLE IF NOT EXISTS mart.load_log (
   loader_version     text,
   dvc_md5            text,
   grid_sha256        text    NOT NULL,     -- content hash of (episodes, windows, labels) as derived
+  input_contract_sha256 text NOT NULL,     -- sha256 over (grid, split, manifest, parquet content shas, loader/schema/prereg versions, window/stride, n)
   prereg_n           integer NOT NULL,
   n_reduction_decision text,               -- decision ID when prereg_n = 40 (§3.1 time contract)
   window_size        integer NOT NULL,
@@ -104,6 +109,9 @@ CREATE TABLE IF NOT EXISTS mart.load_log (
   counts             jsonb   NOT NULL,
   ok                 boolean NOT NULL DEFAULT false
 );
+
+ALTER TABLE raw.tep_files ADD COLUMN IF NOT EXISTS content_sha256 text;
+ALTER TABLE mart.load_log ADD COLUMN IF NOT EXISTS input_contract_sha256 text;
 
 -- ------------------------------------------------------------ mart: execution tables (never truncated by a load)
 CREATE TABLE IF NOT EXISTS mart.agent_runs (

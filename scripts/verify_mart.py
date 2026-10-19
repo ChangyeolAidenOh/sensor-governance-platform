@@ -68,16 +68,18 @@ def main() -> int:
         cur.execute("SELECT count(*) FROM staging.episodes")
         check(n_keys == cur.fetchone()[0], f"6d keys minted once: {n_keys} keys = episodes")
 
-        cur.execute("SELECT load_id, ok, action, split_json_sha256, counts, prereg_n, n_reduction_decision FROM mart.load_log ORDER BY load_id DESC LIMIT 2")
+        cur.execute("SELECT action, ok FROM mart.load_log ORDER BY load_id DESC LIMIT 1")
+        latest = cur.fetchone()
+        check(bool(latest) and latest[1], f"7a latest load attempt ok (action={latest[0] if latest else None}; a refused attempt means disk inputs changed)")
+        cur.execute("SELECT load_id, ok, action, split_json_sha256, counts, prereg_n, n_reduction_decision FROM mart.load_log WHERE ok ORDER BY load_id DESC LIMIT 2")
         rows = cur.fetchall()
-        check(bool(rows) and rows[0][1], "7a last load ok")
         check(bool(rows) and rows[0][3] == hashlib.sha256(Path(a.split).read_bytes()).hexdigest(), "7b split sha = disk")
         check(bool(rows) and (rows[0][5] == 60 or rows[0][6]), "7c n=40 only with a reduction decision")
         if len(rows) == 2:
             c0, c1 = rows[0][4], rows[1][4]
             check({k: v for k, v in c0.items() if k != "execution_rows"} == {k: v for k, v in c1.items() if k != "execution_rows"},
                   f"7d last two loads identical counts (second action={rows[0][2]})")
-            check(rows[0][2] == "unchanged", "7e re-run with same grid is a no-op (action=unchanged)")
+            check(rows[0][2] == "unchanged", "7e re-run with same input contract is a no-op (action=unchanged)")
         else:
             print("skip 7d/7e (one load so far)")
 
