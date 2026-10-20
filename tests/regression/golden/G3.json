@@ -1,0 +1,184 @@
+{
+ "case": "G3",
+ "preset": 10,
+ "episode_id": "962545fc-2f74-437d-9f4d-582889a31e8c",
+ "contract_version": "1.0",
+ "generated_at": "2026-10-20T20:33:14.023517+00:00",
+ "code_commit": "0361085",
+ "spec": [
+  "window 2 BLOCK row committed by gate_check (p/p_adj/alarm null, m_t unchanged)",
+  "detect_diagnose(2) → REFUSED(GATE_BLOCK)",
+  "window 3 accepted, m_3 = m_1 + 1"
+ ],
+ "observations": {},
+ "windows": [
+  {
+   "t": 0,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.9118933555509269,
+   "p_adj": 0.9118933555509269,
+   "alarm": false,
+   "m_t": 1,
+   "pred_set": [
+    9
+   ],
+   "top1": 9,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": false,
+    "drift_stat": null,
+    "drift_threshold": null,
+    "composite_min": 30.0,
+    "composite_mean": 35.97038461538462,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 0,
+    "history_age_windows": null,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     9
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 9,
+    "top1_prob": 0.5161087866030722,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 1,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.42511976671526763,
+   "p_adj": 0.8502395334305353,
+   "alarm": false,
+   "m_t": 2,
+   "pred_set": [
+    9
+   ],
+   "top1": 9,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": false,
+    "drift_stat": null,
+    "drift_threshold": null,
+    "composite_min": 30.0,
+    "composite_mean": 36.66653846153846,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 20,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     9
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 9,
+    "top1_prob": 0.584831718399324,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 2,
+   "gate": "BLOCK",
+   "drift": "ok",
+   "p_value": null,
+   "p_adj": null,
+   "alarm": null,
+   "m_t": 2,
+   "pred_set": [],
+   "top1": null,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "BLOCK",
+    "drift": "ok",
+    "drift_assessed": false,
+    "drift_stat": null,
+    "drift_threshold": null,
+    "composite_min": null,
+    "composite_mean": null,
+    "block_reasons": [
+     "non_finite"
+    ],
+    "flag_reasons": [],
+    "n_history": 0,
+    "history_age_windows": null,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   }
+  },
+  {
+   "t": 3,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.4378254530306186,
+   "p_adj": 0.656738179545928,
+   "alarm": false,
+   "m_t": 3,
+   "pred_set": [],
+   "top1": 15,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.9230769230769231,
+    "drift_threshold": 0.9426923076923078,
+    "composite_min": 30.0,
+    "composite_mean": 38.011153846153846,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 40,
+    "history_age_windows": 2,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [],
+    "set_size": 0,
+    "valid": false,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.4228096951935142,
+    "indeterminate": true
+   }
+  }
+ ],
+ "selected_window": 3,
+ "kind": "block_sequence",
+ "versions": {
+  "detector": "detector_v1",
+  "detector_model": "if_window_v1",
+  "diagnoser": "diagnoser_v1",
+  "gate": "gate_v2",
+  "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+  "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+  "alpha": 0.1,
+  "tau": 0.5
+ }
+}

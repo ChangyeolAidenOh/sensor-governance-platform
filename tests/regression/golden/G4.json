@@ -1,0 +1,2243 @@
+{
+ "case": "G4",
+ "preset": 8,
+ "episode_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e",
+ "contract_version": "1.0",
+ "generated_at": "2026-10-20T20:33:17.636784+00:00",
+ "code_commit": "0361085",
+ "spec": [
+  "selected window: first prefix-BH alarm window in 8..47",
+  "fault 18 case: set=[15] — C-only iff set ⊆ {16..20}; ev_AB=False recorded",
+  "decision query_more (rule 5) → work_order_draft REFUSED(NO_PROPOSE_DECISION)"
+ ],
+ "observations": {
+  "n_alarm_windows_total": 35,
+  "alarm_windows": [
+   8,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47
+  ],
+  "n_block": 0,
+  "set_within_16_20": false
+ },
+ "windows": [
+  {
+   "t": 0,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.9198083732555717,
+   "p_adj": 0.9198083732555717,
+   "alarm": false,
+   "m_t": 1,
+   "pred_set": [],
+   "top1": 9,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": false,
+    "drift_stat": null,
+    "drift_threshold": null,
+    "composite_min": 30.0,
+    "composite_mean": 36.86730769230769,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 0,
+    "history_age_windows": null,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [],
+    "set_size": 0,
+    "valid": false,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 9,
+    "top1_prob": 0.4280340917754721,
+    "indeterminate": true
+   }
+  },
+  {
+   "t": 1,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.5436367423453448,
+   "p_adj": 0.9198083732555717,
+   "alarm": false,
+   "m_t": 2,
+   "pred_set": [
+    9
+   ],
+   "top1": 9,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": false,
+    "drift_stat": null,
+    "drift_threshold": null,
+    "composite_min": 30.0,
+    "composite_mean": 37.21634615384616,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 20,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     9
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 9,
+    "top1_prob": 0.6673765291517533,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 2,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.280358258696105,
+   "p_adj": 0.8154551135180171,
+   "alarm": false,
+   "m_t": 3,
+   "pred_set": [],
+   "top1": 15,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.8653846153846154,
+    "drift_threshold": 0.9426923076923078,
+    "composite_min": 30.0,
+    "composite_mean": 36.93192307692307,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 40,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [],
+    "set_size": 0,
+    "valid": false,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.4401226661186382,
+    "indeterminate": true
+   }
+  },
+  {
+   "t": 3,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.7242241199750052,
+   "p_adj": 0.9198083732555717,
+   "alarm": false,
+   "m_t": 4,
+   "pred_set": [
+    3
+   ],
+   "top1": 3,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.6538461538461539,
+    "drift_threshold": 0.8076923076923077,
+    "composite_min": 30.0,
+    "composite_mean": 38.30576923076923,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 60,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     3
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 3,
+    "top1_prob": 0.6132633459764325,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 4,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.7865028119141846,
+   "p_adj": 0.9198083732555717,
+   "alarm": false,
+   "m_t": 5,
+   "pred_set": [
+    9
+   ],
+   "top1": 9,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.5192307692307693,
+    "drift_threshold": 0.6923076923076923,
+    "composite_min": 30.0,
+    "composite_mean": 37.143076923076926,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 80,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     9
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 9,
+    "top1_prob": 0.6990692866931104,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 5,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.036659029368881484,
+   "p_adj": 0.2199541762132889,
+   "alarm": false,
+   "m_t": 6,
+   "pred_set": [
+    15
+   ],
+   "top1": 15,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.40384615384615385,
+    "drift_threshold": 0.5769230769230769,
+    "composite_min": 30.0,
+    "composite_mean": 36.96057692307693,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 100,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     15
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.5921482764138895,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 6,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.21703811705894605,
+   "p_adj": 0.6541692702909115,
+   "alarm": false,
+   "m_t": 7,
+   "pred_set": [],
+   "top1": 15,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.38461538461538464,
+    "drift_threshold": 0.48153846153846197,
+    "composite_min": 30.0,
+    "composite_mean": 34.97615384615385,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 120,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [],
+    "set_size": 0,
+    "valid": false,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.5102232474786521,
+    "indeterminate": true
+   }
+  },
+  {
+   "t": 7,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.07290147885857114,
+   "p_adj": 0.29160591543428455,
+   "alarm": false,
+   "m_t": 8,
+   "pred_set": [
+    15
+   ],
+   "top1": 15,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.2692307692307692,
+    "drift_threshold": 0.4423076923076923,
+    "composite_min": 30.0,
+    "composite_mean": 36.870384615384616,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 140,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     15
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.5528709273063694,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 8,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.008123307644240784,
+   "p_adj": 0.07310976879816705,
+   "alarm": true,
+   "m_t": 9,
+   "pred_set": [
+    15
+   ],
+   "top1": 15,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:8:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.2692307692307692,
+    "drift_threshold": 0.38461538461538464,
+    "composite_min": 30.0,
+    "composite_mean": 34.64230769230769,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 160,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     15
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.618048051811121,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 9,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.07269318891897521,
+   "p_adj": 0.18225369714642783,
+   "alarm": false,
+   "m_t": 10,
+   "pred_set": [
+    15
+   ],
+   "top1": 15,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.2692307692307692,
+    "drift_threshold": 0.38461538461538464,
+    "composite_min": 30.0,
+    "composite_mean": 34.125,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 160,
+    "history_age_windows": 2,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     15
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.6665822475429404,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 10,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.3111851697563008,
+   "p_adj": 0.48900526675990125,
+   "alarm": false,
+   "m_t": 11,
+   "pred_set": [
+    15
+   ],
+   "top1": 15,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.2692307692307692,
+    "drift_threshold": 0.38461538461538464,
+    "composite_min": 30.0,
+    "composite_mean": 38.92307692307692,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 180,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     15
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 15,
+    "top1_prob": 0.5712400614944161,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 11,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.018329514684440742,
+   "p_adj": 0.10997708810664444,
+   "alarm": false,
+   "m_t": 12,
+   "pred_set": [],
+   "top1": 9,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.2692307692307692,
+    "drift_threshold": 0.34576923076923083,
+    "composite_min": 30.0,
+    "composite_mean": 35.87519230769231,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 200,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [],
+    "set_size": 0,
+    "valid": false,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 9,
+    "top1_prob": 0.42734469956221355,
+    "indeterminate": true
+   }
+  },
+  {
+   "t": 12,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.7000624869818788,
+   "p_adj": 0.8520447129070333,
+   "alarm": false,
+   "m_t": 13,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.28846153846153844,
+    "drift_threshold": 0.3080769230769233,
+    "composite_min": 30.0,
+    "composite_mean": 36.76423076923077,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 220,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.8898264063249144,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 13,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.02582795250989377,
+   "p_adj": 0.12053044504617093,
+   "alarm": false,
+   "m_t": 14,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": null,
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.21153846153846154,
+    "drift_threshold": 0.2880769230769231,
+    "composite_min": 30.0,
+    "composite_mean": 36.59461538461539,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 240,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9992412693035877,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 14,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.003124349093938763,
+   "alarm": true,
+   "m_t": 15,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:14:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 35.644807692307694,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 1,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998516901185875,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 15,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0016663195167673402,
+   "alarm": true,
+   "m_t": 16,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:15:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 33.94730769230769,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 2,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.999922447962712,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 16,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0011803096577101993,
+   "alarm": true,
+   "m_t": 17,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:16:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.11980769230769,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 3,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.999894075925073,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 17,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0009373047281816288,
+   "alarm": true,
+   "m_t": 18,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:17:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.07538461538462,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 4,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9988988909377613,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 18,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0007915017704644867,
+   "alarm": true,
+   "m_t": 19,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:18:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.050576923076925,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 5,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9995787656237558,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 19,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0006942997986530584,
+   "alarm": true,
+   "m_t": 20,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:19:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.110576923076927,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 6,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9993229474932666,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 20,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0006248698187877525,
+   "alarm": true,
+   "m_t": 21,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:20:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.552692307692304,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 7,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9995815823930797,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 21,
+   "gate": "PASS",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0005727973338887732,
+   "alarm": true,
+   "m_t": 22,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:21:detector_v1",
+   "gate_payload": {
+    "gate": "PASS",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.096346153846156,
+    "block_reasons": [],
+    "flag_reasons": [],
+    "n_history": 260,
+    "history_age_windows": 8,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9997742037907412,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 22,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0005322965123006781,
+   "alarm": true,
+   "m_t": 23,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:22:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.033703703703704,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 9,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9997047188134979,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 23,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.000499895855030202,
+   "alarm": true,
+   "m_t": 24,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:23:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.12964285714286,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 10,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998065933283404,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 24,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00047338622635435796,
+   "alarm": true,
+   "m_t": 25,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:24:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.645925925925926,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 11,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998618180053049,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 25,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00045129486912448796,
+   "alarm": true,
+   "m_t": 26,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:25:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.2852,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 12,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999022503798929,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 26,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0004326021822376749,
+   "alarm": true,
+   "m_t": 27,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:26:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.677307692307693,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 13,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998868601128057,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 27,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00041657987919183504,
+   "alarm": true,
+   "m_t": 28,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:27:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 30.916666666666668,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 14,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999094170981901,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 28,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00040269388321877386,
+   "alarm": true,
+   "m_t": 29,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:28:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.86884615384616,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 15,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998967766415638,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 29,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00039054363674234535,
+   "alarm": true,
+   "m_t": 30,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:29:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.536538461538463,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 16,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.999882055036385,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 30,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003798228310278496,
+   "alarm": true,
+   "m_t": 31,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:30:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.2224,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 17,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998925148264992,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 31,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00037029322594829783,
+   "alarm": true,
+   "m_t": 32,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:31:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.9388,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 18,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.999882215480996,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 32,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00036176673719290933,
+   "alarm": true,
+   "m_t": 33,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:32:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.29416666666666,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 19,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998831487231644,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 33,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00035409289731305976,
+   "alarm": true,
+   "m_t": 34,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:33:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 33.01208333333333,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 20,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998897857645681,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 34,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003471498993265292,
+   "alarm": true,
+   "m_t": 35,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:34:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.017916666666665,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 21,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999010574094599,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 35,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00034083808297513777,
+   "alarm": true,
+   "m_t": 36,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:35:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 33.288333333333334,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 22,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999144109424044,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 36,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00033507512021951945,
+   "alarm": true,
+   "m_t": 37,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:36:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.8616,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 23,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998711190120255,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 37,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003297924043602028,
+   "alarm": true,
+   "m_t": 38,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:37:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.4828,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 24,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998818223600813,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 38,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00032493230576963135,
+   "alarm": true,
+   "m_t": 39,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:38:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.422800000000002,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 25,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998884862675088,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 39,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003204460609167962,
+   "alarm": true,
+   "m_t": 40,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:39:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.804,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 26,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999058793107298,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 40,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003162921304975044,
+   "alarm": true,
+   "m_t": 41,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:40:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.430799999999998,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 27,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999018672011819,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 41,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003124349093938762,
+   "alarm": true,
+   "m_t": 42,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:41:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.102399999999996,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 28,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998500814667629,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 42,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003088437035387743,
+   "alarm": true,
+   "m_t": 43,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:42:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 30.613599999999998,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 29,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999161198851008,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 43,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003054919114073457,
+   "alarm": true,
+   "m_t": 44,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:43:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.814999999999998,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 30,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999050554990159,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 44,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0003023563639295577,
+   "alarm": true,
+   "m_t": 45,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:44:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.594166666666666,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 31,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999043428901304,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 45,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00029941678816913146,
+   "alarm": true,
+   "m_t": 46,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:45:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 31.386400000000002,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 32,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.999874622422975,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 46,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.0002966553685153977,
+   "alarm": true,
+   "m_t": 47,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:46:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.1352,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 33,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9998754653264029,
+    "indeterminate": false
+   }
+  },
+  {
+   "t": 47,
+   "gate": "FLAG",
+   "drift": "ok",
+   "p_value": 0.00020828993959591752,
+   "p_adj": 0.00029405638531188353,
+   "alarm": true,
+   "m_t": 48,
+   "pred_set": [
+    18
+   ],
+   "top1": 18,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:47:detector_v1",
+   "gate_payload": {
+    "gate": "FLAG",
+    "drift": "ok",
+    "drift_assessed": true,
+    "drift_stat": 0.23076923076923078,
+    "drift_threshold": 0.2692307692307692,
+    "composite_min": 30.0,
+    "composite_mean": 32.041666666666664,
+    "block_reasons": [],
+    "flag_reasons": [
+     "flatline:xmeas_1,xmeas_2,xmeas_3,xmeas_4,xmeas_5"
+    ],
+    "n_history": 260,
+    "history_age_windows": 34,
+    "gate_version": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "stored": false
+   },
+   "diagnosis": {
+    "set": [
+     18
+    ],
+    "set_size": 1,
+    "valid": true,
+    "coverage_target": 0.9,
+    "calibration_window": 20,
+    "top1": 18,
+    "top1_prob": 0.9999095567413195,
+    "indeterminate": false
+   }
+  }
+ ],
+ "selected_window": 8,
+ "kind": "alarm",
+ "versions": {
+  "detector": "detector_v1",
+  "detector_model": "if_window_v1",
+  "diagnoser": "diagnoser_v1",
+  "gate": "gate_v2",
+  "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+  "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+  "alpha": 0.1,
+  "tau": 0.5,
+  "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+  "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+  "retrieve.tau": 0.5,
+  "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+  "retrieve.index_dir": "models/retrieval_v1",
+  "retrieve.k_primary": 5,
+  "retrieve.k_query_more": 10,
+  "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+  "retrieve.detector": "detector_v1"
+ },
+ "retrieve": {
+  "query": "응축기 냉각수 밸브 고착 이상 징후 발생 시 점검 및 조치 사항",
+  "grounding": {
+   "mode": "scoped",
+   "tau": 0.5,
+   "g_AB": 0.02576696232469985,
+   "g_C": 0.008866132666999278,
+   "ev_AB": false,
+   "ev_C": false,
+   "snapshot": [
+    {
+     "clause_key": "P-129-2013:0:5.2.2",
+     "grade": "A",
+     "score": 0.02576696232469985
+    },
+    {
+     "clause_key": "P-77-2011:0:7.2",
+     "grade": "A",
+     "score": 0.010041247355370783
+    },
+    {
+     "clause_key": "P-129-2013:0:4.1",
+     "grade": "C",
+     "score": 0.008866132666999278
+    },
+    {
+     "clause_key": "P-129-2013:0:5.2.2",
+     "grade": "A",
+     "score": 0.007742759212530053
+    },
+    {
+     "clause_key": "P-77-2011:0:7.3",
+     "grade": "A",
+     "score": 0.007288463443705347
+    }
+   ]
+  },
+  "top_keys": [
+   "P-129-2013:0:5.2.2",
+   "P-77-2011:0:7.2",
+   "P-129-2013:0:4.1",
+   "P-129-2013:0:5.2.2",
+   "P-77-2011:0:7.3"
+  ],
+  "scope_size": 18
+ },
+ "decision": {
+  "signals": {
+   "gate": "PASS",
+   "drift": "ok",
+   "alarm": true,
+   "s": 1,
+   "g_AB": 0.02576696232469985,
+   "g_C": 0.008866132666999278,
+   "q_used": false,
+   "tau": 0.5,
+   "retrieve_mode": "scoped"
+  },
+  "action": "query_more",
+  "rule": 5
+ },
+ "cmms": {
+  "decision": "query_more",
+  "draft": "REFUSED(NO_PROPOSE_DECISION)"
+ }
+}
