@@ -100,3 +100,21 @@ stages:
     outs:
       - models/gate_v2/gate_calibration.json:
           cache: false
+
+  fit_detector_at:
+    cmd: python scripts/fit_detector_at.py --dsn "$SGP_PG_DSN" --processed data/processed/TEP --out models/detector_at_v1 --sign 1 && cp models/detector_at_v1/meta.json outputs/model_meta/detector_at_v1.json
+    deps:
+      - scripts/fit_detector_at.py
+      - scripts/check_mart_inputs.py
+      - core_pipeline/prereg_constants.py
+      - core_pipeline/data/tep_loader.py
+      - core_pipeline/anomaly/anomaly_transformer.py
+      - core_pipeline/anomaly/at_window.py
+      - core_pipeline/anomaly/conformal.py
+      - outputs/mart_load_receipt.json
+      - outputs/stage0_episode_split.json
+      - data/processed/TEP
+    outs:
+      - models/detector_at_v1
+      - outputs/model_meta/detector_at_v1.json:
+          cache: false

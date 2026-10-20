@@ -1,0 +1,32 @@
+{
+  "manifest_sha256": "64d4b0de7916067ffb2b7264b7a3524f52b95a36a4feb64c30c530404a83053e",
+  "input_contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+  "load_id": 6,
+  "prereg_commit": "cdd9a3b",
+  "role": "Should comparison (prereg \u00a74.1); IF remains primary",
+  "train_data": "training fault-free, all runs (same windows as detector_v1)",
+  "calibration_data": "calibration fault-free 100 runs (same windows as detector_v1)",
+  "calibration_engine_ids_sha256": "df5dd0c384b849707639112a6d8d337bb7e123a939ad48f79a2c5d2cb518d2ba",
+  "version": "at_window_v1",
+  "n_train_windows": 12500,
+  "window_size": 20,
+  "d_model": 128,
+  "n_heads": 8,
+  "n_layers": 3,
+  "d_ff": 256,
+  "n_epochs": 30,
+  "batch_size": 64,
+  "lr": 5e-05,
+  "seed": 20261018,
+  "device": "mps",
+  "sign": 1,
+  "score": "per-window mean of per-timestep association discrepancy (v1)",
+  "n_cal": 4800,
+  "cal_score_quantiles": {
+    "0.5": 10.832169532775879,
+    "0.9": 10.880602169036866,
+    "0.95": 10.891869068145752,
+    "0.99": 10.912751264572144
+  },
+  "fit_seconds": 139.2
+}

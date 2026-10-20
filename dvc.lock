@@ -272,3 +272,59 @@ stages:
       hash: md5
       md5: 06141ae4d42442349f692cfc73ac8b7d
       size: 4043
+  fit_detector_at:
+    cmd: python scripts/fit_detector_at.py --dsn "$SGP_PG_DSN" --processed 
+      data/processed/TEP --out models/detector_at_v1 --sign 1 && cp 
+      models/detector_at_v1/meta.json outputs/model_meta/detector_at_v1.json
+    deps:
+    - path: core_pipeline/anomaly/anomaly_transformer.py
+      hash: md5
+      md5: 28b197e6703c1298a98a15e8824c01fa
+      size: 17633
+    - path: core_pipeline/anomaly/at_window.py
+      hash: md5
+      md5: 3ba7c7fc3e17f7319fcab65f326e9543
+      size: 5487
+    - path: core_pipeline/anomaly/conformal.py
+      hash: md5
+      md5: 3dcf56fdd0565bff33d6a3c1ce1968f1
+      size: 3744
+    - path: core_pipeline/data/tep_loader.py
+      hash: md5
+      md5: c4a6087c472e92483e0851dc9708ff47
+      size: 25027
+    - path: core_pipeline/prereg_constants.py
+      hash: md5
+      md5: 04a5f9d2128e01bab55ec2fde4d7b0d7
+      size: 1753
+    - path: data/processed/TEP
+      hash: md5
+      md5: 605ef974a6bf54e1f30c22335382319c.dir
+      size: 1429258004
+      nfiles: 11
+    - path: outputs/mart_load_receipt.json
+      hash: md5
+      md5: e586e47670f91224d656bbcc7af3c228
+      size: 816
+    - path: outputs/stage0_episode_split.json
+      hash: md5
+      md5: 7d50e3a5e70d3ef0c629578e08f2237c
+      size: 9585
+    - path: scripts/check_mart_inputs.py
+      hash: md5
+      md5: 57d13c12f5ae5999155697710971ddfc
+      size: 4282
+    - path: scripts/fit_detector_at.py
+      hash: md5
+      md5: 7b40684eff9a67668e11e9cac8271d62
+      size: 4668
+    outs:
+    - path: models/detector_at_v1
+      hash: md5
+      md5: aa7a20075a102765782e274067876409.dir
+      size: 1715119
+      nfiles: 6
+    - path: outputs/model_meta/detector_at_v1.json
+      hash: md5
+      md5: 26fbf87eb8c03cb1bc3d787de5aab56c
+      size: 1093

@@ -53,7 +53,8 @@ def main() -> int:
             rec["active"] = {"alarm_rate_alpha": round(float((p[active] <= P.ALPHA).mean()), 4), "b2": round(float(zal[active].mean()), 4),
                              "p_median": round(float(np.median(p[active])), 4)}
         by_fault[f] = rec
-    summary = {"models": m.meta.get("version"), "n_cal": conf.n_cal, "run_ids": a.run_ids, "by_fault": by_fault}
+    summary = {"models": m.meta.get("version"), "n_cal": conf.n_cal, "run_ids": a.run_ids, "alpha": P.ALPHA,
+               "window": [P.WINDOW_SIZE, P.STRIDE], "by_fault": by_fault}
     Path(a.out).parent.mkdir(parents=True, exist_ok=True); Path(a.out).write_text(json.dumps(summary, indent=1))
     print(json.dumps(summary, indent=1))
     return 0
