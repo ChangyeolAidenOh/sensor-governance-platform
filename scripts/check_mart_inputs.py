@@ -14,24 +14,22 @@ from core_pipeline import prereg_constants as P  # noqa: E402
 from scripts.load_mart import derive, sha256_file, parquet_identity, input_contract_sha  # noqa: E402
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--dsn", required=True)
-    ap.add_argument("--split", default="outputs/stage0_episode_split.json")
-    ap.add_argument("--manifest", default="data/processed/TEP/_manifest.json")
-    a = ap.parse_args()
+def verify_inputs(dsn: str, split: str = "outputs/stage0_episode_split.json",
+                  manifest: str = "data/processed/TEP/_manifest.json") -> dict:
+    """Return {"ok", "problems", "load_id", "prereg_n", "input_contract_sha256", "manifest_sha256"}.
+    Reused by training/replay entry points so no model or replay is built on inputs that differ from the loaded mart."""
     bad = []
-    with psycopg.connect(a.dsn) as conn, conn.cursor() as cur:
+    with psycopg.connect(dsn) as conn, conn.cursor() as cur:
         cur.execute("SELECT load_id, manifest_sha256, split_json_sha256, grid_sha256, prereg_commit, prereg_n, input_contract_sha256 FROM mart.load_log WHERE ok ORDER BY load_id DESC LIMIT 1")
         row = cur.fetchone()
         if not row:
-            print("FAIL no successful load"); return 1
+            return {"ok": False, "problems": ["no successful load"], "load_id": None}
         load_id, msha, ssha, gsha, pc, n, csha = row
         if pc != P.PREREG_COMMIT: bad.append(f"prereg commit {pc} != {P.PREREG_COMMIT}")
-        if ssha != sha256_file(Path(a.split)): bad.append("split JSON on disk differs from the loaded one")
-        if derive(json.loads(Path(a.split).read_text()), n)[3] != gsha: bad.append("derived grid differs from loaded grid")
-        mp = Path(a.manifest)
-        if msha is None: bad.append("load recorded no manifest identity (dev load) — not valid for replay")
+        if ssha != sha256_file(Path(split)): bad.append("split JSON on disk differs from the loaded one")
+        if derive(json.loads(Path(split).read_text()), n)[3] != gsha: bad.append("derived grid differs from loaded grid")
+        mp = Path(manifest)
+        if msha is None: bad.append("load recorded no manifest identity (dev load) — not valid for replay/training")
         elif not mp.exists(): bad.append(f"manifest missing at {mp}")
         elif sha256_file(mp) != msha: bad.append("manifest on disk differs from the loaded one (parquet set replaced?)")
         cur.execute("SELECT file_name, size_bytes, written_at, raw_size, raw_mtime, content_sha256 FROM raw.tep_files")
@@ -49,9 +47,20 @@ def main() -> int:
         if msha and mp.exists() and not bad:
             ident = parquet_identity(mp, Path("data/processed/TEP.dvc"))
             if input_contract_sha(gsha, ssha, ident, n) != csha: bad.append("input contract recomputed from disk differs from loaded")
-    for b in bad: print("FAIL", b)
-    print("RESULT:", "PASS" if not bad else "FAIL", f"(load_id={load_id}, n={n})")
-    return 0 if not bad else 1
+    return {"ok": not bad, "problems": bad, "load_id": load_id, "prereg_n": n,
+            "input_contract_sha256": csha, "manifest_sha256": msha}
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dsn", required=True)
+    ap.add_argument("--split", default="outputs/stage0_episode_split.json")
+    ap.add_argument("--manifest", default="data/processed/TEP/_manifest.json")
+    a = ap.parse_args()
+    r = verify_inputs(a.dsn, a.split, a.manifest)
+    for b in r["problems"]: print("FAIL", b)
+    print("RESULT:", "PASS" if r["ok"] else "FAIL", f"(load_id={r['load_id']}, n={r.get('prereg_n')})")
+    return 0 if r["ok"] else 1
 
 
 if __name__ == "__main__":

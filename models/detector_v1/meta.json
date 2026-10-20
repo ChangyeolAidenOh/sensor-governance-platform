@@ -1,0 +1,23 @@
+{
+  "version": "detector_v1",
+  "manifest_sha256": "64d4b0de7916067ffb2b7264b7a3524f52b95a36a4feb64c30c530404a83053e",
+  "prereg_commit": "cdd9a3b",
+  "input_contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+  "load_id": 6,
+  "train": "training fault-free, all runs",
+  "calibration": "calibration group fault-free (100 testing runs)",
+  "calibration_engine_ids_sha256": "df5dd0c384b849707639112a6d8d337bb7e123a939ad48f79a2c5d2cb518d2ba",
+  "window": [
+    20,
+    20
+  ],
+  "n_train_windows": 12500,
+  "n_cal": 4800,
+  "cal_score_quantiles": {
+    "0.5": -0.05067276373257737,
+    "0.9": -0.015217275858924196,
+    "0.95": -0.0029055764268771404,
+    "0.99": 0.023021821861921695
+  },
+  "fit_seconds": 7.9
+}
