@@ -44,3 +44,59 @@ stages:
       - data/processed/gate_reference_v1.parquet
       - data/processed/gate_reference_v1.json:
           cache: false
+
+  fit_detector:
+    cmd: python scripts/fit_detector.py --dsn "$SGP_PG_DSN" --processed data/processed/TEP --out models/detector_v1 && cp models/detector_v1/meta.json outputs/model_meta/detector_v1.json
+    deps:
+      - scripts/fit_detector.py
+      - scripts/check_mart_inputs.py
+      - core_pipeline/prereg_constants.py
+      - core_pipeline/data/tep_loader.py
+      - core_pipeline/anomaly/isolation_forest.py
+      - core_pipeline/features/window_features.py
+      - core_pipeline/anomaly/if_window.py
+      - core_pipeline/anomaly/conformal.py
+      - core_pipeline/anomaly/zscore_l0.py
+      - outputs/mart_load_receipt.json
+      - outputs/stage0_episode_split.json
+      - data/processed/TEP
+    outs:
+      - models/detector_v1
+      - outputs/model_meta/detector_v1.json:
+          cache: false
+
+  fit_diagnoser:
+    cmd: python scripts/fit_diagnoser.py --dsn "$SGP_PG_DSN" --processed data/processed/TEP --out models/diagnoser_v1 && cp models/diagnoser_v1/diag_meta.json outputs/model_meta/diagnoser_v1.json
+    deps:
+      - scripts/fit_diagnoser.py
+      - scripts/check_mart_inputs.py
+      - core_pipeline/prereg_constants.py
+      - core_pipeline/data/tep_loader.py
+      - core_pipeline/features/window_features.py
+      - core_pipeline/diagnosis/classifier.py
+      - outputs/mart_load_receipt.json
+      - outputs/stage0_episode_split.json
+      - data/processed/TEP
+    outs:
+      - models/diagnoser_v1
+      - outputs/model_meta/diagnoser_v1.json:
+          cache: false
+
+  calibrate_gate_drift:
+    cmd: python scripts/calibrate_gate_drift.py --dsn "$SGP_PG_DSN" --processed data/processed/TEP --out models/gate_v2/gate_calibration.json
+    deps:
+      - scripts/calibrate_gate_drift.py
+      - scripts/check_mart_inputs.py
+      - core_pipeline/prereg_constants.py
+      - core_pipeline/governance/gate_v2.py
+      - core_pipeline/governance/gate_adapter.py
+      - core_pipeline/governance/quality_gate.py
+      - core_pipeline/governance/quality_metrics.py
+      - core_pipeline/anomaly/conformal.py
+      - data/processed/gate_reference_v1.parquet
+      - models/detector_v1
+      - outputs/mart_load_receipt.json
+      - outputs/stage0_episode_split.json
+    outs:
+      - models/gate_v2/gate_calibration.json:
+          cache: false

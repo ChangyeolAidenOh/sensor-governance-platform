@@ -98,3 +98,177 @@ stages:
       hash: md5
       md5: 5d3e73d4ccf68051ed805b97f395c7dd
       size: 509018
+  fit_detector:
+    cmd: python scripts/fit_detector.py --dsn "$SGP_PG_DSN" --processed 
+      data/processed/TEP --out models/detector_v1 && cp 
+      models/detector_v1/meta.json outputs/model_meta/detector_v1.json
+    deps:
+    - path: core_pipeline/anomaly/conformal.py
+      hash: md5
+      md5: 3dcf56fdd0565bff33d6a3c1ce1968f1
+      size: 3744
+    - path: core_pipeline/anomaly/if_window.py
+      hash: md5
+      md5: 8590061a172ca316602cfeaf2ca19456
+      size: 2372
+    - path: core_pipeline/anomaly/isolation_forest.py
+      hash: md5
+      md5: 7a39fa55bac01d385cebe0f6ded3db36
+      size: 10777
+    - path: core_pipeline/anomaly/zscore_l0.py
+      hash: md5
+      md5: 1011c1d36b51821764713a7676021da4
+      size: 2886
+    - path: core_pipeline/data/tep_loader.py
+      hash: md5
+      md5: c4a6087c472e92483e0851dc9708ff47
+      size: 25027
+    - path: core_pipeline/features/window_features.py
+      hash: md5
+      md5: f355a6f8e3a7932500ec53b655a13e33
+      size: 3352
+    - path: core_pipeline/prereg_constants.py
+      hash: md5
+      md5: 04a5f9d2128e01bab55ec2fde4d7b0d7
+      size: 1753
+    - path: data/processed/TEP
+      hash: md5
+      md5: 605ef974a6bf54e1f30c22335382319c.dir
+      size: 1429258004
+      nfiles: 11
+    - path: outputs/mart_load_receipt.json
+      hash: md5
+      md5: e586e47670f91224d656bbcc7af3c228
+      size: 816
+    - path: outputs/stage0_episode_split.json
+      hash: md5
+      md5: 7d50e3a5e70d3ef0c629578e08f2237c
+      size: 9585
+    - path: scripts/check_mart_inputs.py
+      hash: md5
+      md5: 57d13c12f5ae5999155697710971ddfc
+      size: 4282
+    - path: scripts/fit_detector.py
+      hash: md5
+      md5: 74f8965729f2c6c21c3e71f66fe38ebd
+      size: 4892
+    outs:
+    - path: models/detector_v1
+      hash: md5
+      md5: 0e56e99fc2518daa746bf1493ce2f9cd.dir
+      size: 2699382
+      nfiles: 7
+    - path: outputs/model_meta/detector_v1.json
+      hash: md5
+      md5: 1c806528bd1a03018029de0263491d41
+      size: 744
+  fit_diagnoser:
+    cmd: python scripts/fit_diagnoser.py --dsn "$SGP_PG_DSN" --processed 
+      data/processed/TEP --out models/diagnoser_v1 && cp 
+      models/diagnoser_v1/diag_meta.json outputs/model_meta/diagnoser_v1.json
+    deps:
+    - path: core_pipeline/data/tep_loader.py
+      hash: md5
+      md5: c4a6087c472e92483e0851dc9708ff47
+      size: 25027
+    - path: core_pipeline/diagnosis/classifier.py
+      hash: md5
+      md5: 6813d6caccfc31ce54336fac8a7e2b0b
+      size: 6630
+    - path: core_pipeline/features/window_features.py
+      hash: md5
+      md5: f355a6f8e3a7932500ec53b655a13e33
+      size: 3352
+    - path: core_pipeline/prereg_constants.py
+      hash: md5
+      md5: 04a5f9d2128e01bab55ec2fde4d7b0d7
+      size: 1753
+    - path: data/processed/TEP
+      hash: md5
+      md5: 605ef974a6bf54e1f30c22335382319c.dir
+      size: 1429258004
+      nfiles: 11
+    - path: outputs/mart_load_receipt.json
+      hash: md5
+      md5: e586e47670f91224d656bbcc7af3c228
+      size: 816
+    - path: outputs/stage0_episode_split.json
+      hash: md5
+      md5: 7d50e3a5e70d3ef0c629578e08f2237c
+      size: 9585
+    - path: scripts/check_mart_inputs.py
+      hash: md5
+      md5: 57d13c12f5ae5999155697710971ddfc
+      size: 4282
+    - path: scripts/fit_diagnoser.py
+      hash: md5
+      md5: 0d40998243138d355ec493007bf45d69
+      size: 5211
+    outs:
+    - path: models/diagnoser_v1
+      hash: md5
+      md5: 6c319a16ed8317db2cbcaa4f5a4efdd1.dir
+      size: 31118891
+      nfiles: 3
+    - path: outputs/model_meta/diagnoser_v1.json
+      hash: md5
+      md5: 40d42bfb8311e8135a4de672df330439
+      size: 1205
+  calibrate_gate_drift:
+    cmd: python scripts/calibrate_gate_drift.py --dsn "$SGP_PG_DSN" --processed 
+      data/processed/TEP --out models/gate_v2/gate_calibration.json
+    deps:
+    - path: core_pipeline/anomaly/conformal.py
+      hash: md5
+      md5: 3dcf56fdd0565bff33d6a3c1ce1968f1
+      size: 3744
+    - path: core_pipeline/governance/gate_adapter.py
+      hash: md5
+      md5: 93dbd56eadb38789e4830bf7e2d8fc50
+      size: 3607
+    - path: core_pipeline/governance/gate_v2.py
+      hash: md5
+      md5: dcef880545232c5571535c35109e6eb6
+      size: 10762
+    - path: core_pipeline/governance/quality_gate.py
+      hash: md5
+      md5: b5bf567a962709657011ffb29a3c32d8
+      size: 7836
+    - path: core_pipeline/governance/quality_metrics.py
+      hash: md5
+      md5: 6ed244b49f9e4ec2f9b5bca1ceed6f23
+      size: 9884
+    - path: core_pipeline/prereg_constants.py
+      hash: md5
+      md5: 04a5f9d2128e01bab55ec2fde4d7b0d7
+      size: 1753
+    - path: data/processed/gate_reference_v1.parquet
+      hash: md5
+      md5: 5d3e73d4ccf68051ed805b97f395c7dd
+      size: 509018
+    - path: models/detector_v1
+      hash: md5
+      md5: 0e56e99fc2518daa746bf1493ce2f9cd.dir
+      size: 2699382
+      nfiles: 7
+    - path: outputs/mart_load_receipt.json
+      hash: md5
+      md5: e586e47670f91224d656bbcc7af3c228
+      size: 816
+    - path: outputs/stage0_episode_split.json
+      hash: md5
+      md5: 7d50e3a5e70d3ef0c629578e08f2237c
+      size: 9585
+    - path: scripts/calibrate_gate_drift.py
+      hash: md5
+      md5: f92c492d520615d77e7549d764d8b321
+      size: 6521
+    - path: scripts/check_mart_inputs.py
+      hash: md5
+      md5: 57d13c12f5ae5999155697710971ddfc
+      size: 4282
+    outs:
+    - path: models/gate_v2/gate_calibration.json
+      hash: md5
+      md5: 06141ae4d42442349f692cfc73ac8b7d
+      size: 4043
