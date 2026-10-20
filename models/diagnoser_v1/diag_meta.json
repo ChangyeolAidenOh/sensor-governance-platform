@@ -1,0 +1,41 @@
+{
+  "version": "diagnoser_v1",
+  "manifest_sha256": "64d4b0de7916067ffb2b7264b7a3524f52b95a36a4feb64c30c530404a83053e",
+  "input_contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+  "load_id": 6,
+  "prereg_commit": "cdd9a3b",
+  "train_data": "training faulty, active windows (window >= 1 of 25)",
+  "calibration_data": "calibration faulty 2000 episodes, active windows",
+  "calibration_engine_ids_sha256": "d9246686e860ea9745bd536c92f81892aa3646cec4aeb55e9d63c661ac09cb7e",
+  "n_train": 240000,
+  "num_boost_round": 300,
+  "params": {
+    "objective": "multiclass",
+    "num_class": 20,
+    "learning_rate": 0.05,
+    "num_leaves": 63,
+    "min_data_in_leaf": 50,
+    "feature_fraction": 0.5,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 1,
+    "lambda_l2": 1.0,
+    "verbose": -1,
+    "seed": 20261018
+  },
+  "coverage_target": 0.9,
+  "calibration": {
+    "w20": {
+      "n_cal": 80000,
+      "q": 0.48927286144797855,
+      "top1_acc_on_cal": 0.9251,
+      "set_size_mean_on_cal": 0.942
+    },
+    "w40": {
+      "n_cal": 78000,
+      "q": 0.7645948019046394,
+      "top1_acc_on_cal": 0.8724,
+      "set_size_mean_on_cal": 1.078
+    }
+  },
+  "fit_seconds": 182.8
+}
