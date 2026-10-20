@@ -9,3 +9,8 @@ requires-python = ">=3.10"
 
 [tool.setuptools.packages.find]
 include = ["core_pipeline*"]
+
+[tool.pytest.ini_options]
+markers = [
+    "golden: frozen golden regressions (scripts/make_goldens.py; needs SGP_TEST_PG_DSN + models)",
+]

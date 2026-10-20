@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sgp/skills/detect_diagnose",
+  "input": {
+    "type": "object",
+    "required": [
+      "ctx",
+      "episode_id",
+      "window_index"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "ctx": {
+        "$ref": "sgp/skills/envelope#/$defs/ctx"
+      },
+      "episode_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "window_index": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 47
+      },
+      "expand": {
+        "enum": [
+          1,
+          2
+        ],
+        "default": 1
+      },
+      "query_id": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "uuid",
+        "description": "required for expand=2: the query_id from spend_query"
+      }
+    }
+  },
+  "payload": {
+    "type": "object",
+    "required": [
+      "detection_run",
+      "score",
+      "p_value",
+      "p_adj",
+      "alarm",
+      "m_t",
+      "alpha",
+      "diagnosis",
+      "contributions",
+      "calibration_ref",
+      "alarm_id"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "detection_run": {
+        "type": "boolean"
+      },
+      "score": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "p_value": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "p_adj": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "alarm": {
+        "type": [
+          "boolean",
+          "null"
+        ]
+      },
+      "m_t": {
+        "type": "integer"
+      },
+      "alpha": {
+        "const": 0.1
+      },
+      "diagnosis": {
+        "type": "object",
+        "required": [
+          "set",
+          "set_size",
+          "valid",
+          "coverage_target",
+          "calibration_window",
+          "top1",
+          "top1_prob",
+          "indeterminate"
+        ],
+        "properties": {
+          "set": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          },
+          "set_size": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "valid": {
+            "type": "boolean"
+          },
+          "coverage_target": {
+            "const": 0.9
+          },
+          "calibration_window": {
+            "enum": [
+              20,
+              40
+            ]
+          },
+          "top1": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "top1_prob": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "indeterminate": {
+            "type": "boolean"
+          }
+        }
+      },
+      "contributions": {
+        "type": "array",
+        "maxItems": 5,
+        "items": {
+          "type": "object"
+        }
+      },
+      "calibration_ref": {
+        "type": "object",
+        "properties": {
+          "n_cal": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "detector_version": {
+            "type": "string"
+          },
+          "diagnoser_version": {
+            "type": "string"
+          }
+        }
+      },
+      "alarm_id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  }
+}

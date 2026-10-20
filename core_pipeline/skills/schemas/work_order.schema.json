@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sgp/skills/work_order",
+  "draft": {
+    "type": "object", "required": ["ctx", "alarm_id", "episode_id", "window_index", "policy", "decision_id", "action_items"], "additionalProperties": false,
+    "properties": {
+      "ctx": {"$ref": "sgp/skills/envelope#/$defs/ctx"},
+      "alarm_id": {"type": "string"},
+      "episode_id": {"type": "string", "format": "uuid"},
+      "window_index": {"type": "integer", "minimum": 0, "maximum": 47},
+      "policy": {"enum": ["E", "B3"]},
+      "decision_id": {"type": "string", "format": "uuid"},
+      "action_items": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["action_type", "item", "clause_key"],
+                       "properties": {"action_type": {"enum": ["inspect", "test", "calibrate", "isolate_verify", "monitor", "sample_analyze", "notify"]},
+                                      "item": {"type": "string", "minLength": 1}, "clause_key": {"type": "string"}}}},
+      "base_proposal_id": {"type": ["string", "null"]},
+      "created_by": {"type": "string"}
+    }
+  },
+  "draft_payload": {"$ref": "#/$defs/draft_obj"},
+  "approve": {
+    "type": "object", "required": ["ctx", "draft", "approver", "decision"], "additionalProperties": false,
+    "properties": {
+      "ctx": {"$ref": "sgp/skills/envelope#/$defs/ctx"},
+      "draft": {"$ref": "#/$defs/draft_obj"},
+      "approver": {"type": "string", "minLength": 1},
+      "decision": {"enum": ["approve", "modify", "reject", "override"]},
+      "modifications": {"type": ["object", "null"]}
+    }
+  },
+  "approve_payload": {"type": "object", "required": ["approval_token", "decision"], "properties": {"approval_token": {"type": ["string", "null"]}, "decision": {"type": "string"}}},
+  "issue": {
+    "type": "object", "required": ["ctx", "draft", "approval_token"], "additionalProperties": false,
+    "properties": {
+      "ctx": {"$ref": "sgp/skills/envelope#/$defs/ctx"},
+      "draft": {"$ref": "#/$defs/draft_obj"},
+      "approval_token": {"type": ["string", "null"], "description": "null is allowed on the wire so that NO_APPROVAL is a server verdict (H0-(c)), never a client-side shortcut"}
+    }
+  },
+  "issue_payload": {"type": "object", "required": ["work_order_id", "cmms_ref", "idempotent_replay"],
+                    "properties": {"work_order_id": {"type": "string"}, "cmms_ref": {"type": "string"}, "idempotent_replay": {"type": "boolean"}}},
+  "status": {"type": "object", "required": ["ctx", "proposal_id"], "properties": {"ctx": {"$ref": "sgp/skills/envelope#/$defs/ctx"}, "proposal_id": {"type": "string"}}},
+  "$defs": {
+    "draft_obj": {
+      "type": "object", "required": ["proposal_id", "draft_version", "content_sha256", "form"],
+      "properties": {"proposal_id": {"type": "string", "format": "uuid"}, "draft_version": {"type": "integer", "minimum": 1},
+                     "content_sha256": {"type": "string", "minLength": 64, "maxLength": 64}, "form": {"type": "object"}}
+    }
+  }
+}

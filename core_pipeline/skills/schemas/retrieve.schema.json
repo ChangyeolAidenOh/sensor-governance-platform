@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sgp/skills/retrieve",
+  "input": {
+    "type": "object",
+    "required": [
+      "ctx",
+      "query",
+      "mode",
+      "fault_set",
+      "k"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "ctx": {
+        "$ref": "sgp/skills/envelope#/$defs/ctx"
+      },
+      "query": {
+        "type": "string",
+        "minLength": 3
+      },
+      "mode": {
+        "enum": [
+          "scoped",
+          "open"
+        ]
+      },
+      "fault_set": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "k": {
+        "enum": [
+          5,
+          10
+        ]
+      },
+      "alarm_id": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "required for the action path (scoped); evidence rows are stored under it and fault_set is checked against the stored set"
+      },
+      "query_id": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "uuid",
+        "description": "required for k=10 (query_more re-search): the query_id from spend_query for the alarm's window"
+      }
+    }
+  },
+  "payload": {
+    "type": "object",
+    "required": [
+      "clauses",
+      "k",
+      "mode",
+      "scope_size",
+      "n_candidates",
+      "alarm_id",
+      "reused"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "clauses": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "chunk_key",
+            "clause_key",
+            "guide_no",
+            "title",
+            "text",
+            "page",
+            "grade",
+            "rank",
+            "score"
+          ],
+          "properties": {
+            "grade": {
+              "enum": [
+                "A",
+                "B",
+                "C",
+                "OUT"
+              ]
+            },
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "rank": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      },
+      "k": {
+        "enum": [
+          5,
+          10
+        ]
+      },
+      "mode": {
+        "enum": [
+          "scoped",
+          "open"
+        ]
+      },
+      "scope_size": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "n_candidates": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "alarm_id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "reused": {
+        "type": "boolean",
+        "description": "true when the stored result of an earlier scoped retrieval for the same (alarm, k) was returned"
+      }
+    }
+  }
+}

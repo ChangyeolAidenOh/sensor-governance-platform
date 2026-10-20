@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sgp/skills/envelope",
+  "title": "Skill envelope v1.0",
+  "type": "object",
+  "required": ["status", "payload", "grounding", "state", "reason", "trace"],
+  "additionalProperties": false,
+  "properties": {
+    "status": {"enum": ["OK", "REFUSED", "ERROR"]},
+    "payload": {"type": ["object", "null"]},
+    "grounding": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/grounding"}]},
+    "state": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/window_state"}]},
+    "reason": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/reason"}]},
+    "trace": {"$ref": "#/$defs/trace"}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "OK"}}}, "then": {"properties": {"reason": {"type": "null"}}}},
+    {"if": {"properties": {"status": {"enum": ["REFUSED", "ERROR"]}}}, "then": {"properties": {"reason": {"type": "object"}}}}
+  ],
+  "$defs": {
+    "ctx": {
+      "type": "object",
+      "required": ["request_id", "thread_id", "run_uuid", "caller_role"],
+      "additionalProperties": false,
+      "properties": {
+        "request_id": {"type": "string", "format": "uuid"},
+        "thread_id": {"type": "string", "minLength": 1},
+        "run_uuid": {"type": "string", "format": "uuid"},
+        "caller_role": {"enum": ["engineer", "restricted"]},
+        "mode": {"enum": ["chat", "event", "replay"]}
+      }
+    },
+    "reason": {
+      "type": "object",
+      "required": ["code", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {"enum": ["GATE_BLOCK", "GATE_NOT_RUN", "DETECT_NOT_RUN", "WINDOW_ORDER", "WINDOW_OUT_OF_RANGE", "DATA_MISSING",
+                          "NO_EXPANSION", "EXPANSION_INVALID", "QUERY_USED", "ARG_NOT_IN_STATE", "ACL_DENIED", "NO_ALARM",
+                          "EVENT_MISMATCH", "DECISION_MISMATCH", "NO_PROPOSE_DECISION", "STALE_DECISION", "NO_EVIDENCE",
+                          "FORBIDDEN_ACTION", "THREAD_MISMATCH", "SUPERSEDED", "CONTENT_MISMATCH", "APPROVAL_MISMATCH", "TOKEN_USED",
+                          "NO_APPROVAL", "UNKNOWN_PROPOSAL", "MODEL_UNAVAILABLE", "INDEX_MISMATCH", "CMMS_DOWN", "DEMO_LIMIT",
+                          "BAD_REQUEST", "SCHEMA_INVALID", "REQUEST_ID_REUSED", "REQUEST_IN_PROGRESS", "QUERY_REQUIRED", "APPROVER_MISMATCH", "INTERNAL"]},
+        "message": {"type": "string"}
+      }
+    },
+    "trace": {
+      "type": "object",
+      "required": ["skill", "contract_version"],
+      "properties": {
+        "request_id": {"type": "string"},
+        "thread_id": {"type": "string"},
+        "run_uuid": {"type": "string"},
+        "skill": {"enum": ["skills_detect", "skills_retrieve"]},
+        "tool": {"type": "string"},
+        "contract_version": {"const": "1.0"},
+        "latency_ms": {"type": "integer", "minimum": 0},
+        "versions": {"type": "object"},
+        "replayed": {"type": "boolean"}
+      }
+    },
+    "grounding": {
+      "type": "object",
+      "description": "retrieve only. ev_AB is the ONLY grounding condition of the action path (scoped and ev_AB === true).",
+      "required": ["mode", "tau", "g_AB", "g_C", "ev_AB", "ev_C"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"enum": ["scoped", "open"]},
+        "tau": {"type": ["number", "null"]},
+        "g_AB": {"type": ["number", "null"]},
+        "g_C": {"type": ["number", "null"]},
+        "ev_AB": {"type": ["boolean", "null"]},
+        "ev_C": {"type": ["boolean", "null"]},
+        "snapshot": {"type": "array", "items": {"type": "object", "required": ["clause_key", "grade", "score"],
+                     "properties": {"clause_key": {"type": "string"}, "grade": {"enum": ["A", "B", "C", "OUT"]}, "score": {"type": "number"}}}}
+      }
+    },
+    "window_state": {
+      "type": "object",
+      "description": "the committed mart.episode_windows row (state ownership = detect server, DB authoritative; ST4-02)",
+      "required": ["episode_id", "window_index", "detector_version", "contract_sha256", "gate", "drift", "drift_assessed",
+                   "p_value", "p_adj", "m_t", "alarm", "pred_set", "set_size", "top1", "q_used", "expanded_set", "reused"],
+      "properties": {
+        "episode_id": {"type": "string", "format": "uuid"},
+        "window_index": {"type": "integer", "minimum": 0, "maximum": 47},
+        "detector_version": {"type": "string"},
+        "contract_sha256": {"type": "string"},
+        "gate": {"enum": ["PASS", "FLAG", "BLOCK"]},
+        "drift": {"enum": ["ok", "critical"]},
+        "drift_assessed": {"type": "boolean"},
+        "p_value": {"type": ["number", "null"]},
+        "p_adj": {"type": ["number", "null"]},
+        "m_t": {"type": "integer", "minimum": 0},
+        "alarm": {"type": ["boolean", "null"]},
+        "pred_set": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 20}},
+        "set_size": {"type": "integer", "minimum": 0},
+        "top1": {"type": ["integer", "null"]},
+        "q_used": {"type": "boolean"},
+        "query_request_id": {"type": ["string", "null"]},
+        "expanded_set": {"type": ["array", "null"], "items": {"type": "integer"}},
+        "alarm_id": {"type": ["string", "null"]},
+        "reused": {"type": "boolean"}
+      },
+      "allOf": [
+        {"if": {"properties": {"gate": {"const": "BLOCK"}}}, "then": {"properties": {"p_value": {"type": "null"}, "p_adj": {"type": "null"}, "alarm": {"type": "null"}}}},
+        {"if": {"properties": {"gate": {"enum": ["PASS", "FLAG"]}}}, "then": {"properties": {"p_value": {"type": "number"}, "alarm": {"type": "boolean"}}}}
+      ]
+    }
+  }
+}

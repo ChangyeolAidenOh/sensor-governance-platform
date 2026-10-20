@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sgp/skills/spend_query",
+  "input": {
+    "type": "object",
+    "required": [
+      "ctx",
+      "episode_id",
+      "window_index"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "ctx": {
+        "$ref": "sgp/skills/envelope#/$defs/ctx"
+      },
+      "episode_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "window_index": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 47
+      }
+    }
+  },
+  "payload": {
+    "type": "object",
+    "required": [
+      "query_id",
+      "q_used",
+      "expand_allowed"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "query_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "q_used": {
+        "const": true
+      },
+      "expand_allowed": {
+        "type": "boolean"
+      }
+    }
+  }
+}

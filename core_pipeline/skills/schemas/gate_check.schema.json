@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sgp/skills/gate_check",
+  "input": {
+    "type": "object", "required": ["ctx", "episode_id", "window_index"], "additionalProperties": false,
+    "properties": {
+      "ctx": {"$ref": "sgp/skills/envelope#/$defs/ctx"},
+      "episode_id": {"type": "string", "format": "uuid"},
+      "window_index": {"type": "integer", "minimum": 0, "maximum": 47}
+    }
+  },
+  "payload": {
+    "type": "object",
+    "required": ["gate", "drift", "drift_assessed", "drift_stat", "drift_threshold", "composite_min", "composite_mean",
+                 "block_reasons", "flag_reasons", "n_history", "history_age_windows", "gate_version", "calib_sha256", "contract_sha256"],
+    "additionalProperties": false,
+    "properties": {
+      "gate": {"enum": ["PASS", "FLAG", "BLOCK"]},
+      "drift": {"enum": ["ok", "critical"]},
+      "drift_assessed": {"type": "boolean"},
+      "drift_stat": {"type": ["number", "null"]},
+      "drift_threshold": {"type": ["number", "null"]},
+      "composite_min": {"type": ["number", "null"]},
+      "composite_mean": {"type": ["number", "null"]},
+      "block_reasons": {"type": "array", "items": {"type": "string"}},
+      "flag_reasons": {"type": "array", "items": {"type": "string"}},
+      "n_history": {"type": "integer", "minimum": 0},
+      "history_age_windows": {"type": ["integer", "null"]},
+      "gate_version": {"type": "string"},
+      "calib_sha256": {"type": "string"},
+      "contract_sha256": {"type": "string"},
+      "stored": {"type": "boolean"}
+    }
+  }
+}
