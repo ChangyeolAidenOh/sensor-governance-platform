@@ -39,3 +39,62 @@ stages:
       md5: bb06921edd2253ae74dd46bae4a26cf4.dir
       size: 178999149
       nfiles: 56
+  load_mart:
+    cmd: python scripts/load_mart.py --dsn "$SGP_PG_DSN" --receipt 
+      outputs/mart_load_receipt.json
+    deps:
+    - path: core_pipeline/prereg_constants.py
+      hash: md5
+      md5: 04a5f9d2128e01bab55ec2fde4d7b0d7
+      size: 1753
+    - path: data/processed/TEP/_manifest.json
+      hash: md5
+      md5: c8026b227ac08140f87403c67b7acfc7
+      size: 1710
+    - path: outputs/stage0_episode_split.json
+      hash: md5
+      md5: 7d50e3a5e70d3ef0c629578e08f2237c
+      size: 9585
+    - path: scripts/load_mart.py
+      hash: md5
+      md5: 08882221a388ae9334c7ab69aa6872e2
+      size: 16145
+    - path: sql/001_schema.sql
+      hash: md5
+      md5: a3ee05f453a568b84bdba8b5b3b4651c
+      size: 11653
+    outs:
+    - path: outputs/mart_load_receipt.json
+      hash: md5
+      md5: e586e47670f91224d656bbcc7af3c228
+      size: 816
+  gate_reference:
+    cmd: python scripts/build_gate_reference.py --dsn "$SGP_PG_DSN" --processed 
+      data/processed/TEP --out data/processed/gate_reference_v1.parquet
+    deps:
+    - path: core_pipeline/governance/gate_adapter.py
+      hash: md5
+      md5: 93dbd56eadb38789e4830bf7e2d8fc50
+      size: 3607
+    - path: data/processed/TEP
+      hash: md5
+      md5: 605ef974a6bf54e1f30c22335382319c.dir
+      size: 1429258004
+      nfiles: 11
+    - path: outputs/mart_load_receipt.json
+      hash: md5
+      md5: e586e47670f91224d656bbcc7af3c228
+      size: 816
+    - path: scripts/build_gate_reference.py
+      hash: md5
+      md5: e535aa75ee9ef21a13e2b42df6d08994
+      size: 1940
+    outs:
+    - path: data/processed/gate_reference_v1.json
+      hash: md5
+      md5: df821aa7c9a2b0c27128001e01e107d6
+      size: 1113
+    - path: data/processed/gate_reference_v1.parquet
+      hash: md5
+      md5: 5d3e73d4ccf68051ed805b97f395c7dd
+      size: 509018

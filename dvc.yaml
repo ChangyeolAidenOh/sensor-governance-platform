@@ -1,18 +1,46 @@
+# dvc.yaml — v2 (S1-06). v1 C-MAPSS stages removed (ST0-12); v1 reproduction is the `python -m` path in docs/v1_report.md.
+# File reproducibility only: DB state is verified separately by scripts/verify_mart.py + check_mart_inputs.py
+# (dvc status clean ≠ mart loaded). Stages that touch Postgres read $SGP_PG_DSN from the shell environment.
 stages:
   preprocess_tep:
-    cmd: python -m core_pipeline.data.tep_loader --data-dir data/raw/TEP 
-      --output-dir data/processed/TEP
+    cmd: python -m core_pipeline.data.tep_loader --data-dir data/raw/TEP --output-dir data/processed/TEP
     deps:
-    - core_pipeline/data/tep_loader.py
-    - data/raw/TEP
+      - core_pipeline/data/tep_loader.py
+      - data/raw/TEP
     outs:
-    - data/processed/TEP
+      - data/processed/TEP
+
   parse_kosha_docling:
-    cmd: .venv-docling/bin/docling convert data/raw/kosha/files --to md --to 
-      json --no-ocr --tables --table-mode accurate --device cpu --output 
-      data/processed/kosha/docling
+    cmd: .venv-docling/bin/docling convert data/raw/kosha/files --to md --to json --no-ocr --tables --table-mode accurate --device cpu --output data/processed/kosha/docling
     deps:
-    - data/raw/kosha/files
-    - requirements_docling.txt
+      - data/raw/kosha/files
+      - requirements_docling.txt
     outs:
-    - data/processed/kosha/docling
+      - data/processed/kosha/docling
+
+  load_mart:
+    # derived mart (episodes / windows / labels) from the frozen split + registers parquet identity & content sha.
+    # Idempotent: unchanged input contract → receipt byte-identical → stage up to date.
+    cmd: python scripts/load_mart.py --dsn "$SGP_PG_DSN" --receipt outputs/mart_load_receipt.json
+    deps:
+      - scripts/load_mart.py
+      - sql/001_schema.sql
+      - core_pipeline/prereg_constants.py
+      - outputs/stage0_episode_split.json
+      - data/processed/TEP/_manifest.json
+    outs:
+      - outputs/mart_load_receipt.json:
+          cache: false
+
+  gate_reference:
+    # external gate reference from calibration fault-free episodes (prereg §3.0, ST0-10 (a)); reads ids from staging.
+    cmd: python scripts/build_gate_reference.py --dsn "$SGP_PG_DSN" --processed data/processed/TEP --out data/processed/gate_reference_v1.parquet
+    deps:
+      - scripts/build_gate_reference.py
+      - core_pipeline/governance/gate_adapter.py
+      - outputs/mart_load_receipt.json
+      - data/processed/TEP
+    outs:
+      - data/processed/gate_reference_v1.parquet
+      - data/processed/gate_reference_v1.json:
+          cache: false

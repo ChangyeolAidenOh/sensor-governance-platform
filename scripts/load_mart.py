@@ -247,14 +247,17 @@ def main() -> int:
         load_id, loaded_at = cur.fetchone()
         conn.commit()
 
-    receipt = {"load_id": load_id, "loaded_at": str(loaded_at), "action": action, "ok": ok, "grid_sha256": grid_sha,
-               "input_contract_sha256": contract_sha,
-               "prereg_n": a.n, "n_reduction_decision": a.n_reduction_decision, "counts": counts,
-               "manifest_sha256": ident["manifest_sha256"] if ident else None}
-    if a.receipt:
+    stable_counts = {k: v for k, v in counts.items() if k != "execution_rows"}
+    # receipt = DVC out: deterministic for an unchanged input contract (no load_id / timestamp / action), so
+    # `dvc status` stays clean on idempotent re-runs. The volatile fields go to stdout only.
+    receipt = {"ok": ok, "grid_sha256": grid_sha, "input_contract_sha256": contract_sha, "schema_version": SCHEMA_VERSION,
+               "prereg_commit": P.PREREG_COMMIT, "prereg_n": a.n, "n_reduction_decision": a.n_reduction_decision,
+               "manifest_sha256": ident["manifest_sha256"] if ident else None, "counts": stable_counts}
+    if a.receipt and ok:
         Path(a.receipt).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.receipt).write_text(json.dumps(receipt, indent=2))
-    print(json.dumps(receipt))
+        Path(a.receipt).write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    print(json.dumps({**receipt, "load_id": load_id, "loaded_at": str(loaded_at), "action": action,
+                      "execution_rows": counts["execution_rows"]}))
     if action == "refused":
         print("REFUSED: input contract changed (data/split/grid/version/n) but execution tables hold rows", exec_counts,
               "\n  → archive/clear execution tables deliberately (decision log), or load as a new data version.")

@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "calibration": {
+      "episodes": 2100,
+      "windows": 100800
+    },
+    "demo_pool": {
+      "episodes": 420,
+      "windows": 20160
+    },
+    "dev": {
+      "episodes": 420,
+      "windows": 20160
+    },
+    "episode_keys": 10500,
+    "evaluation_pool": {
+      "episodes": 6300,
+      "windows": 302400
+    },
+    "evaluation_pool/selected": {
+      "episodes": 1260,
+      "windows": 60480
+    }
+  },
+  "grid_sha256": "8cd7e7eae03c881530d030e0a5d123055a4da813db80548cacea972bcc633cbd",
+  "input_contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+  "manifest_sha256": "64d4b0de7916067ffb2b7264b7a3524f52b95a36a4feb64c30c530404a83053e",
+  "n_reduction_decision": null,
+  "ok": true,
+  "prereg_commit": "cdd9a3b",
+  "prereg_n": 60,
+  "schema_version": 3
+}
