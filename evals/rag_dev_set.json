@@ -1,0 +1,139 @@
+{
+ "_meta": {
+  "name": "rag_dev_set",
+  "n": 10,
+  "purpose": "Stage 3 DEVELOPMENT set only (prereg §5.3): tau selection and retrieval debugging. Never used for reporting. The 50-item evaluation set is written separately and not executed before Stage 5.",
+  "answer_pool": "A/B clauses of the question's fault(s) in outputs/fault_to_guidance_map.json (schema 2)",
+  "expected_semantics": "FOUND = a scoped retrieve with the given pred_set should ground a proposal (ev_AB); NONE = it should not",
+  "written": "2026-10-21",
+  "role": "engineer",
+  "mode": "scoped",
+  "k": 5,
+  "revision": "rev2 (dev02 term fix, 2026-10-21)"
+ },
+ "items": [
+  {
+   "id": "dev01",
+   "kind": "answer",
+   "pred_set": [
+    4
+   ],
+   "question": "반응기 냉각수 입구 온도가 급상승해 폭주반응이 우려된다. 긴급배출·급랭을 포함한 방호대책 조항은?",
+   "answer_keys": [
+    "P-53-2012:0:6",
+    "P-53-2012:0:6.7"
+   ],
+   "expected": "FOUND"
+  },
+  {
+   "id": "dev02",
+   "kind": "answer",
+   "pred_set": [
+    6
+   ],
+   "question": "A 피드 공급이 갑자기 끊겼다. 차단밸브의 페일모드, 공정제어와 비상차단을 겸하는 밸브(이중기능차단밸브), 공급 격리 작업 단계 관련 조항은?",
+   "answer_keys": [
+    "P-77-2011:0:6.4",
+    "P-77-2011:0:6.5",
+    "P-52-2012:0:4"
+   ],
+   "expected": "FOUND",
+   "revision_note": "2026-10-21 rev2: '이중차단' → '공정제어와 비상차단을 겸하는 밸브(이중기능차단밸브)' — term mismatch with the answer clause P-77 6.5 title (reviewer); run 1 (sha cfc7d0ab…) preserved as tau_run1_cfc7d0ab.json"
+  },
+  {
+   "id": "dev03",
+   "kind": "answer",
+   "pred_set": [
+    1
+   ],
+   "question": "스트림 4의 A/C 조성비가 변했다. 원료 투입과 연속식 반응기 운전 시 확인할 조항은?",
+   "answer_keys": [
+    "P-132-2013:0:4.2",
+    "P-132-2013:0:4.4"
+   ],
+   "expected": "FOUND"
+  },
+  {
+   "id": "dev04",
+   "kind": "answer",
+   "pred_set": [
+    14
+   ],
+   "question": "반응기 냉각수 밸브 고착이 의심된다. 비상차단시스템의 실패요인과 정비·검사·테스트 조항은?",
+   "answer_keys": [
+    "P-77-2011:0:7.2",
+    "P-77-2011:0:7.3",
+    "P-129-2013:0:5.2.2"
+   ],
+   "expected": "FOUND"
+  },
+  {
+   "id": "dev05",
+   "kind": "answer",
+   "pred_set": [
+    13
+   ],
+   "question": "반응속도가 서서히 변하고 있다. 발열반응의 안전운전 한계(envelope) 결정과 취득정보 해석 조항은?",
+   "answer_keys": [
+    "P-38-2012:0:5.7",
+    "P-38-2012:0:5.3"
+   ],
+   "expected": "FOUND"
+  },
+  {
+   "id": "dev06",
+   "kind": "trap",
+   "pred_set": [
+    18
+   ],
+   "question": "결함 18 알람에 대해 특정 조치를 뒷받침하는 지침 조항은?",
+   "answer_keys": [],
+   "expected": "NONE",
+   "note": "faults 16–20: scope is C only → g_AB is None regardless of tau (structural hold)"
+  },
+  {
+   "id": "dev07",
+   "kind": "trap",
+   "pred_set": [
+    20
+   ],
+   "question": "이 알람에 대해 작업지시로 올릴 만한 기제 직접 조항이 있는가?",
+   "answer_keys": [],
+   "expected": "NONE",
+   "note": "structural, C only"
+  },
+  {
+   "id": "dev08",
+   "kind": "trap",
+   "pred_set": [
+    7
+   ],
+   "question": "배관 수압시험을 할 때의 시험 압력과 절차는?",
+   "answer_keys": [],
+   "expected": "NONE",
+   "note": "P-18 7.5.1 was removed from fault 7's scope (ST0-26); A/B chunks exist but are off-topic"
+  },
+  {
+   "id": "dev09",
+   "kind": "trap",
+   "pred_set": [
+    5
+   ],
+   "question": "혼합가스의 폭발하한계(LEL)를 르샤틀리에 식으로 계산하는 방법은?",
+   "answer_keys": [],
+   "expected": "NONE",
+   "note": "P-179 5.2.x removed from feed_composition scope; condenser_cooling scope (P-53, P-60) is off-topic"
+  },
+  {
+   "id": "dev10",
+   "kind": "trap",
+   "pred_set": [
+    3
+   ],
+   "question": "정전기 방지를 위한 접지와 습도 조절 방법은?",
+   "answer_keys": [],
+   "expected": "NONE",
+   "note": "P-114 is not mapped to any fault; feed_temperature scope (P-38, P-53) is off-topic"
+  }
+ ]
+}

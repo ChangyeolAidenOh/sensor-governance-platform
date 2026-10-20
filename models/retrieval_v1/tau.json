@@ -1,0 +1,488 @@
+{
+ "tau": 0.5,
+ "grid": [
+  {
+   "tau": 0.2,
+   "tpr": 1.0,
+   "tnr": 1.0,
+   "balanced_acc": 1.0
+  },
+  {
+   "tau": 0.3,
+   "tpr": 1.0,
+   "tnr": 1.0,
+   "balanced_acc": 1.0
+  },
+  {
+   "tau": 0.4,
+   "tpr": 1.0,
+   "tnr": 1.0,
+   "balanced_acc": 1.0
+  },
+  {
+   "tau": 0.5,
+   "tpr": 1.0,
+   "tnr": 1.0,
+   "balanced_acc": 1.0
+  },
+  {
+   "tau": 0.6,
+   "tpr": 0.8,
+   "tnr": 1.0,
+   "balanced_acc": 0.9
+  },
+  {
+   "tau": 0.7,
+   "tpr": 0.8,
+   "tnr": 1.0,
+   "balanced_acc": 0.9
+  },
+  {
+   "tau": 0.8,
+   "tpr": 0.4,
+   "tnr": 1.0,
+   "balanced_acc": 0.7
+  }
+ ],
+ "rule": "balanced accuracy; ties → TNR → largest tau (largest-tau tie rule pre-specified in S3-04/ST3-09, not in prereg-v1)",
+ "contract": {
+  "mode": "scoped",
+  "role": "engineer",
+  "k": 5,
+  "score_scale": "sigmoid(logit) once, [0,1]"
+ },
+ "dev_set": "evals/rag_dev_set.json",
+ "dev_set_sha256": "5e8e99efced574495d8a76c8890d4df325ebb35e83e7ed2748a8e85546c2fb13",
+ "fault_map": "outputs/fault_to_guidance_map.json",
+ "fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+ "reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+ "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+ "embedder": "BAAI/bge-m3@5617a9f61b02",
+ "embedder_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+ "index_meta": {
+  "embedder": "BAAI/bge-m3@5617a9f61b02",
+  "n_chunks": 655,
+  "dim": 1024,
+  "chunks_sha256": "a9115498a22f28061aa37694ef8d94fb8fcd73d2e2297e403ff9ea08c8c7b6e6",
+  "rrf_k": 60,
+  "candidates_per_source": 20,
+  "bm25_tokens": "char-bigram (fixed choice)",
+  "source_chunks_file_sha256": "a9115498a22f28061aa37694ef8d94fb8fcd73d2e2297e403ff9ea08c8c7b6e6",
+  "embedder_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+  "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+  "reranker_scale": "sigmoid(logit) once, [0,1]",
+  "reranker_max_length": 2048,
+  "reranker_tokens_max_chunk": 621,
+  "reranker_tokens_p99_chunk": 604,
+  "reranker_truncation_risk": false
+ },
+ "reranker_pair_tokens_max": 661,
+ "reranker_pair_tokens_n": 182,
+ "reranker_pair_tokens_over_limit": 0,
+ "pair_tokens_scope": "all candidate pairs scored by the reranker (RRF-fused BM25∪dense), not only the returned top-k",
+ "hit@3_answer_items": 5,
+ "per_item": [
+  {
+   "id": "dev01",
+   "kind": "answer",
+   "pred_set": [
+    4
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.988245787817871,
+   "g_C": null,
+   "scope_size": 19,
+   "hit@3": true,
+   "top": [
+    {
+     "key": "P-53-2012:0:6",
+     "grade": "A",
+     "score": 0.9882
+    },
+    {
+     "key": "P-53-2012:0:6.7",
+     "grade": "A",
+     "score": 0.5968
+    },
+    {
+     "key": "P-65-2012:0:4.1",
+     "grade": "A",
+     "score": 0.591
+    },
+    {
+     "key": "P-65-2012:0:5.1",
+     "grade": "A",
+     "score": 0.3846
+    },
+    {
+     "key": "P-65-2012:0:5.4",
+     "grade": "B",
+     "score": 0.2269
+    }
+   ]
+  },
+  {
+   "id": "dev02",
+   "kind": "answer",
+   "pred_set": [
+    6
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.5087097156012399,
+   "g_C": null,
+   "scope_size": 22,
+   "hit@3": true,
+   "top": [
+    {
+     "key": "P-77-2011:0:6.5",
+     "grade": "A",
+     "score": 0.5087
+    },
+    {
+     "key": "P-77-2011:0:6.4",
+     "grade": "A",
+     "score": 0.5085
+    },
+    {
+     "key": "P-52-2012:0:4",
+     "grade": "A",
+     "score": 0.2983
+    },
+    {
+     "key": "P-77-2011:0:4",
+     "grade": "B",
+     "score": 0.0415
+    },
+    {
+     "key": "P-77-2011:0:7.2",
+     "grade": "A",
+     "score": 0.0107
+    }
+   ]
+  },
+  {
+   "id": "dev03",
+   "kind": "answer",
+   "pred_set": [
+    1
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.7642880327917907,
+   "g_C": null,
+   "scope_size": 25,
+   "hit@3": true,
+   "top": [
+    {
+     "key": "P-132-2013:0:4.4",
+     "grade": "A",
+     "score": 0.7643
+    },
+    {
+     "key": "P-132-2013:0:4.2",
+     "grade": "A",
+     "score": 0.0263
+    },
+    {
+     "key": "P-132-2013:0:4.2",
+     "grade": "A",
+     "score": 0.0128
+    },
+    {
+     "key": "P-132-2013:0:4.1",
+     "grade": "B",
+     "score": 0.0052
+    },
+    {
+     "key": "P-132-2013:0:4.1",
+     "grade": "B",
+     "score": 0.0034
+    }
+   ]
+  },
+  {
+   "id": "dev04",
+   "kind": "answer",
+   "pred_set": [
+    14
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.9693328602637059,
+   "g_C": null,
+   "scope_size": 18,
+   "hit@3": true,
+   "top": [
+    {
+     "key": "P-77-2011:0:7.2",
+     "grade": "A",
+     "score": 0.9693
+    },
+    {
+     "key": "P-77-2011:0:7.3",
+     "grade": "A",
+     "score": 0.3326
+    },
+    {
+     "key": "P-77-2011:0:4",
+     "grade": "B",
+     "score": 0.008
+    },
+    {
+     "key": "P-77-2011:0:7.1",
+     "grade": "B",
+     "score": 0.004
+    },
+    {
+     "key": "P-77-2011:0:6.3",
+     "grade": "A",
+     "score": 0.003
+    }
+   ]
+  },
+  {
+   "id": "dev05",
+   "kind": "answer",
+   "pred_set": [
+    13
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.7170067537777515,
+   "g_C": null,
+   "scope_size": 21,
+   "hit@3": true,
+   "top": [
+    {
+     "key": "P-38-2012:0:5.3",
+     "grade": "A",
+     "score": 0.717
+    },
+    {
+     "key": "P-38-2012:0:5.6",
+     "grade": "B",
+     "score": 0.3774
+    },
+    {
+     "key": "P-38-2012:0:5.7",
+     "grade": "A",
+     "score": 0.2817
+    },
+    {
+     "key": "P-53-2012:0:5.1",
+     "grade": "A",
+     "score": 0.2543
+    },
+    {
+     "key": "P-53-2012:0:4",
+     "grade": "B",
+     "score": 0.0442
+    }
+   ]
+  },
+  {
+   "id": "dev06",
+   "kind": "trap",
+   "pred_set": [
+    18
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": null,
+   "g_C": 0.0008555997509758697,
+   "scope_size": 11,
+   "hit@3": null,
+   "top": [
+    {
+     "key": "P-116-2012:0:5.2.4",
+     "grade": "C",
+     "score": 0.0009
+    },
+    {
+     "key": "P-116-2012:0:5.2.5",
+     "grade": "C",
+     "score": 0.0006
+    },
+    {
+     "key": "P-116-2012:0:5.2.2",
+     "grade": "C",
+     "score": 0.0003
+    },
+    {
+     "key": "P-129-2013:0:5.2.2",
+     "grade": "C",
+     "score": 0.0003
+    },
+    {
+     "key": "P-133-2013:0:5.1",
+     "grade": "C",
+     "score": 0.0002
+    }
+   ]
+  },
+  {
+   "id": "dev07",
+   "kind": "trap",
+   "pred_set": [
+    20
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": null,
+   "g_C": 0.0016578898977047422,
+   "scope_size": 11,
+   "hit@3": null,
+   "top": [
+    {
+     "key": "P-116-2012:0:5.2.4",
+     "grade": "C",
+     "score": 0.0017
+    },
+    {
+     "key": "P-133-2013:0:5.2.2",
+     "grade": "C",
+     "score": 0.0011
+    },
+    {
+     "key": "P-116-2012:0:5.2.2",
+     "grade": "C",
+     "score": 0.0004
+    },
+    {
+     "key": "P-116-2012:0:5.2.5",
+     "grade": "C",
+     "score": 0.0003
+    },
+    {
+     "key": "P-129-2013:0:5.2.2",
+     "grade": "C",
+     "score": 0.0003
+    }
+   ]
+  },
+  {
+   "id": "dev08",
+   "kind": "trap",
+   "pred_set": [
+    7
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.003316814479543785,
+   "g_C": 0.01586192208829849,
+   "scope_size": 19,
+   "hit@3": null,
+   "top": [
+    {
+     "key": "P-129-2013:0:5.2.2",
+     "grade": "C",
+     "score": 0.0159
+    },
+    {
+     "key": "P-18-2012:0:6.3",
+     "grade": "A",
+     "score": 0.0033
+    },
+    {
+     "key": "P-159-2017:0:4.3",
+     "grade": "B",
+     "score": 0.0015
+    },
+    {
+     "key": "P-65-2012:0:5.4",
+     "grade": "B",
+     "score": 0.0013
+    },
+    {
+     "key": "P-159-2017:0:4.2",
+     "grade": "B",
+     "score": 0.0006
+    }
+   ]
+  },
+  {
+   "id": "dev09",
+   "kind": "trap",
+   "pred_set": [
+    5
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.0002783165986785838,
+   "g_C": 0.0004619225647670224,
+   "scope_size": 19,
+   "hit@3": null,
+   "top": [
+    {
+     "key": "P-129-2013:0:4.1",
+     "grade": "C",
+     "score": 0.0005
+    },
+    {
+     "key": "P-53-2012:0:5.2",
+     "grade": "A",
+     "score": 0.0003
+    },
+    {
+     "key": "P-129-2013:0:5.2.2",
+     "grade": "C",
+     "score": 0.0003
+    },
+    {
+     "key": "P-53-2012:0:6.7",
+     "grade": "B",
+     "score": 0.0001
+    },
+    {
+     "key": "P-53-2012:0:6.5",
+     "grade": "A",
+     "score": 0.0001
+    }
+   ]
+  },
+  {
+   "id": "dev10",
+   "kind": "trap",
+   "pred_set": [
+    3
+   ],
+   "status": "OK",
+   "grounding": "unknown_tau",
+   "g_AB": 0.0010430634771136993,
+   "g_C": 0.0019423289234347533,
+   "scope_size": 18,
+   "hit@3": null,
+   "top": [
+    {
+     "key": "P-129-2013:0:5.2.2",
+     "grade": "C",
+     "score": 0.0019
+    },
+    {
+     "key": "P-53-2012:0:5.1",
+     "grade": "A",
+     "score": 0.001
+    },
+    {
+     "key": "P-38-2012:0:5.5",
+     "grade": "B",
+     "score": 0.0003
+    },
+    {
+     "key": "P-129-2013:0:4.1",
+     "grade": "C",
+     "score": 0.0001
+    },
+    {
+     "key": "P-38-2012:0:5.4",
+     "grade": "B",
+     "score": 0.0001
+    }
+   ]
+  }
+ ],
+ "note": "development diagnostic; H3 is evaluated on the 50-item set in Stage 5"
+}

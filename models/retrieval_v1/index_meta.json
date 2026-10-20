@@ -1,0 +1,18 @@
+{
+  "embedder": "BAAI/bge-m3@5617a9f61b02",
+  "n_chunks": 655,
+  "dim": 1024,
+  "chunks_sha256": "a9115498a22f28061aa37694ef8d94fb8fcd73d2e2297e403ff9ea08c8c7b6e6",
+  "rrf_k": 60,
+  "candidates_per_source": 20,
+  "bm25_tokens": "char-bigram (fixed choice)",
+  "source_chunks_file_sha256": "a9115498a22f28061aa37694ef8d94fb8fcd73d2e2297e403ff9ea08c8c7b6e6",
+  "embedder_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+  "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+  "reranker_scale": "sigmoid(logit) once, [0,1]",
+  "reranker_max_length": 2048,
+  "reranker_tokens_max_chunk": 621,
+  "reranker_tokens_p99_chunk": 604,
+  "reranker_truncation_risk": false
+}

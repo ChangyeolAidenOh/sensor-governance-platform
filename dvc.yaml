@@ -118,3 +118,45 @@ stages:
       - models/detector_at_v1
       - outputs/model_meta/detector_at_v1.json:
           cache: false
+
+  build_clause_corpus:
+    cmd: python scripts/build_clause_corpus.py
+    deps:
+      - scripts/build_clause_corpus.py
+      - core_pipeline/docs/clause_parser.py
+      - core_pipeline/docs/chunker.py
+      - outputs/kosha_clause_index.json
+      - outputs/corpus_known_diffs.json
+      - data/processed/kosha/docling
+    outs:
+      - outputs/kosha_clauses.jsonl:
+          cache: false
+      - outputs/kosha_chunks.jsonl:
+          cache: false
+
+  build_retrieval_index:
+    cmd: python scripts/build_retrieval_index.py
+    deps:
+      - scripts/build_retrieval_index.py
+      - core_pipeline/retrieval/index.py
+      - core_pipeline/retrieval/models.py
+      - core_pipeline/retrieval/model_pins.json
+      - outputs/kosha_chunks.jsonl
+    outs:
+      - models/retrieval_v1/dense.npy
+      - models/retrieval_v1/chunks.jsonl
+      - models/retrieval_v1/index_meta.json:
+          cache: false
+
+  fix_tau:
+    cmd: python scripts/fix_tau.py
+    deps:
+      - scripts/fix_tau.py
+      - evals/rag_dev_set.json
+      - models/retrieval_v1/dense.npy
+      - models/retrieval_v1/index_meta.json
+      - outputs/fault_to_guidance_map.json
+      - core_pipeline/retrieval
+    outs:
+      - models/retrieval_v1/tau.json:
+          cache: false

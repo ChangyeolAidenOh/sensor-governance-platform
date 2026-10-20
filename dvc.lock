@@ -261,8 +261,8 @@ stages:
       size: 9585
     - path: scripts/calibrate_gate_drift.py
       hash: md5
-      md5: f92c492d520615d77e7549d764d8b321
-      size: 6521
+      md5: 65afe5426a82bfbd81c9d2a376bffcef
+      size: 6261
     - path: scripts/check_mart_inputs.py
       hash: md5
       md5: 57d13c12f5ae5999155697710971ddfc
@@ -270,8 +270,8 @@ stages:
     outs:
     - path: models/gate_v2/gate_calibration.json
       hash: md5
-      md5: 06141ae4d42442349f692cfc73ac8b7d
-      size: 4043
+      md5: 979f6d3428ffee32a04f99e7c53f4df0
+      size: 4086
   fit_detector_at:
     cmd: python scripts/fit_detector_at.py --dsn "$SGP_PG_DSN" --processed 
       data/processed/TEP --out models/detector_at_v1 --sign 1 && cp 
@@ -328,3 +328,109 @@ stages:
       hash: md5
       md5: 26fbf87eb8c03cb1bc3d787de5aab56c
       size: 1093
+  build_clause_corpus:
+    cmd: python scripts/build_clause_corpus.py
+    deps:
+    - path: core_pipeline/docs/chunker.py
+      hash: md5
+      md5: f11f2b215ae8e14f2a74c3231be7a9dd
+      size: 3002
+    - path: core_pipeline/docs/clause_parser.py
+      hash: md5
+      md5: 1a298e35217d4970c88c10eacc5fad6e
+      size: 13767
+    - path: data/processed/kosha/docling
+      hash: md5
+      md5: bb06921edd2253ae74dd46bae4a26cf4.dir
+      size: 178999149
+      nfiles: 56
+    - path: outputs/corpus_known_diffs.json
+      hash: md5
+      md5: 9124f0e776db1f3d719cd11fe44be19d
+      size: 534
+    - path: outputs/kosha_clause_index.json
+      hash: md5
+      md5: 07c8dd89aa8fd328faf40b50fc0bec59
+      size: 398088
+    - path: scripts/build_clause_corpus.py
+      hash: md5
+      md5: 100516efa9a1d25f97119e7791d44996
+      size: 7907
+    outs:
+    - path: outputs/kosha_chunks.jsonl
+      hash: md5
+      md5: 40df61cd90864106f5edfb685a93738d
+      size: 750879
+    - path: outputs/kosha_clauses.jsonl
+      hash: md5
+      md5: 7234c734f2de2e5944785383aa96731a
+      size: 743086
+  build_retrieval_index:
+    cmd: python scripts/build_retrieval_index.py
+    deps:
+    - path: core_pipeline/retrieval/index.py
+      hash: md5
+      md5: 7b625a5ebe4e02575fcbd1701d40163f
+      size: 5046
+    - path: core_pipeline/retrieval/model_pins.json
+      hash: md5
+      md5: f85294398d58e4a6c825ea83fa45c001
+      size: 136
+    - path: core_pipeline/retrieval/models.py
+      hash: md5
+      md5: 7bbb949b923787ce8a7f2e6573df649e
+      size: 5102
+    - path: outputs/kosha_chunks.jsonl
+      hash: md5
+      md5: 40df61cd90864106f5edfb685a93738d
+      size: 750879
+    - path: scripts/build_retrieval_index.py
+      hash: md5
+      md5: d2f29de440e1632c0051582a72adf1a0
+      size: 2666
+    outs:
+    - path: models/retrieval_v1/chunks.jsonl
+      hash: md5
+      md5: 40df61cd90864106f5edfb685a93738d
+      size: 750879
+    - path: models/retrieval_v1/dense.npy
+      hash: md5
+      md5: a144a9b988d254eb46fecb0526f2dc1b
+      size: 2683008
+    - path: models/retrieval_v1/index_meta.json
+      hash: md5
+      md5: eea5ead83436db35289d7eebf1953ebd
+      size: 735
+  fix_tau:
+    cmd: python scripts/fix_tau.py
+    deps:
+    - path: core_pipeline/retrieval
+      hash: md5
+      md5: 195445fb0278d7161de2a1195189caad.dir
+      size: 55162
+      nfiles: 13
+    - path: evals/rag_dev_set.json
+      hash: md5
+      md5: 318f09ebc61f5114d1acea43b5b20686
+      size: 4116
+    - path: models/retrieval_v1/dense.npy
+      hash: md5
+      md5: a144a9b988d254eb46fecb0526f2dc1b
+      size: 2683008
+    - path: models/retrieval_v1/index_meta.json
+      hash: md5
+      md5: eea5ead83436db35289d7eebf1953ebd
+      size: 735
+    - path: outputs/fault_to_guidance_map.json
+      hash: md5
+      md5: 820d770ea651a8c7224d5dc9feb435e4
+      size: 34800
+    - path: scripts/fix_tau.py
+      hash: md5
+      md5: cbfc87a33b7395205824bf5f397e0b69
+      size: 5718
+    outs:
+    - path: models/retrieval_v1/tau.json
+      hash: md5
+      md5: f1955cca64a1dd563369c810591a29c3
+      size: 8990
