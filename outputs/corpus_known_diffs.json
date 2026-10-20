@@ -1,0 +1,5 @@
+{
+ "_note": "Reviewed exceptions to the 0-C structural equivalence (ST3-03). extra_clauses: clauses the parser finds that the 0-C index lacks (folded into the preceding row for the comparison only). item_deltas: per-clause (parser − 0-C) item/char differences in form/table regions of guides the frozen mapping does NOT reference; each pinned to the source file sha, with the item indices/original text and a reason. Nothing else may differ; mapping-referenced clauses never get a delta.",
+ "extra_clauses": {},
+ "item_deltas": {}
+}

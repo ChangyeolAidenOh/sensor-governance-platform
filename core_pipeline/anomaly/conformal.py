@@ -42,6 +42,21 @@ class ConformalCalibration:
         n_less = int(np.searchsorted(self.cal_scores_sorted, score, side="left"))
         return (1 + (self.n_cal - n_less)) / (self.n_cal + 1)
 
+    def p_value_loo(self, score: float) -> float:
+        """p-value for a window that is ITSELF a member of the calibration set (leave-one-out): one copy of its own
+        score is removed from the comparison set, p = (1 + #{j != i: s_j >= s_i}) / n_cal. For exchangeable scores
+        WITHOUT ties this is exactly uniform on the grid {1/n, ..., 1}; with ties (counted as >=) it is conservative
+        by the number of tied scores. The score must be an exact member of the calibration set (checked), used only
+        when replaying calibration fault-free episodes to build drift thresholds with the evaluation's alarm rule."""
+        if not np.isfinite(score):
+            raise ValueError("non-finite test score")
+        lo = int(np.searchsorted(self.cal_scores_sorted, score, side="left"))
+        hi = int(np.searchsorted(self.cal_scores_sorted, score, side="right"))
+        if hi - lo < 1:
+            raise ValueError("score is not a calibration member")
+        n_ge_excl_self = (self.n_cal - lo) - 1          # all >= minus one copy of itself
+        return (1 + n_ge_excl_self) / self.n_cal
+
     def p_values(self, scores: np.ndarray) -> np.ndarray:
         s = np.asarray(scores, dtype=np.float64)
         if not np.isfinite(s).all():
