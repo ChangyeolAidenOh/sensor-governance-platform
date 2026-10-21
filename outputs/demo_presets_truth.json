@@ -1,0 +1,76 @@
+{
+ "schema": "demo_presets_truth/1",
+ "note": "post-hoc reveal only — never read by the graph",
+ "presets": [
+  {
+   "preset": 1,
+   "fault_scenario": 1,
+   "run_id": 22,
+   "episode_id": "1602739f-9819-486b-b557-e0d86cb3208c",
+   "reveal": "결함 1"
+  },
+  {
+   "preset": 2,
+   "fault_scenario": 4,
+   "run_id": 26,
+   "episode_id": "13406ab6-14b4-4dfc-a88d-8edeec3ddcf5",
+   "reveal": "결함 4 — 탐지 한계 사례(알람 미발생)"
+  },
+  {
+   "preset": 3,
+   "fault_scenario": 5,
+   "run_id": 39,
+   "episode_id": "4785985b-0e5d-4bd5-9e04-185c765f00fb",
+   "reveal": "결함 5"
+  },
+  {
+   "preset": 4,
+   "fault_scenario": 6,
+   "run_id": 43,
+   "episode_id": "d9980e79-0e9b-47ed-abfc-9b3f71c33814",
+   "reveal": "결함 6"
+  },
+  {
+   "preset": 5,
+   "fault_scenario": 7,
+   "run_id": 133,
+   "episode_id": "8221c446-d58c-4b78-8dd4-3c81db05976a",
+   "reveal": "결함 7"
+  },
+  {
+   "preset": 6,
+   "fault_scenario": 13,
+   "run_id": 174,
+   "episode_id": "a33a56ac-f961-46b1-af28-1a486dfa1aca",
+   "reveal": "결함 13"
+  },
+  {
+   "preset": 7,
+   "fault_scenario": 14,
+   "run_id": 176,
+   "episode_id": "5e839a21-4036-4813-902a-cd1d402da453",
+   "reveal": "결함 14"
+  },
+  {
+   "preset": 8,
+   "fault_scenario": 18,
+   "run_id": 178,
+   "episode_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e",
+   "reveal": "결함 18"
+  },
+  {
+   "preset": 9,
+   "fault_scenario": 0,
+   "run_id": 250,
+   "episode_id": "87efac11-67f2-4e7f-8e0a-d3e94aa671e3",
+   "reveal": "정상 에피소드"
+  },
+  {
+   "preset": 10,
+   "fault_scenario": 0,
+   "run_id": 251,
+   "episode_id": "962545fc-2f74-437d-9f4d-582889a31e8c",
+   "reveal": "정상 에피소드"
+  }
+ ]
+}

@@ -35,3 +35,7 @@ data/raw/kosha/files_manifest.json
 !outputs/stage0_episode_split.json
 !outputs/stage0_llm_selection.json
 !outputs/stage0_conformal_toy.json
+outputs/demo_presets_windows.json
+outputs/*.log
+outputs/*_dev_check.json
+outputs/gate_reference_dev.json

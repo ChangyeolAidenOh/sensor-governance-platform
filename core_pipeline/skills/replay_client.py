@@ -16,7 +16,7 @@ from core_pipeline import prereg_constants as P
 from core_pipeline.skills.client import SkillClient
 from core_pipeline.skills.servers.common import new_ctx
 
-SQL_FILES = ("sql/003_skill_state.sql", "sql/004_skill_state_rev2.sql", "sql/005_gate_checks.sql")
+SQL_FILES = ("sql/003_skill_state.sql", "sql/004_skill_state_rev2.sql", "sql/005_gate_checks.sql", "sql/007_graph_state.sql")
 
 
 def apply_stage4a_schema(dsn: str) -> None:
@@ -54,6 +54,7 @@ def clean_episode(dsn: str, episode_id: UUID) -> None:
                 cur.execute("DELETE FROM mart.approvals WHERE proposal_id = ANY(%s)", (props,))
                 cur.execute("DELETE FROM mart.proposal_drafts WHERE proposal_id = ANY(%s)", (props,))
                 cur.execute("DELETE FROM mart.proposals WHERE proposal_id = ANY(%s)", (props,))
+            cur.execute("DELETE FROM mart.query_plans WHERE episode_id=%s", (episode_id,))          # schema v7: FK to policy_decisions
             cur.execute("DELETE FROM mart.policy_decisions WHERE alarm_id = ANY(%s)", (alarms,))
             cur.execute("DELETE FROM mart.evidence WHERE alarm_id = ANY(%s)", (alarms,))
             cur.execute("DELETE FROM mart.diagnoses WHERE alarm_id = ANY(%s)", (alarms,))
@@ -75,19 +76,21 @@ def window_row(env: dict) -> dict:
 
 
 async def replay_episode(sk: SkillClient, episode_id: UUID, thread_id: str, t_max: int = P.N_WINDOWS - 1,
-                         run_uuid: Optional[UUID] = None, on_window: Optional[Callable[[int, dict, Optional[dict]], None]] = None) -> list[dict]:
-    """gate_check → (non-BLOCK) detect_diagnose for windows 0..t_max. Returns one compact row per window."""
+                         run_uuid: Optional[UUID] = None, on_window: Optional[Callable[[int, dict, Optional[dict]], None]] = None,
+                         mode: str = "chat") -> list[dict]:
+    """gate_check → (non-BLOCK) detect_diagnose for windows 0..t_max. Returns one compact row per window.
+    `mode` is the ctx.mode of every call (S4a-03 pre-computation passes "replay"; default unchanged for the goldens)."""
     run_uuid = run_uuid or uuid.uuid4()
     rows: list[dict] = []
     for t in range(t_max + 1):
-        g = await sk.gate_check(new_ctx(thread_id, run_uuid), str(episode_id), t)
+        g = await sk.gate_check(new_ctx(thread_id, run_uuid, mode=mode), str(episode_id), t)
         if g["status"] != "OK":
             raise RuntimeError(f"gate_check({t}) {g['status']} {g['reason']}")
         d = None
         if g["payload"]["gate"] == "BLOCK":
             rows.append({**window_row(g), "gate_payload": g["payload"]})
         else:
-            d = await sk.detect_diagnose(new_ctx(thread_id, run_uuid), str(episode_id), t)
+            d = await sk.detect_diagnose(new_ctx(thread_id, run_uuid, mode=mode), str(episode_id), t)
             if d["status"] != "OK":
                 raise RuntimeError(f"detect_diagnose({t}) {d['status']} {d['reason']}")
             rows.append({**window_row(d), "gate_payload": g["payload"], "diagnosis": d["payload"]["diagnosis"]})

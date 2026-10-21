@@ -1,0 +1,1083 @@
+{
+ "schema": "demo_presets/1",
+ "generated_at": "2026-10-20T22:44:43.875084+00:00",
+ "code_commit": "882b462",
+ "contract_version": "1.0",
+ "n_windows": 48,
+ "display_rule": "first prefix-BH alarm window in 0..47; no alarm → window 47",
+ "presets": [
+  {
+   "preset": 1,
+   "episode_id": "1602739f-9819-486b-b557-e0d86cb3208c",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 8,
+   "alarm_id": "1602739f-9819-486b-b557-e0d86cb3208c:8:detector_v1",
+   "pred_set": [
+    1
+   ],
+   "top1": 1,
+   "note": "창 8에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 39개",
+   "retrieve_k5": {
+    "query": "A/C 피드 비율 변화, B 조성 일정 (스트림 4) 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": 0.03525250721641387,
+     "g_C": 0.008227261080833832,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-132-2013:0:4.4",
+       "grade": "A",
+       "score": 0.03525250721641387
+      },
+      {
+       "clause_key": "P-132-2013:0:4.1",
+       "grade": "B",
+       "score": 0.03338321542603633
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.008227261080833832
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.007738704828348177
+      },
+      {
+       "clause_key": "P-132-2013:0:4.1",
+       "grade": "B",
+       "score": 0.0076019977704121396
+      }
+     ]
+    },
+    "top_keys": [
+     "P-132-2013:0:4.4",
+     "P-132-2013:0:4.1",
+     "P-129-2013:0:5.2.2",
+     "P-129-2013:0:5.2.2",
+     "P-132-2013:0:4.1"
+    ],
+    "scope_size": 25
+   },
+   "decide_preview": {
+    "action": "hold",
+    "rule": 3,
+    "query_kind": null,
+    "signals": {
+     "gate": "PASS",
+     "drift": "critical",
+     "alarm": true,
+     "s": 1,
+     "g_AB": 0.03525250721641387,
+     "g_C": 0.008227261080833832,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  },
+  {
+   "preset": 2,
+   "episode_id": "13406ab6-14b4-4dfc-a88d-8edeec3ddcf5",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5
+   },
+   "kind": "no_alarm",
+   "display_window": 47,
+   "alarm_id": null,
+   "pred_set": [],
+   "top1": null,
+   "note": "전체 48창 관측, prefix-BH 알람 미발생",
+   "retrieve_k5": null,
+   "decide_preview": null
+  },
+  {
+   "preset": 3,
+   "episode_id": "4785985b-0e5d-4bd5-9e04-185c765f00fb",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    35,
+    37
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 8,
+   "alarm_id": "4785985b-0e5d-4bd5-9e04-185c765f00fb:8:detector_v1",
+   "pred_set": [
+    5
+   ],
+   "top1": 5,
+   "note": "창 8에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 11개",
+   "retrieve_k5": {
+    "query": "응축기 냉각수 입구 온도 변화 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": 0.024116222194938985,
+     "g_C": 0.015703089606814213,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-53-2012:0:6.5",
+       "grade": "A",
+       "score": 0.024116222194938985
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.015703089606814213
+      },
+      {
+       "clause_key": "P-53-2012:0:5.1",
+       "grade": "B",
+       "score": 0.014615642630926642
+      },
+      {
+       "clause_key": "P-53-2012:0:6.7",
+       "grade": "B",
+       "score": 0.011142826119152108
+      },
+      {
+       "clause_key": "P-129-2013:0:4.1",
+       "grade": "C",
+       "score": 0.00428347891289573
+      }
+     ]
+    },
+    "top_keys": [
+     "P-53-2012:0:6.5",
+     "P-129-2013:0:5.2.2",
+     "P-53-2012:0:5.1",
+     "P-53-2012:0:6.7",
+     "P-129-2013:0:4.1"
+    ],
+    "scope_size": 19
+   },
+   "decide_preview": {
+    "action": "query_more",
+    "rule": 5,
+    "query_kind": "rerank",
+    "signals": {
+     "gate": "PASS",
+     "drift": "ok",
+     "alarm": true,
+     "s": 1,
+     "g_AB": 0.024116222194938985,
+     "g_C": 0.015703089606814213,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  },
+  {
+   "preset": 4,
+   "episode_id": "d9980e79-0e9b-47ed-abfc-9b3f71c33814",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 8,
+   "alarm_id": "d9980e79-0e9b-47ed-abfc-9b3f71c33814:8:detector_v1",
+   "pred_set": [
+    6
+   ],
+   "top1": 6,
+   "note": "창 8에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 40개",
+   "retrieve_k5": {
+    "query": "A 피드 손실 (스트림 1) 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": 0.003255685174825784,
+     "g_C": 0.005006724646713845,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.005006724646713845
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.0037604300982565404
+      },
+      {
+       "clause_key": "P-52-2012:0:4",
+       "grade": "A",
+       "score": 0.003255685174825784
+      },
+      {
+       "clause_key": "P-77-2011:0:6.4",
+       "grade": "A",
+       "score": 0.0029794784329659494
+      },
+      {
+       "clause_key": "P-133-2013:0:5.2.3",
+       "grade": "C",
+       "score": 0.0014932794384068544
+      }
+     ]
+    },
+    "top_keys": [
+     "P-129-2013:0:5.2.2",
+     "P-129-2013:0:5.2.2",
+     "P-52-2012:0:4",
+     "P-77-2011:0:6.4",
+     "P-133-2013:0:5.2.3"
+    ],
+    "scope_size": 22
+   },
+   "decide_preview": {
+    "action": "query_more",
+    "rule": 5,
+    "query_kind": "rerank",
+    "signals": {
+     "gate": "PASS",
+     "drift": "ok",
+     "alarm": true,
+     "s": 1,
+     "g_AB": 0.003255685174825784,
+     "g_C": 0.005006724646713845,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  },
+  {
+   "preset": 5,
+   "episode_id": "8221c446-d58c-4b78-8dd4-3c81db05976a",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    35,
+    37,
+    38,
+    39
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 8,
+   "alarm_id": "8221c446-d58c-4b78-8dd4-3c81db05976a:8:detector_v1",
+   "pred_set": [
+    7
+   ],
+   "top1": 7,
+   "note": "창 8에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 24개",
+   "retrieve_k5": {
+    "query": "C 헤더 압력 손실 (스트림 4) 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": null,
+     "g_C": 0.016953436864710843,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.016953436864710843
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.006591825955265365
+      },
+      {
+       "clause_key": "P-129-2013:0:4.1",
+       "grade": "C",
+       "score": 0.0024582398971761
+      },
+      {
+       "clause_key": "P-133-2013:0:5.2.3",
+       "grade": "C",
+       "score": 0.001909457892192551
+      },
+      {
+       "clause_key": "P-133-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.001771188884452415
+      }
+     ]
+    },
+    "top_keys": [
+     "P-129-2013:0:5.2.2",
+     "P-129-2013:0:5.2.2",
+     "P-129-2013:0:4.1",
+     "P-133-2013:0:5.2.3",
+     "P-133-2013:0:5.2.2"
+    ],
+    "scope_size": 19
+   },
+   "decide_preview": {
+    "action": "query_more",
+    "rule": 5,
+    "query_kind": "rerank",
+    "signals": {
+     "gate": "PASS",
+     "drift": "ok",
+     "alarm": true,
+     "s": 1,
+     "g_AB": null,
+     "g_C": 0.016953436864710843,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  },
+  {
+   "preset": 6,
+   "episode_id": "a33a56ac-f961-46b1-af28-1a486dfa1aca",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    5,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 5,
+   "alarm_id": "a33a56ac-f961-46b1-af28-1a486dfa1aca:5:detector_v1",
+   "pred_set": [],
+   "top1": 15,
+   "note": "창 5에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 40개",
+   "retrieve_k5": {
+    "query": "공정 이상 경보 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": null,
+     "g_C": 0.06805369537698165,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-133-2013:0:5.2.3",
+       "grade": "C",
+       "score": 0.06805369537698165
+      },
+      {
+       "clause_key": "P-116-2012:0:5.2.5",
+       "grade": "C",
+       "score": 0.06367775448110334
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "C",
+       "score": 0.0345050050194926
+      },
+      {
+       "clause_key": "P-129-2013:0:4.1",
+       "grade": "C",
+       "score": 0.023750645702832703
+      },
+      {
+       "clause_key": "P-133-2013:0:5.1",
+       "grade": "C",
+       "score": 0.01718255414941831
+      }
+     ]
+    },
+    "top_keys": [
+     "P-133-2013:0:5.2.3",
+     "P-116-2012:0:5.2.5",
+     "P-129-2013:0:5.2.2",
+     "P-129-2013:0:4.1",
+     "P-133-2013:0:5.1"
+    ],
+    "scope_size": 11
+   },
+   "decide_preview": {
+    "action": "query_more",
+    "rule": 5,
+    "query_kind": "both",
+    "signals": {
+     "gate": "PASS",
+     "drift": "ok",
+     "alarm": true,
+     "s": 0,
+     "g_AB": null,
+     "g_C": 0.06805369537698165,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  },
+  {
+   "preset": 7,
+   "episode_id": "5e839a21-4036-4813-902a-cd1d402da453",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    25,
+    26,
+    27
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 25,
+   "alarm_id": "5e839a21-4036-4813-902a-cd1d402da453:25:detector_v1",
+   "pred_set": [
+    14
+   ],
+   "top1": 14,
+   "note": "창 25에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 3개",
+   "retrieve_k5": {
+    "query": "반응기 냉각수 밸브 고착 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": 0.020422619408561358,
+     "g_C": null,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "A",
+       "score": 0.020422619408561358
+      },
+      {
+       "clause_key": "P-77-2011:0:7.2",
+       "grade": "A",
+       "score": 0.009711190832753073
+      },
+      {
+       "clause_key": "P-77-2011:0:7.3",
+       "grade": "A",
+       "score": 0.005226461046180974
+      },
+      {
+       "clause_key": "P-133-2013:0:5.2.4",
+       "grade": "B",
+       "score": 0.004612675637437356
+      },
+      {
+       "clause_key": "P-77-2011:0:4",
+       "grade": "B",
+       "score": 0.0038892323406855265
+      }
+     ]
+    },
+    "top_keys": [
+     "P-129-2013:0:5.2.2",
+     "P-77-2011:0:7.2",
+     "P-77-2011:0:7.3",
+     "P-133-2013:0:5.2.4",
+     "P-77-2011:0:4"
+    ],
+    "scope_size": 18
+   },
+   "decide_preview": {
+    "action": "query_more",
+    "rule": 5,
+    "query_kind": "rerank",
+    "signals": {
+     "gate": "PASS",
+     "drift": "ok",
+     "alarm": true,
+     "s": 1,
+     "g_AB": 0.020422619408561358,
+     "g_C": null,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  },
+  {
+   "preset": 8,
+   "episode_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    8,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 8,
+   "alarm_id": "0c2623a6-d2b7-4721-9304-79bc0f6e0e7e:8:detector_v1",
+   "pred_set": [
+    15
+   ],
+   "top1": 15,
+   "note": "창 8에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 35개",
+   "retrieve_k5": {
+    "query": "응축기 냉각수 밸브 고착 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": 0.02576696232469985,
+     "g_C": 0.008866132666999278,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "A",
+       "score": 0.02576696232469985
+      },
+      {
+       "clause_key": "P-77-2011:0:7.2",
+       "grade": "A",
+       "score": 0.010041247355370783
+      },
+      {
+       "clause_key": "P-129-2013:0:4.1",
+       "grade": "C",
+       "score": 0.008866132666999278
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "A",
+       "score": 0.007742759212530053
+      },
+      {
+       "clause_key": "P-77-2011:0:7.3",
+       "grade": "A",
+       "score": 0.007288463443705347
+      }
+     ]
+    },
+    "top_keys": [
+     "P-129-2013:0:5.2.2",
+     "P-77-2011:0:7.2",
+     "P-129-2013:0:4.1",
+     "P-129-2013:0:5.2.2",
+     "P-77-2011:0:7.3"
+    ],
+    "scope_size": 18
+   },
+   "decide_preview": {
+    "action": "query_more",
+    "rule": 5,
+    "query_kind": "rerank",
+    "signals": {
+     "gate": "PASS",
+     "drift": "ok",
+     "alarm": true,
+     "s": 1,
+     "g_AB": 0.02576696232469985,
+     "g_C": 0.008866132666999278,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  },
+  {
+   "preset": 9,
+   "episode_id": "87efac11-67f2-4e7f-8e0a-d3e94aa671e3",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5
+   },
+   "kind": "no_alarm",
+   "display_window": 47,
+   "alarm_id": null,
+   "pred_set": [],
+   "top1": null,
+   "note": "전체 48창 관측, prefix-BH 알람 미발생",
+   "retrieve_k5": null,
+   "decide_preview": null
+  },
+  {
+   "preset": 10,
+   "episode_id": "962545fc-2f74-437d-9f4d-582889a31e8c",
+   "n_windows": 48,
+   "n_block": 0,
+   "alarm_windows": [
+    4
+   ],
+   "versions": {
+    "detector": "detector_v1",
+    "detector_model": "if_window_v1",
+    "diagnoser": "diagnoser_v1",
+    "gate": "gate_v2",
+    "calib_sha256": "bac08fb3b8df9d9d613cef8f6f94d0ace56a9d20971207a979b2baa4fd20b0a6",
+    "contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "alpha": 0.1,
+    "tau": 0.5,
+    "retrieve.embedder": "BAAI/bge-m3@5617a9f61b02",
+    "retrieve.reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a",
+    "retrieve.tau": 0.5,
+    "retrieve.fault_map_sha256": "866e66eb9b37190910550877ac3e1a134f6592a32a638c22091aee96ffa9a6e7",
+    "retrieve.index_dir": "models/retrieval_v1",
+    "retrieve.k_primary": 5,
+    "retrieve.k_query_more": 10,
+    "retrieve.contract_sha256": "808601386456fa9bdd9cc31b186058d4af426f0b887fb27d0caa8fc99b226515",
+    "retrieve.detector": "detector_v1"
+   },
+   "kind": "alarm",
+   "display_window": 4,
+   "alarm_id": "962545fc-2f74-437d-9f4d-582889a31e8c:4:detector_v1",
+   "pred_set": [
+    15
+   ],
+   "top1": 15,
+   "note": "창 4에서 첫 prefix-BH 알람 (0..47 기준), 전체 알람 창 1개",
+   "retrieve_k5": {
+    "query": "응축기 냉각수 밸브 고착 이상 징후 발생 시 점검 및 조치 사항",
+    "reused": false,
+    "grounding": {
+     "mode": "scoped",
+     "tau": 0.5,
+     "g_AB": 0.02576696232469985,
+     "g_C": 0.008866132666999278,
+     "ev_AB": false,
+     "ev_C": false,
+     "snapshot": [
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "A",
+       "score": 0.02576696232469985
+      },
+      {
+       "clause_key": "P-77-2011:0:7.2",
+       "grade": "A",
+       "score": 0.010041247355370783
+      },
+      {
+       "clause_key": "P-129-2013:0:4.1",
+       "grade": "C",
+       "score": 0.008866132666999278
+      },
+      {
+       "clause_key": "P-129-2013:0:5.2.2",
+       "grade": "A",
+       "score": 0.007742759212530053
+      },
+      {
+       "clause_key": "P-77-2011:0:7.3",
+       "grade": "A",
+       "score": 0.007288463443705347
+      }
+     ]
+    },
+    "top_keys": [
+     "P-129-2013:0:5.2.2",
+     "P-77-2011:0:7.2",
+     "P-129-2013:0:4.1",
+     "P-129-2013:0:5.2.2",
+     "P-77-2011:0:7.3"
+    ],
+    "scope_size": 18
+   },
+   "decide_preview": {
+    "action": "query_more",
+    "rule": 5,
+    "query_kind": "rerank",
+    "signals": {
+     "gate": "PASS",
+     "drift": "ok",
+     "alarm": true,
+     "s": 1,
+     "g_AB": 0.02576696232469985,
+     "g_C": 0.008866132666999278,
+     "q_used": false,
+     "tau": 0.5,
+     "retrieve_mode": "scoped"
+    },
+    "observed_at": "precompute",
+    "stale_note": "사전 계산 시점 관측; 대화는 현재 세션의 실제 결정을 표시"
+   }
+  }
+ ],
+ "golden_checks": {
+  "1": {
+   "golden": "G1b",
+   "status": "same",
+   "window_diffs": [],
+   "version_diffs": {}
+  },
+  "2": {
+   "golden": "G1",
+   "status": "same",
+   "window_diffs": [],
+   "version_diffs": {}
+  },
+  "3": {},
+  "4": {},
+  "5": {},
+  "6": {},
+  "7": {},
+  "8": {
+   "golden": "G4",
+   "status": "same",
+   "window_diffs": [],
+   "version_diffs": {}
+  },
+  "9": {
+   "golden": "G2",
+   "status": "same",
+   "window_diffs": [],
+   "version_diffs": {}
+  },
+  "10": {}
+ }
+}
