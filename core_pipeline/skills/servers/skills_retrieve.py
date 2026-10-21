@@ -84,13 +84,15 @@ class RetrieveServer:
             return None
         return {"set": [int(x) for x in (w[1] if w[1] is not None else (w[0] or []))], "q_used": w[2], "query_request_id": w[3]}
 
-    def _stored_scoped(self, alarm_id: str, k: int) -> Optional[dict]:
-        """An earlier OK scoped retrieval for (alarm, k) under this contract — the stored envelope is the authority."""
+    def _stored_scoped(self, alarm_id: str, k: int, caller_role: str) -> Optional[dict]:
+        """An earlier OK scoped retrieval for (alarm, k) under this contract, computed for the SAME caller role (ST4-18:
+        results are reusable across sessions, never across ACL roles) — the stored envelope is the authority."""
         with psycopg.connect(self.dsn) as conn, conn.cursor() as cur:
             cur.execute("""SELECT output FROM mart.agent_steps WHERE skill=%s AND status='OK'
                            AND input->'args'->>'alarm_id'=%s AND input->'args'->>'mode'='scoped' AND (input->'args'->>'k')::int=%s
+                           AND input->'ctx'->>'caller_role'=%s
                            AND input->>'contract_version'=%s AND output->'trace'->'versions'->>'contract_sha256'=%s
-                           ORDER BY step_id LIMIT 1""", (SKILL, alarm_id, k, "1.0", self.contract_sha))
+                           ORDER BY step_id LIMIT 1""", (SKILL, alarm_id, k, caller_role, "1.0", self.contract_sha))
             row = cur.fetchone()
         if not row:
             return None
@@ -106,15 +108,15 @@ class RetrieveServer:
             if mode == "scoped":
                 if sorted(int(f) for f in fault_set) != sorted(w["set"]):
                     return envelope("REFUSED", reason=("ARG_NOT_IN_STATE", f"fault_set {sorted(fault_set)} != stored set {sorted(w['set'])} for this alarm"))
+                prior = self._stored_scoped(alarm_id, k, ctx.caller_role)
+                if prior is not None:                                            # computed once per (alarm, k, role); reuse needs no query ownership
+                    payload = dict(prior["payload"]); payload["reused"] = True
+                    return envelope("OK", payload=payload, grounding=prior["grounding"])
                 if k == K_QUERY_MORE:
                     if query_id is None:
                         return envelope("REFUSED", reason=("QUERY_REQUIRED", "k=10 is the query_more re-search: present the query_id from spend_query"))
                     if not w["q_used"] or str(w["query_request_id"]) != str(query_id):
                         return envelope("REFUSED", reason=("QUERY_USED", "query_id does not own this window's query"))
-                prior = self._stored_scoped(alarm_id, k)
-                if prior is not None:                                            # computed once per (alarm, k)
-                    payload = dict(prior["payload"]); payload["reused"] = True
-                    return envelope("OK", payload=payload, grounding=prior["grounding"])
         elif mode == "scoped" and k == K_QUERY_MORE:
             return envelope("REFUSED", reason=("QUERY_REQUIRED", "k=10 needs an alarm_id and its query_id"))
         r: RetrieveResult = self.retriever(query, [int(f) for f in fault_set], ctx.caller_role, mode=mode, k=k)

@@ -32,19 +32,45 @@ ACTION_TYPES = {"inspect", "test", "calibrate", "isolate_verify", "monitor", "sa
 FORBIDDEN_TERMS = ("설정값", "setpoint", "인터록", "interlock", "bypass", "우회", "긴급정지", "비상정지", "emergency stop", "shutdown")
 
 
+def decision_sha256(alarm_id: str, policy: str, signals: dict, action: str, rule: int, evidence: Optional[list[dict]]) -> str:
+    """Hash of the whole semantic input of a decision record (ST4-17): same key + same hash = the same decision."""
+    body = {"alarm_id": alarm_id, "policy": policy, "signals": signals, "action": action, "rule": int(rule), "evidence": evidence or []}
+    return hashlib.sha256(json.dumps(body, sort_keys=True, default=str, ensure_ascii=False).encode()).hexdigest()
+
+
 def record_decision(dsn: str, alarm_id: str, policy: str, signals: dict, action: str, rule: int,
-                    evidence: Optional[list[dict]] = None) -> UUID:
+                    evidence: Optional[list[dict]] = None, decision_key: Optional[str] = None) -> UUID:
     """Server-side record of a decide_action outcome (written by the graph's decide node, read by draft()).
     `evidence` is the SNAPSHOT of the scoped retrieve the decision used ([{clause_key, grade, score}]); a draft may
-    only cite keys from that snapshot, never from later retrievals."""
+    only cite keys from that snapshot, never from later retrievals.
+    `decision_key` (graph: thread:turn:phase, ST4-17) makes the record idempotent: ON CONFLICT the existing row is
+    returned when its decision_sha256 equals this call's, otherwise ValueError('DECISION_MISMATCH: ...')."""
     did = uuid.uuid4()
     sha = hashlib.sha256(json.dumps(signals, sort_keys=True, default=str).encode()).hexdigest()
+    dsha = decision_sha256(alarm_id, policy, signals, action, rule, evidence)
     with psycopg.connect(dsn) as conn, conn.cursor() as cur:
-        cur.execute("""INSERT INTO mart.policy_decisions (decision_id, alarm_id, policy, signals_sha256, signals, action, rule, evidence)
-                       VALUES (%s,%s,%s,%s,%s,%s,%s,%s)""",
-                    (did, alarm_id, policy, sha, json.dumps(signals, default=str), action, rule, json.dumps(evidence or [])))
+        if decision_key is None:
+            cur.execute("""INSERT INTO mart.policy_decisions (decision_id, alarm_id, policy, signals_sha256, signals, action, rule, evidence, decision_sha256)
+                           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                        (did, alarm_id, policy, sha, json.dumps(signals, default=str), action, rule, json.dumps(evidence or []), dsha))
+            conn.commit()
+            return did
+        cur.execute("""INSERT INTO mart.policy_decisions (decision_id, alarm_id, policy, signals_sha256, signals, action, rule, evidence,
+                                                          decision_key, decision_sha256)
+                       VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (decision_key) DO NOTHING RETURNING decision_id""",
+                    (did, alarm_id, policy, sha, json.dumps(signals, default=str), action, rule, json.dumps(evidence or []), decision_key, dsha))
+        row = cur.fetchone()
+        if row:
+            conn.commit()
+            return row[0]
+        cur.execute("SELECT decision_id, decision_sha256 FROM mart.policy_decisions WHERE decision_key=%s", (decision_key,))
+        existing = cur.fetchone()
         conn.commit()
-    return did
+    if existing is None:
+        raise RuntimeError("INTERNAL: decision_key conflict without a stored row")
+    if existing[1] != dsha:
+        raise ValueError(f"DECISION_MISMATCH: decision_key {decision_key} already recorded with a different semantic input")
+    return existing[0]
 
 
 def content_hash(form: dict) -> str:
