@@ -14,7 +14,7 @@ Cases (contract v1.0 §4):
        approval mechanics on a synthetic propose are tests/integration/test_h0_servers.py::test_h0_c_… instead.
 
 Usage (test DB only — destructive for the demo episodes' Stage 4a rows):
-  SGP_TEST_PG_DSN=postgresql://postgres:postgres@localhost:5436/sgp_test SGP_GATE_REF=<path> \
+  SGP_TEST_PG_DSN=<test DSN> SGP_GATE_REF=<path> \
   python -m scripts.make_goldens --out tests/regression/golden [--cases G1,G1b,G2,G3,G4,G5]
 """
 from __future__ import annotations

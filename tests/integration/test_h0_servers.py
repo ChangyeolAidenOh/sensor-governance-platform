@@ -8,7 +8,7 @@
           scoped k=5 computed once per alarm, approver must be the registered thread owner.
 
 Runs ONLY against SGP_TEST_PG_DSN (ST4-09); destructive for two dev episodes' Stage 4a rows. Needs models + SGP_GATE_REF.
-  SGP_TEST_PG_DSN=postgresql://postgres:postgres@localhost:5436/sgp_test SGP_GATE_REF=<path> pytest tests/integration/test_h0_servers.py -x -s
+  SGP_TEST_PG_DSN=<test DSN> SGP_GATE_REF=<path> pytest tests/integration/test_h0_servers.py -x -s
 """
 from __future__ import annotations
 
