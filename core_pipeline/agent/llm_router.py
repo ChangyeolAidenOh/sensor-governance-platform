@@ -27,7 +27,7 @@ from core_pipeline.agent.router import CATEGORIES, RouteResult, RuleRouter
 log = logging.getLogger("sgp.agent.llm")
 
 TOOL = "router"
-MAX_ATTEMPTS = 2                                   # one retry, only after a RECEIVED but invalid response
+MAX_ATTEMPTS = 2                                   # default; allowed 1 or 2 (one retry, only after a RECEIVED but invalid response)
 _UUID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.I)
 
 ROUTER_SCHEMA = {
@@ -123,8 +123,11 @@ def _from_merged(d: dict) -> RouteResult:
 
 
 class LLMRouter:
-    def __init__(self, client: LLMClient, ledger: LlmLedger, rule: Optional[RuleRouter] = None, model: str = DEFAULT_MODEL) -> None:
-        self.client, self.ledger, self.rule, self.model = client, ledger, rule or RuleRouter(), model
+    def __init__(self, client: LLMClient, ledger: LlmLedger, rule: Optional[RuleRouter] = None, model: str = DEFAULT_MODEL,
+                 max_attempts: int = MAX_ATTEMPTS) -> None:
+        if max_attempts not in (1, 2):
+            raise ValueError("max_attempts must be 1 or 2")
+        self.client, self.ledger, self.rule, self.model, self.max_attempts = client, ledger, rule or RuleRouter(), model, int(max_attempts)
 
     @staticmethod
     def stage_key(state: dict) -> str:
@@ -137,7 +140,7 @@ class LLMRouter:
         req = build_request(message, state, self.model)
         rule_extract = dataclasses.asdict(rr)
         thread, run = str(state.get("thread_id")), str(state.get("run_uuid"))
-        for attempt in range(1, MAX_ATTEMPTS + 1):
+        for attempt in range(1, self.max_attempts + 1):
             res = self.ledger.reserve(thread_id=thread, run_uuid=run, stage_key=self.stage_key(state), attempt=attempt, tool=TOOL, req=req)
             if res.status == "replay":
                 out = res.output or {}

@@ -141,13 +141,14 @@ def test_manual_settle_uses_stored_prices_and_does_not_auto_resolve(run, monkeyp
     q = req(max_tokens=10)
     monkeypatch.setenv("SGP_LLM_BUDGET_USD", str(spent0 + 100.0))
     a = led.reserve(thread_id=thread, run_uuid=run_uuid, stage_key="a", attempt=1, tool="router", req=q)
-    with psycopg.connect(DSN) as conn, conn.cursor() as cur:                  # price pair preserved in the row, independent of the global table
-        cur.execute("""UPDATE mart.agent_steps SET input = jsonb_set(input, '{reserve,prices_per_mtok}', '[1.0, 2.0]'::jsonb) WHERE request_id=%s""", (a.request_id,))
+    with psycopg.connect(DSN) as conn, conn.cursor() as cur:                  # table preserved in the row, independent of the global one
+        cur.execute("""UPDATE mart.agent_steps SET input = jsonb_set(input, '{reserve,price_table,tiers}', '[[1.0, 2.0], [3.0, 4.0]]'::jsonb)
+                       WHERE request_id=%s""", (a.request_id,))
         conn.commit()
     with pytest.raises(ValueError):
         led.manual_settle(a.request_id, 100, -1, evidence="x", by="test")
-    out = led.manual_settle(a.request_id, 1_000_000, 1_000_000, evidence="vendor console", by="test")
-    assert float(row(a.request_id)[1]) == pytest.approx(3.0)                   # 1.0 + 2.0 at the stored prices, not 0.10/0.50
+    out = led.manual_settle(a.request_id, 100_001, 1_000_000, evidence="vendor console", by="test")
+    assert float(row(a.request_id)[1]) == pytest.approx(100_001 * 3.0 / 1e6 + 1_000_000 * 4.0 / 1e6, abs=1e-6)   # higher tier of the STORED table
     assert out["reservation_exceeded"] is True and out["exceeded_resolved"] is False
     assert led.reserve(thread_id=thread, run_uuid=run_uuid, stage_key="b", attempt=1, tool="router", req=q).status == "exceeded_unresolved"
     led.resolve_exceeded(a.request_id, evidence="checked", by="test")
@@ -217,4 +218,18 @@ def test_settlement_cannot_slip_between_reserve_checks(run, monkeypatch):
         holder.rollback()                                                      # release
         t.join(timeout=10)
     assert done.get("t") and led.reserve(thread_id=thread, run_uuid=run_uuid, stage_key="b", attempt=1, tool="router", req=q).status == "exceeded_unresolved"
+    led.resolve_exceeded(a.request_id, evidence="checked", by="test")
+
+
+def test_legacy_row_without_price_table_settles_at_its_pair(run, monkeypatch):
+    led, thread, run_uuid, spent0 = run
+    q = req(max_tokens=10)
+    monkeypatch.setenv("SGP_LLM_BUDGET_USD", str(spent0 + 100.0))
+    a = led.reserve(thread_id=thread, run_uuid=run_uuid, stage_key="a", attempt=1, tool="router", req=q)
+    with psycopg.connect(DSN) as conn, conn.cursor() as cur:                  # simulate a rev2 row: pair only
+        cur.execute("""UPDATE mart.agent_steps SET input = jsonb_set(input #- '{reserve,price_table}', '{reserve,prices_per_mtok}', '[1.0, 2.0]'::jsonb)
+                       WHERE request_id=%s""", (a.request_id,))
+        conn.commit()
+    led.manual_settle(a.request_id, 200_000, 1_000_000, evidence="vendor console", by="test")
+    assert float(row(a.request_id)[1]) == pytest.approx(200_000 * 1.0 / 1e6 + 1_000_000 * 2.0 / 1e6, abs=1e-6)
     led.resolve_exceeded(a.request_id, evidence="checked", by="test")

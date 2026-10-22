@@ -17,7 +17,9 @@ reserve(...) returns a Reservation whose status is:
   budget_refused      SGP_LLM_BUDGET_USD unset, or SUM(cost_usd of all llm rows incl. PENDING) + reserved > cap: no row
 
 settle(...) is a conditional UPDATE of the PENDING row at the ACTUAL usage (never truncated to the reservation); the
-reservation itself (input.reserve, incl. the price pair used) is immutable. Two distinct blocking events are kept apart:
+reservation itself (input.reserve, incl. the FULL tiered price table) is immutable; every settlement — automatic,
+manual_settle, settle_usage — prices the actual usage from that stored table (tier chosen by the ACTUAL input tokens),
+so a prompt that turns out to be above the tier boundary is settled at the higher rates even though the estimate was not. Two distinct blocking events are kept apart:
   * reservation_exceeded (actual cost known and > reserved): cleared only by resolve_exceeded(evidence) after the
     price table / formula were re-checked;
   * usage_missing (response received, usage not reported): settled at the reserved amount and blocked; cleared only
@@ -39,7 +41,7 @@ from typing import Optional, Protocol
 from uuid import UUID
 
 from core_pipeline.agent.budget import LLM_LEDGER_SKILL, budget_usd
-from core_pipeline.agent.llm_client import LLMRequest, LLMResponse, cost_usd
+from core_pipeline.agent.llm_client import LLMRequest, LLMResponse, cost_from_table, tier_for
 
 LLM_NS = uuid.uuid5(uuid.NAMESPACE_URL, "sgp/agent/llm_ledger")
 LOCK_KEY = "sgp_llm_ledger"
@@ -66,12 +68,20 @@ def _json(v) -> dict:
     return v if isinstance(v, dict) else json.loads(v)
 
 
+def _stored_table(inp: dict) -> dict:
+    """The price table preserved in the reservation row (never the current global table). Rows written before the
+    tiered table (rev2) hold only `prices_per_mtok`: they are settled at that pair, as recorded at the time."""
+    res = inp.get("reserve") or {}
+    if res.get("price_table"):
+        return res["price_table"]
+    pair = res.get("prices_per_mtok")
+    if not pair or len(pair) != 2:
+        raise RuntimeError("reservation row has no preserved price table")
+    return {"version": res.get("price_table_version", "legacy"), "boundary_input_tokens": 10**12, "tiers": [list(pair), list(pair)]}
+
+
 def _stored_cost(inp: dict, input_tokens: int, output_tokens: int) -> float:
-    """Cost at the price pair preserved in the reservation row (never the current global table)."""
-    pi, po = (inp.get("reserve") or {}).get("prices_per_mtok") or [None, None]
-    if pi is None or po is None:
-        raise RuntimeError("reservation row has no preserved price pair")
-    return round(int(input_tokens) / 1e6 * float(pi) + int(output_tokens) / 1e6 * float(po), 6)
+    return cost_from_table(_stored_table(inp), input_tokens, output_tokens)
 
 
 def _check_tokens(input_tokens: int, output_tokens: int) -> None:
@@ -108,12 +118,14 @@ def _settlement(req: LLMRequest, resp: Optional[LLMResponse], output: dict, reas
         out.update({"cost_usd": 0.0, "reservation_exceeded": False, "usage_missing": False})
         return "ERROR", 0.0, None, None, out, reason_code or "LLM_REQUEST_REJECTED"
     if resp.usage_known:
-        actual = cost_usd(req.model, resp.input_tokens, resp.output_tokens)
+        table = req.reserve_record()["price_table"]                  # identical to the table stored in the row at reserve time
+        actual = cost_from_table(table, resp.input_tokens, resp.output_tokens)
         exceeded = actual > reserved
         calib = {"estimated_input_tokens": req.estimated_input_tokens(), "actual_input_tokens": resp.input_tokens,
                  "input_ratio": (round(resp.input_tokens / req.estimated_input_tokens(), 4) if req.estimated_input_tokens() else None),
                  "actual_output_tokens": resp.output_tokens, "max_tokens": int(req.max_tokens),
-                 "reserved_usd": reserved, "actual_usd": actual, "formula_version": req.reserve_record()["formula_version"]}
+                 "reserved_usd": reserved, "actual_usd": actual, "formula_version": req.reserve_record()["formula_version"],
+                 "price_tier_estimated": tier_for(table, req.estimated_input_tokens()), "price_tier_actual": tier_for(table, resp.input_tokens)}
         out.update({"text": resp.text, "usage": dict(resp.usage), "stop_reason": resp.stop_reason, "model": resp.model,
                     "cost_usd": actual, "calibration": calib, "reservation_exceeded": exceeded, "usage_missing": False})
         if exceeded:

@@ -31,7 +31,7 @@ log = logging.getLogger("sgp.agent.llm")
 TOOL = "narrate"
 MODES = ("llm", "llm_all")
 LLM_CATEGORIES = ("alarm", "diagnosis", "evidence", "action")
-MAX_ATTEMPTS = 2
+MAX_ATTEMPTS = 2                                   # default; allowed 1 or 2 (one retry, only after a RECEIVED but invalid response)
 PROSE_HEADER = "요약(LLM 생성):"
 OMITTED_NOTE = "(LLM 요약 생략: 보조 검사 위반)"
 _NUM = re.compile(r"(?<![\d.])-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?(?![\d.])")      # particles may follow a number (0.42이며)
@@ -150,10 +150,13 @@ def build_request(sheet: str, model: str = DEFAULT_MODEL) -> LLMRequest:
 
 class LLMNarrator:
     def __init__(self, client: LLMClient, ledger: LlmLedger, template: Optional[TemplateNarrator] = None, mode: str = "llm",
-                 model: str = DEFAULT_MODEL) -> None:
+                 model: str = DEFAULT_MODEL, max_attempts: int = MAX_ATTEMPTS) -> None:
         if mode not in MODES:
             raise ValueError(f"mode must be one of {MODES}")
+        if max_attempts not in (1, 2):
+            raise ValueError("max_attempts must be 1 or 2")
         self.client, self.ledger, self.template, self.mode, self.model = client, ledger, template or TemplateNarrator(), mode, model
+        self.max_attempts = int(max_attempts)
 
     def wants_llm(self, state: dict) -> bool:
         if state.get("refusal") or state.get("category") not in LLM_CATEGORIES:
@@ -169,7 +172,7 @@ class LLMNarrator:
         sheet = fact_sheet(state)
         req = build_request(sheet, self.model)
         thread, run, key = str(state.get("thread_id")), str(state.get("run_uuid")), stage_key(state)
-        for attempt in range(1, MAX_ATTEMPTS + 1):
+        for attempt in range(1, self.max_attempts + 1):
             res = self.ledger.reserve(thread_id=thread, run_uuid=run, stage_key=key, attempt=attempt, tool=TOOL, req=req)
             if res.status == "replay":
                 out = res.output or {}

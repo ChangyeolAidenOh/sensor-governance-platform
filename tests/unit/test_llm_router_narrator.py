@@ -347,3 +347,71 @@ def test_http_errors_are_unknown_outcome_unless_documented():
     assert C.AnthropicClient._classify(Err()) is LLMOutcomeUnknown
     assert C.AnthropicClient._classify(TimeoutError()) is LLMOutcomeUnknown
     assert C.REJECTED_NO_CHARGE_STATUSES == frozenset()                        # filled only after the docs check
+
+
+# ----------------------------------------------------------------------------------------------------- commit 3: price tiers, guard, max_attempts
+HI_IN, HI_OUT = 0.50, 2.50
+LO_IN, LO_OUT = 0.10, 0.50
+
+
+def test_price_tier_switches_input_and_output_rates_at_the_boundary():
+    assert C.cost_usd("claude-haiku-5-5", 100_000, 1_000) == pytest.approx(100_000 * LO_IN / 1e6 + 1_000 * LO_OUT / 1e6, abs=1e-6)
+    assert C.cost_usd("claude-haiku-5-5", 100_001, 1_000) == pytest.approx(100_001 * HI_IN / 1e6 + 1_000 * HI_OUT / 1e6, abs=1e-6)
+    t = C.PRICE_TABLES["claude-haiku-5-5"]
+    assert C.tier_for(t, 100_000) == 0 and C.tier_for(t, 100_001) == 1 and t["version"] == C.PRICE_TABLE_VERSION
+
+
+def test_input_guard_refuses_large_estimates_only():
+    LLMRequest(model="claude-haiku-5-5", system="s", user="x" * (C.INPUT_GUARD_TOKENS - C.RESERVE_FRAMING_TOKENS - 1), max_tokens=10, timeout_s=1)
+    with pytest.raises(ValueError):
+        LLMRequest(model="claude-haiku-5-5", system="s", user="x" * C.INPUT_GUARD_TOKENS, max_tokens=10, timeout_s=1)
+
+
+def test_reserve_record_preserves_the_full_price_table():
+    req = LLMRequest(model="claude-haiku-5-5", system="s", user="u", max_tokens=10, timeout_s=1)
+    rec = req.reserve_record()
+    assert rec["price_table"]["tiers"] == [[LO_IN, LO_OUT], [HI_IN, HI_OUT]] and rec["price_table"]["boundary_input_tokens"] == 100_000
+    assert rec["prices_per_mtok"] == [LO_IN, LO_OUT]                           # tier used by the estimate (low)
+
+
+def test_settlement_prices_actual_usage_at_the_higher_tier_when_the_estimate_was_low():
+    req = LLMRequest(model="claude-haiku-5-5", system="s", user="u", max_tokens=10, timeout_s=1)
+    led = MemoryLedger(cap=100.0)
+    r = led.reserve(thread_id=THREAD, run_uuid=RUN, stage_key="a", attempt=1, tool="router", req=req)
+    out = led.settle(r.request_id, LLMResponse(text="x", input_tokens=100_001, output_tokens=10, latency_ms=1, model=req.model), req=req, output={})
+    assert out["cost_usd"] == pytest.approx(100_001 * HI_IN / 1e6 + 10 * HI_OUT / 1e6, abs=1e-6)
+    assert out["calibration"]["price_tier_estimated"] == 0 and out["calibration"]["price_tier_actual"] == 1
+    assert out["reservation_exceeded"] is True
+
+
+def test_settle_usage_uses_the_stored_table_and_tier():
+    req = LLMRequest(model="claude-haiku-5-5", system="s", user="u", max_tokens=10, timeout_s=1)
+    led = MemoryLedger(cap=100.0)
+    r = led.reserve(thread_id=THREAD, run_uuid=RUN, stage_key="a", attempt=1, tool="router", req=req)
+    led.settle(r.request_id, LLMResponse(text="x", input_tokens=0, output_tokens=0, latency_ms=1, model=req.model, usage_known=False), req=req, output={})
+    led.rows[r.request_id].input["reserve"]["price_table"]["tiers"] = [[1.0, 2.0], [3.0, 4.0]]   # row's own table, not the global one
+    out = led.settle_usage(r.request_id, 100_000, 1_000_000, evidence="console", by="t")
+    assert out["cost_usd"] == pytest.approx(100_000 * 1.0 / 1e6 + 1_000_000 * 2.0 / 1e6, abs=1e-6)
+    r2 = led.reserve(thread_id=THREAD, run_uuid=RUN, stage_key="b", attempt=1, tool="router", req=req)
+    assert r2.status == "exceeded_unresolved"                                   # 2.1 USD > the reservation
+
+
+def test_legacy_row_with_only_a_price_pair_settles_at_that_pair():
+    from core_pipeline.agent.llm_ledger import _stored_cost
+    inp = {"reserve": {"prices_per_mtok": [1.0, 2.0], "price_table_version": "ST0-22/2026-10"}}
+    assert _stored_cost(inp, 1_000_000, 1_000_000) == pytest.approx(3.0)
+    assert _stored_cost(inp, 5_000_000, 0) == pytest.approx(5.0)             # no tier boundary in a legacy row
+
+
+def test_max_attempts_one_falls_back_without_a_second_call():
+    fake, led = FakeLLMClient(["not json", llm_json()]), MemoryLedger(cap=1.0)
+    rr = LLMRouter(fake, led, max_attempts=1).route("지금은?", base_state())
+    assert rr.matched == "llm_fallback:invalid_output" and len(fake.calls) == 1 and len(led.rows) == 1
+    fake, led = FakeLLMClient(["확률 0.42입니다.", "보류."]), MemoryLedger(cap=1.0)
+    out = LLMNarrator(fake, led, max_attempts=1).narrate(action_state("llm"))
+    assert "보조 검사 위반" in out and len(fake.calls) == 1 and len(led.rows) == 1
+    for bad in (0, 3):
+        with pytest.raises(ValueError):
+            LLMRouter(fake, led, max_attempts=bad)
+        with pytest.raises(ValueError):
+            LLMNarrator(fake, led, max_attempts=bad)

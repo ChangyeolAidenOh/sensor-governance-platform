@@ -14,17 +14,21 @@ Rules enforced here:
 from __future__ import annotations
 
 import contextlib
+import copy
 import hashlib
 import time
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional, Protocol, Union
 
-PRICE_TABLE_VERSION = "ST0-22/2026-10"            # copied from spikes/llm_spike/run_llm_spike.py PRICES; re-verify before paid use
-PRICES_USD_PER_MTOK: dict[str, tuple[float, float]] = {
-    "claude-haiku-5-5": (0.10, 0.50),
-    "claude-sonnet-5-5": (2.00, 10.00),
+# Prices verified against the official model/pricing docs on 2026-10-22 (ST4-20): standard API, USD per MTok,
+# tiered by prompt length — tiers[0] applies when input_tokens <= boundary_input_tokens, tiers[1] above it (input AND output).
+PRICE_TABLE_VERSION = "docs/2026-10-22"
+PRICE_TABLES: dict[str, dict] = {
+    "claude-haiku-5-5": {"version": PRICE_TABLE_VERSION, "boundary_input_tokens": 100_000, "tiers": [[0.10, 0.50], [0.50, 2.50]]},
 }
-ALLOWED_MODELS: tuple[str, ...] = ("claude-haiku-5-5",)   # 0-F selection (ST0-23); sonnet has a price row but is not allowed
+INPUT_GUARD_TOKENS = 100_000                      # development guard on large inputs: estimated_input_tokens above this is refused.
+                                                  # It does NOT guarantee the actual prompt is <= 100K: settlement is tier-aware.
+ALLOWED_MODELS: tuple[str, ...] = ("claude-haiku-5-5",)   # 0-F selection (ST0-23)
 DEFAULT_MODEL = "claude-haiku-5-5"
 EFFORT = "medium"                                 # same adapter argument as 0-F (reasoning_effort)
 RESERVE_FORMULA_VERSION = "v1:utf8_bytes+64"      # estimated_input_tokens = utf8 bytes of system+user + 64 (margin without evidence)
@@ -51,9 +55,18 @@ class LLMRequestRejected(RuntimeError):
     """HTTP status in REJECTED_NO_CHARGE_STATUSES: documented as not billed, nothing generated (settle at cost 0)."""
 
 
+def tier_for(table: dict, input_tokens: int) -> int:
+    return 0 if int(input_tokens) <= int(table["boundary_input_tokens"]) else 1
+
+
+def cost_from_table(table: dict, input_tokens: int, output_tokens: int) -> float:
+    """Tier-aware cost from a price table in the PRICE_TABLES shape (the one stored in the reservation row)."""
+    pi, po = table["tiers"][tier_for(table, input_tokens)]
+    return round(int(input_tokens) / 1e6 * float(pi) + int(output_tokens) / 1e6 * float(po), 6)
+
+
 def cost_usd(model: str, input_tokens: int, output_tokens: int) -> float:
-    pi, po = PRICES_USD_PER_MTOK[model]
-    return round(int(input_tokens) / 1e6 * pi + int(output_tokens) / 1e6 * po, 6)
+    return cost_from_table(PRICE_TABLES[model], input_tokens, output_tokens)
 
 
 @dataclass(frozen=True)
@@ -68,10 +81,12 @@ class LLMRequest:
     def __post_init__(self) -> None:
         if self.model not in ALLOWED_MODELS:
             raise ValueError(f"model {self.model!r} is not allowed (ALLOWED_MODELS={ALLOWED_MODELS})")
-        if self.model not in PRICES_USD_PER_MTOK:
-            raise ValueError(f"model {self.model!r} has no price row")
+        if self.model not in PRICE_TABLES:
+            raise ValueError(f"model {self.model!r} has no price table")
         if int(self.max_tokens) <= 0:
             raise ValueError("max_tokens must be positive")
+        if self.estimated_input_tokens() > INPUT_GUARD_TOKENS:
+            raise ValueError(f"estimated input {self.estimated_input_tokens()} tokens exceeds the {INPUT_GUARD_TOKENS} guard")
 
     def bound_input(self) -> dict:
         """What the ledger compares for replay/mismatch: same stage key + same bound input = same logical request."""
@@ -82,13 +97,20 @@ class LLMRequest:
     def estimated_input_tokens(self) -> int:
         return len((self.system + self.user).encode("utf-8")) + RESERVE_FRAMING_TOKENS
 
+    def price_table(self) -> dict:
+        return copy.deepcopy(PRICE_TABLES[self.model])
+
     def reserved_usd(self) -> float:
-        return cost_usd(self.model, self.estimated_input_tokens(), int(self.max_tokens))
+        """Estimate: estimated input tokens at the tier they fall in + max_tokens output at that tier."""
+        return cost_from_table(self.price_table(), self.estimated_input_tokens(), int(self.max_tokens))
 
     def reserve_record(self) -> dict:
+        """Everything a later settlement needs, preserved in the row: estimate, formula and the FULL price table."""
+        t = self.price_table()
         return {"reserved_usd": self.reserved_usd(), "estimated_input_tokens": self.estimated_input_tokens(),
                 "max_tokens": int(self.max_tokens), "formula_version": RESERVE_FORMULA_VERSION,
-                "price_table_version": PRICE_TABLE_VERSION, "prices_per_mtok": list(PRICES_USD_PER_MTOK[self.model])}
+                "price_table_version": t["version"], "price_table": t,
+                "prices_per_mtok": list(t["tiers"][tier_for(t, self.estimated_input_tokens())])}   # tier used by the estimate
 
 
 @dataclass(frozen=True)
