@@ -233,3 +233,17 @@ def test_legacy_row_without_price_table_settles_at_its_pair(run, monkeypatch):
     led.manual_settle(a.request_id, 200_000, 1_000_000, evidence="vendor console", by="test")
     assert float(row(a.request_id)[1]) == pytest.approx(200_000 * 1.0 / 1e6 + 1_000_000 * 2.0 / 1e6, abs=1e-6)
     led.resolve_exceeded(a.request_id, evidence="checked", by="test")
+
+
+def test_automatic_settlement_prices_from_the_row_not_the_request(run, monkeypatch):
+    led, thread, run_uuid, spent0 = run
+    q = req(max_tokens=10)
+    monkeypatch.setenv("SGP_LLM_BUDGET_USD", str(spent0 + 100.0))
+    a = led.reserve(thread_id=thread, run_uuid=run_uuid, stage_key="a", attempt=1, tool="router", req=q)
+    with psycopg.connect(DSN) as conn, conn.cursor() as cur:                  # the row's table diverges from the live one
+        cur.execute("""UPDATE mart.agent_steps SET input = jsonb_set(input, '{reserve,price_table,tiers}', '[[1.0, 2.0], [3.0, 4.0]]'::jsonb)
+                       WHERE request_id=%s""", (a.request_id,))
+        conn.commit()
+    out = led.settle(a.request_id, resp(50, 10), req=q, output={})
+    assert float(row(a.request_id)[1]) == pytest.approx(50 * 1.0 / 1e6 + 10 * 2.0 / 1e6, abs=1e-9)
+    assert out["calibration"]["reserved_usd"] == pytest.approx(q.reserved_usd())

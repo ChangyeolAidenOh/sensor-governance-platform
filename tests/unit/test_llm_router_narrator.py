@@ -415,3 +415,17 @@ def test_max_attempts_one_falls_back_without_a_second_call():
             LLMRouter(fake, led, max_attempts=bad)
         with pytest.raises(ValueError):
             LLMNarrator(fake, led, max_attempts=bad)
+
+
+def test_automatic_settlement_uses_the_stored_table_not_the_live_one(monkeypatch):
+    """Regression (review 2026-10-22): reserve, then change the global price table → settle must price from the row."""
+    req = LLMRequest(model="claude-haiku-5-5", system="s", user="u", max_tokens=10, timeout_s=1)
+    led = MemoryLedger(cap=100.0)
+    r = led.reserve(thread_id=THREAD, run_uuid=RUN, stage_key="a", attempt=1, tool="router", req=req)
+    stored_reserved = led.rows[r.request_id].input["reserve"]["reserved_usd"]
+    monkeypatch.setitem(C.PRICE_TABLES["claude-haiku-5-5"], "tiers", [[1.0, 2.0], [3.0, 4.0]])      # live table changes
+    assert req.reserved_usd() != stored_reserved                                                   # the request would now say otherwise
+    out = led.settle(r.request_id, LLMResponse(text="x", input_tokens=100_001, output_tokens=1_000, latency_ms=1, model=req.model), req=req, output={})
+    assert out["cost_usd"] == pytest.approx(100_001 * HI_IN / 1e6 + 1_000 * HI_OUT / 1e6, abs=1e-6)   # stored tiers, not 3.0/4.0
+    assert out["calibration"]["reserved_usd"] == stored_reserved and out["calibration"]["price_table_version"] == C.PRICE_TABLE_VERSION
+    assert out["reservation_exceeded"] is True

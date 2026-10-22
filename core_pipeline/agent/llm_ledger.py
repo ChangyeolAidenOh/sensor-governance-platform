@@ -17,8 +17,9 @@ reserve(...) returns a Reservation whose status is:
   budget_refused      SGP_LLM_BUDGET_USD unset, or SUM(cost_usd of all llm rows incl. PENDING) + reserved > cap: no row
 
 settle(...) is a conditional UPDATE of the PENDING row at the ACTUAL usage (never truncated to the reservation); the
-reservation itself (input.reserve, incl. the FULL tiered price table) is immutable; every settlement — automatic,
-manual_settle, settle_usage — prices the actual usage from that stored table (tier chosen by the ACTUAL input tokens),
+reservation itself (input.reserve, incl. the FULL tiered price table) is immutable; every settlement — automatic
+(settle reads the row under the lock before pricing), manual_settle, settle_usage — prices the actual usage from that
+stored table and compares against the stored reserved amount (tier chosen by the ACTUAL input tokens),
 so a prompt that turns out to be above the tier boundary is settled at the higher rates even though the estimate was not. Two distinct blocking events are kept apart:
   * reservation_exceeded (actual cost known and > reserved): cleared only by resolve_exceeded(evidence) after the
     price table / formula were re-checked;
@@ -110,22 +111,27 @@ class LlmLedger(Protocol):
     def note_no_response(self, rid: UUID, note: str) -> None: ...
 
 
-def _settlement(req: LLMRequest, resp: Optional[LLMResponse], output: dict, reason_code: Optional[str]) -> tuple[str, float, Optional[int], Optional[int], dict, Optional[str]]:
-    """→ (status, cost_usd, input_tokens, output_tokens, output_json, reason_code). resp=None: documented rejection, nothing generated."""
-    reserved = req.reserved_usd()
+def _settlement(stored_input: dict, resp: Optional[LLMResponse], output: dict, reason_code: Optional[str]) -> tuple[str, float, Optional[int], Optional[int], dict, Optional[str]]:
+    """→ (status, cost_usd, input_tokens, output_tokens, output_json, reason_code), priced ONLY from the row's own
+    `input.reserve` (table, reserved amount, estimate) as read under the lock — never from the live price table or the
+    request object. resp=None: documented rejection, nothing generated."""
+    res = stored_input.get("reserve") or {}
+    reserved = float(res["reserved_usd"])
+    est = int(res.get("estimated_input_tokens") or 0)
+    table = _stored_table(stored_input)
     out = dict(output)
     if resp is None:
         out.update({"cost_usd": 0.0, "reservation_exceeded": False, "usage_missing": False})
         return "ERROR", 0.0, None, None, out, reason_code or "LLM_REQUEST_REJECTED"
     if resp.usage_known:
-        table = req.reserve_record()["price_table"]                  # identical to the table stored in the row at reserve time
         actual = cost_from_table(table, resp.input_tokens, resp.output_tokens)
         exceeded = actual > reserved
-        calib = {"estimated_input_tokens": req.estimated_input_tokens(), "actual_input_tokens": resp.input_tokens,
-                 "input_ratio": (round(resp.input_tokens / req.estimated_input_tokens(), 4) if req.estimated_input_tokens() else None),
-                 "actual_output_tokens": resp.output_tokens, "max_tokens": int(req.max_tokens),
-                 "reserved_usd": reserved, "actual_usd": actual, "formula_version": req.reserve_record()["formula_version"],
-                 "price_tier_estimated": tier_for(table, req.estimated_input_tokens()), "price_tier_actual": tier_for(table, resp.input_tokens)}
+        calib = {"estimated_input_tokens": est, "actual_input_tokens": resp.input_tokens,
+                 "input_ratio": (round(resp.input_tokens / est, 4) if est else None),
+                 "actual_output_tokens": resp.output_tokens, "max_tokens": res.get("max_tokens"),
+                 "reserved_usd": reserved, "actual_usd": actual, "formula_version": res.get("formula_version"),
+                 "price_table_version": table.get("version"),
+                 "price_tier_estimated": tier_for(table, est), "price_tier_actual": tier_for(table, resp.input_tokens)}
         out.update({"text": resp.text, "usage": dict(resp.usage), "stop_reason": resp.stop_reason, "model": resp.model,
                     "cost_usd": actual, "calibration": calib, "reservation_exceeded": exceeded, "usage_missing": False})
         if exceeded:
@@ -191,10 +197,16 @@ class PostgresLedger:
 
     def settle(self, rid: UUID, resp: Optional[LLMResponse], *, req: LLMRequest, output: dict, violation: bool = False,
                reason_code: Optional[str] = None) -> dict:
-        status, cost, itok, otok, out, code = _settlement(req, resp, output, reason_code)
-        out["settled_at"] = _now()
+        """Lock → read the PENDING row's input.reserve → price from the stored table / reserved amount → conditional UPDATE.
+        `req` is accepted for the call-site symmetry with reserve(); pricing never uses it."""
         with self._tx() as conn, conn.cursor() as cur:
             cur.execute(SQL_LOCK, (LOCK_KEY,))
+            cur.execute("SELECT input FROM mart.agent_steps WHERE request_id=%s AND status='PENDING' AND skill=%s FOR UPDATE", (rid, LLM_LEDGER_SKILL))
+            row = cur.fetchone()
+            if row is None:
+                raise RuntimeError("INTERNAL: llm ledger row is not PENDING any more (lost ownership)")
+            status, cost, itok, otok, out, code = _settlement(_json(row[0]), resp, output, reason_code)
+            out["settled_at"] = _now()
             cur.execute("""UPDATE mart.agent_steps SET status=%s, reason_code=%s, output=%s, latency_ms=%s, input_tokens=%s,
                                   output_tokens=%s, cost_usd=%s, violation=%s
                            WHERE request_id=%s AND status='PENDING' AND skill=%s""",
@@ -384,7 +396,7 @@ class MemoryLedger:
         row = self.rows[rid]
         if row.status != "PENDING":
             raise RuntimeError("INTERNAL: llm ledger row is not PENDING any more")
-        status, cost, _, _, out, code = _settlement(req, resp, output, reason_code)
+        status, cost, _, _, out, code = _settlement(row.input, resp, output, reason_code)
         out["settled_at"] = _now()
         row.status, row.output, row.cost_usd, row.violation, row.reason_code = status, out, cost, bool(violation), code
         return out
