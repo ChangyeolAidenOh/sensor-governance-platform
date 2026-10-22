@@ -18,7 +18,7 @@ Protocol per thread (run twice on two thread ids, compared at the end):
             invoke(Command(resume={"decision": "reject"}))   -> held
 
 Usage:
-    PG_DSN=postgresql://postgres:postgres@localhost:5433/sgp_v2 python spikes/langgraph_interrupt_spike.py
+    PG_DSN=postgresql://<user>:<password>@localhost:5436/sgp_v2 python spikes/langgraph_interrupt_spike.py   # PG_DSN is required
 Report: outputs/stage0_interrupt_spike.json (and stdout).
 """
 
@@ -34,7 +34,9 @@ from langgraph.checkpoint.postgres import PostgresSaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
 
-DSN = os.environ.get("PG_DSN", "postgresql://postgres:postgres@localhost:5433/sgp_v2")
+DSN = os.environ.get("PG_DSN")
+if not DSN:
+    raise SystemExit("PG_DSN is required (no default credentials; see .env)")
 REPORT = Path(os.environ.get("REPORT", "outputs/stage0_interrupt_spike.json"))
 
 
