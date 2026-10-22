@@ -40,3 +40,4 @@ outputs/*.log
 outputs/*_dev_check.json
 outputs/gate_reference_dev.json
 outputs/demo_presets_test.json
+outputs/chat_dev/
