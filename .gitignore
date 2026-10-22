@@ -39,3 +39,4 @@ outputs/demo_presets_windows.json
 outputs/*.log
 outputs/*_dev_check.json
 outputs/gate_reference_dev.json
+outputs/demo_presets_test.json
