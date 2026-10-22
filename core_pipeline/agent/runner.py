@@ -15,9 +15,14 @@ of a resend of the same turn (reviewer 2026-10-21):
 A resume is its own turn (kind='resume', parent = the waiting message turn); resume done + parent transition are ONE
 transaction (TurnStore.finish_resume): the parent closes when the graph completes and stays waiting with the NEW
 interrupt when a modify round interrupts again. A resent finished resume returns its own result and nothing else.
+ST4-38: compose_result() never copies `approval.payload.approval_token` into a result — the returned dict and the
+stored graph_turns.result carry `approval_token_issued: bool` instead. The graph State / checkpoint is untouched
+(approval_resume reads the token from the live envelope in the same node) and results stored BEFORE this change are
+not rewritten (a resend of a finished turn returns its stored turn.result as is).
 """
 from __future__ import annotations
 
+import copy
 import logging
 import uuid
 from typing import Any, Optional
@@ -49,11 +54,26 @@ def _checkpoint_id(state_snapshot) -> Optional[str]:
         return None
 
 
+TOKEN_FIELD = "approval_token"
+
+
+def masked_approval(env):
+    """Deep copy of the approve envelope with payload.approval_token replaced by approval_token_issued (ST4-38).
+    The caller's dict (graph State) is left intact — the token must still reach the issue call inside approval_resume."""
+    if not isinstance(env, dict):
+        return env
+    out = copy.deepcopy(env)
+    pl = out.get("payload")
+    if isinstance(pl, dict) and TOKEN_FIELD in pl:
+        pl["approval_token_issued"] = bool(pl.pop(TOKEN_FIELD))
+    return out
+
+
 def compose_result(values: dict, turn_id: str) -> dict:
     out = {"status": "done", "turn_id": turn_id}
     for k in RESULT_FIELDS:
         if k in values:
-            out[k] = values[k]
+            out[k] = masked_approval(values[k]) if k == "approval" else values[k]
     d = (values.get("draft") or {})
     if d:
         out["draft"] = {"status": d.get("status"), "payload": d.get("payload"), "reason": d.get("reason")}
