@@ -22,10 +22,10 @@
       "s-1a827844-40b1-424d-b5da-4012e698950b"
     ],
     "rescored": {
-      "at": "2026-10-23T07:50:13.194166+00:00",
+      "at": "2026-10-23T07:50:33.997056+00:00",
       "from": "turns.jsonl",
       "scorer": {
-        "code_commit": "b2f857e",
+        "code_commit": "0185544",
         "git_dirty": false,
         "chat_eval_sha16": "110c250ca62ec602",
         "run_script_sha16": "7e0d00b5db8e4642"
