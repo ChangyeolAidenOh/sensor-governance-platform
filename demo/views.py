@@ -118,7 +118,9 @@ _CLAUSE_HEADER = re.compile(r"^\[P-[^\]]+\] \(")
 _CLAUSE_TITLE = re.compile(r"^\[(?P<key>P-[^\]]+)\] \((?P<grade>[ABC]), score (?P<score>[0-9.]+)\)\s*(?P<title>.*)$")
 # template lines the main view shows (narrator.py parts; everything else stays in the raw answer only)
 _MAIN_PREFIXES = ("창 ", "진단 집합", "정책 결정", "검색 ", "query 상태", "초안 ", "승인 ", "작업지시 발행", "발행 거부", "open 모드", "이 창에서는",
-                  "선택 가능한 알람", "요청한 참조", "(조항 없음)", "요약(LLM 생성)", "(LLM 요약")
+                  "선택 가능한 알람", "요청한 참조", "(조항 없음)", "요약(LLM 생성)", "(LLM 요약",
+                  "탐지: ", "진단: ", "근거: ", "정책 E", "작업지시: ",                           # ST4-47 methodology block lines
+                  "언급한 결함 ")                                                                  # ST4-48 referred-fault contrast
 _MAIN_SUFFIXES = ("집합에 포함됩니다.", "근거로 제안하지 않습니다.")      # the user-claim comparison line has a variable start
 
 

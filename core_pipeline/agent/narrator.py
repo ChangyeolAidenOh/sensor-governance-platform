@@ -5,6 +5,7 @@ narrator behind the same Protocol, with the clause blocks passed as fixed text.
 """
 from __future__ import annotations
 
+import re
 from typing import Optional, Protocol
 
 REASON_KO = {
@@ -61,6 +62,43 @@ def _claims_contrast(state: dict) -> str:
     return " ".join(parts)
 
 
+def _candidate_set(state: dict) -> Optional[list]:
+    """The diagnosis candidate set the narrator contrasts against (ST4-48): the envelope after a query first, then the
+    initial one; the expanded set when it exists, else pred_set. None = not observed (missing / non-OK envelope or a
+    None field) — never treated as an empty set."""
+    env = state.get("detect_after") or state.get("detect")
+    if not env or env.get("status") != "OK":
+        return None
+    st = env.get("state") or {}
+    if st.get("expanded_set") is not None:
+        return list(st["expanded_set"])
+    return list(st["pred_set"]) if st.get("pred_set") is not None else None
+
+
+def _refs_contrast(state: dict) -> str:
+    """ST4-48: faults the user REFERRED to without asserting them (route.ref_faults minus user_claims), diagnosis
+    category only. Asserted faults are handled by _claims_contrast. Outside the set never means impossible."""
+    if state.get("category") != "diagnosis":
+        return ""
+    claims = state.get("user_claims") or ((state.get("route") or {}).get("user_claims") or [])
+    refs = [f for f in ((state.get("route") or {}).get("ref_faults") or []) if f not in claims]
+    if not refs:
+        return ""
+    cand = _candidate_set(state)
+    if cand is None:
+        return f"언급한 결함 {refs}: 진단 집합이 관측되지 않아 대조할 수 없습니다."
+    if not cand:
+        return f"언급한 결함 {refs}: 현재 후보 집합이 비어 있어 포함된 후보가 없습니다. 모든 결함의 가능성이 0이라는 뜻은 아닙니다."
+    inside = [f for f in refs if f in cand]
+    outside = [f for f in refs if f not in cand]
+    lines = []
+    if inside:
+        lines.append(f"언급한 결함 {inside}은(는) 현재 후보 집합 {cand}에 포함됩니다(집합 크기 {len(cand)}). 포함은 후보라는 뜻이며 확정 진단을 뜻하지 않습니다.")
+    if outside:
+        lines.append(f"언급한 결함 {outside}은(는) 현재 후보 집합 {cand}에 포함되지 않았습니다. 이는 이번 집합 구성 기준에서 선택되지 않았다는 뜻이며, 해당 결함의 가능성이 0이라는 뜻은 아닙니다.")
+    return "\n".join(lines)
+
+
 def _clauses_block(env: Optional[dict], limit: int = 5) -> str:
     if not env or env.get("status") != "OK":
         return ""
@@ -85,7 +123,7 @@ class TemplateNarrator:
         if cat == "out_of_scope":
             return "그 요청은 이 에이전트의 권한 밖입니다(운전 조건·설정값·인터록 변경은 운전원/엔지니어와 인터록 우회 절차가 필요합니다). 도구를 호출하지 않았습니다."
         if cat == "methodology":
-            return METHODOLOGY_KO
+            return methodology_answer(state.get("message"))
         if cat == "history":
             h = state.get("history") or {}
             return (f"이 에피소드(선택 창 {state.get('display_window')}까지): 관측 창 {h.get('n_windows')}개, 알람 창 {h.get('alarm_windows')}, "
@@ -93,6 +131,9 @@ class TemplateNarrator:
         ws = _window_summary(state)
         if ws:
             parts.append(ws)
+        rc = _refs_contrast(state)
+        if rc:
+            parts.append(rc)
         cc = _claims_contrast(state)
         if cc:
             parts.append(cc)
@@ -141,9 +182,32 @@ class TemplateNarrator:
 
 
 METHODOLOGY_KO = (
-    "탐지: 창(20샘플) 단위 Isolation Forest 점수 → split conformal p-value → prefix-BH(α=0.10, 인과적 휴리스틱, FDR 보증 없음; BLOCK 창은 검정 목록 제외). "
-    "진단: LightGBM + split conformal 집합(목표 커버리지 0.90, 유효 집합 1≤s≤3). "
-    "근거: 예측 집합의 결함→지침 매핑(A/B/C)으로 범위를 제한한 하이브리드 검색 + 리랭커 점수 [0,1], τ=0.5(개발셋 규칙 선택값, 일반화 미입증). "
-    "정책 E(사전등록 §4.5): BLOCK→판단 불가, ¬알람→알람 없음, drift critical→보류, 유효 집합∧A/B 근거→제안, 창당 1회 추가 조회, 그 외 보류. "
-    "작업지시는 사람 승인 없이는 발행되지 않습니다."
+    "탐지: 20샘플 창마다 Isolation Forest 점수 → split conformal p-value → prefix-BH 알람(α=0.10). 현재 창까지의 정보만 사용하는 알람 규칙이며, FDR(거짓 발견률) 제어를 보증하지 않습니다. BLOCK 창은 검정 목록에서 제외합니다.\n"
+    "진단: LightGBM 분류 + split conformal 집합. 목표 커버리지 0.90(여러 사례에 대한 비율 목표), 유효 집합은 크기 1~3입니다.\n"
+    "근거: 예측 집합의 결함→지침 매핑(A/B/C)으로 범위를 좁힌 하이브리드 검색 + 리랭커 점수(0~1), τ=0.5(개발셋에서 규칙으로 고른 값, 일반화 미입증).\n"
+    "정책 E(사전등록 §4.5): BLOCK이면 판단 불가 → 알람이 없으면 알람 없음 → drift critical이면 보류 → 유효 집합이고 A/B 근거(점수 ≥ τ)가 있으면 제안 → 그 외에는 창당 1회 추가 조회 뒤 재판단, 그래도 아니면 보류.\n"
+    "작업지시: 사람 승인 없이는 발행되지 않습니다."
 )
+
+# ST4-47: a deterministic direct answer is prepended when the question is about the diagnosis set AND about
+# singleton / coverage / certainty. Both contexts are required ("p-value가 결함 확률이야?" gets the block only).
+_METHOD_TOPIC_SET = re.compile(r"(진단\s*집합|후보\s*집합|후보|집합)")
+_METHOD_TOPIC_COVERAGE = re.compile(r"(하나|한\s*개|1개|커버리지|90|0\.9|확실|확률)")
+METHOD_DIRECT_KO = {
+    "singleton_coverage": (
+        "진단 집합의 목표 커버리지 0.90은 특정 결함이 90% 확실하다는 뜻이 아닙니다. 후보가 하나만 남은 경우에도 마찬가지입니다. "
+        "커버리지는 여러 사례에서 실제 결함이 후보 집합에 포함되는 비율을 말하며, 후보가 하나인 경우만의 정확도와도 다릅니다. "
+        "목표와 실제 달성률은 구분하며, 실제 달성률은 별도 평가에서 보고합니다. "
+        "이론적 커버리지 보증은 보정 자료와 평가 자료의 교환 가능성 등 필요한 가정에 의존하며, 개별 창이나 결함 유형별 커버리지를 보장하지 않습니다."
+    ),
+}
+
+
+def method_topics(message: Optional[str]) -> list[str]:
+    m = message or ""
+    return ["singleton_coverage"] if _METHOD_TOPIC_SET.search(m) and _METHOD_TOPIC_COVERAGE.search(m) else []
+
+
+def methodology_answer(message: Optional[str]) -> str:
+    """Direct answer(s) for the matched topics first, then the fixed methodology block. $0 in every narrator mode."""
+    return "\n".join([METHOD_DIRECT_KO[t] for t in method_topics(message)] + [METHODOLOGY_KO])

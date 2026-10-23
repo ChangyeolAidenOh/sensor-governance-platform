@@ -311,9 +311,12 @@ def test_state_line_contrast_fails_on_wrong_template_line_and_review_flags_do_no
 
 def test_fixed_response_and_history_items():
     obs = {"id": "chat05", "status": "done", "dw": 8, "context": {"prep": "ok"}, "route": _route("methodology", matched="method"), "skills": [], "decisions": [],
-           "narration": {"snapshot": {"category": "methodology"}, "answer": METHODOLOGY_KO}, "views_roundtrip": True, "result": {"status": "done", "refusal": None, "trace": []}, "db": {}}
+           "narration": {"snapshot": {"category": "methodology"}, "answer": TemplateNarrator().narrate({"category": "methodology", "message": ITEMS["chat05"]["question"]})},
+           "views_roundtrip": True, "result": {"status": "done", "refusal": None, "trace": []}, "db": {}}   # ST4-47: the fixed response depends on the question
     sc = CE.score_item(ITEMS["chat05"], obs)
-    assert sc["contract"]["ok"] and sc["narration"]["ok"] and sc["narration"]["flags"]["fixed"] == []
+    assert sc["contract"]["ok"] and sc["narration"]["ok"] and sc["narration"]["flags"]["fixed"] == ["90%", "확실"]   # the direct answer names the flagged words; flags are not failures
+    obs["narration"]["answer"] = METHODOLOGY_KO                                                                   # block without the direct answer ≠ expected text
+    assert _checks(CE.score_item(ITEMS["chat05"], obs), "narration")["fixed_response_equal"] is False
     h = {"n_windows": 9, "alarm_windows": [8], "n_block": 0, "decisions": []}
     snap = {"category": "history", "history": h, "display_window": 8, "alarm_id": "ep:8:detector_v1"}
     ans = TemplateNarrator().narrate(snap)

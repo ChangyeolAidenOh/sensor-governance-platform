@@ -210,7 +210,9 @@ def test_duplicate_chunks_keep_every_body_with_their_own_scores():
 def test_template_lines_from_narrator_source():
     for l in ("승인 거부: 승인 불일치", "발행 거부: TOKEN_USED", "open 모드 결과는 참고용이며 제안의 근거(ev_AB)가 될 수 없습니다.", "이 창에서는 prefix-BH 알람이 없습니다.",
               "선택 가능한 알람이 없어 조치안 경로로 진입하지 않습니다.", "요청한 참조 창 3는 현재 상태와 달라 무시하고 선택 창 기준으로 답합니다.", "(조항 없음)",
-              "query 상태: spent (expand=None, rerank=done)", "[1]은(는) 집합에 포함됩니다.", "[4]은(는) 집합에 없으므로 그 주장을 근거로 제안하지 않습니다."):
+              "query 상태: spent (expand=None, rerank=done)", "[1]은(는) 집합에 포함됩니다.", "[4]은(는) 집합에 없으므로 그 주장을 근거로 제안하지 않습니다.",
+              "언급한 결함 [14]은(는) 현재 후보 집합 [1]에 포함되지 않았습니다. 이는 이번 집합 구성 기준에서 선택되지 않았다는 뜻이며, 해당 결함의 가능성이 0이라는 뜻은 아닙니다.",
+              "탐지: 20샘플 창마다", "진단: LightGBM", "근거: 예측 집합", "정책 E(사전등록 §4.5)", "작업지시: 사람 승인"):
         assert V.is_template_line(l), l
     assert not V.is_template_line("촉매 유량계 등 중요한 측정기기는 정기적으로 테스트하여")
     body_then_open = "[P-1-2013:0:1] (A, score 0.5) t\n> first\ncontinuation 승인 아님\nopen 모드 결과는 참고용입니다."

@@ -300,6 +300,7 @@ def template_line_expectations(snap: dict) -> dict[str, bool]:
     exp = {
         "요청한 참조 ": bool(snap.get("turn_refs_discarded")),
         "사용자 주장 결함 ": bool(snap.get("user_claims")) and cat not in ("out_of_scope", "methodology", "history"),
+        "언급한 결함 ": cat == "diagnosis" and bool(set((snap.get("route") or {}).get("ref_faults") or []) - set(snap.get("user_claims") or [])),   # ST4-48
         "이 창에서는 prefix-BH 알람이 없습니다.": cat in ("alarm", "diagnosis") and not det.get("alarm"),
         "정책 결정(E):": cat == "action" and bool(dec),
         "초기 결정(E):": cat == "action" and bool(snap.get("decision_after")) and bool(snap.get("decision")),
@@ -319,9 +320,12 @@ def template_line_expectations(snap: dict) -> dict[str, bool]:
     return exp
 
 
-def fixed_response_expected(kind: str, snap: dict) -> Optional[str]:
+def fixed_response_expected(kind: str, snap: dict, question: Optional[str] = None) -> Optional[str]:
+    """Expected fixed text, rendered by the same TemplateNarrator (ST4-47: methodology depends on the question). This is a
+    FORMAT check — the expectation moves with the implementation; wording semantics are covered by unit tests and the
+    human judgment, never by this equality."""
     if kind == "methodology":
-        return METHODOLOGY_KO
+        return TemplateNarrator().narrate({"category": "methodology", "message": question})
     if kind == "out_of_scope":
         return TemplateNarrator().narrate({"category": "out_of_scope"})
     if kind == "refusal":
@@ -525,8 +529,9 @@ def score_item(item: dict, obs: dict) -> dict:
         nchecks: list[dict] = []
         fr = nar.get("fixed_response")
         if fr:
-            expct = fixed_response_expected(fr, snap)
-            nchecks.append(_check("fixed_response_equal", None if expct is None else fixed == expct, {"kind": fr}))
+            expct = fixed_response_expected(fr, snap, item.get("question"))
+            nchecks.append(_check("fixed_response_equal", None if expct is None else fixed == expct,
+                                  {"kind": fr, "comparison": "format only (same narrator); semantics = unit tests + human judgment"}))
         for line in nar.get("template_lines", []):
             nchecks.append(_check(f"template_line:{line}", line in fixed))
         if nar.get("state_lines") == "auto":
