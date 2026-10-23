@@ -169,10 +169,10 @@ def test_turn_sections_without_decision_uses_answer_blocks_only():
 
 def test_clause_label_headline_and_main_lines():
     c = {"clause_key": "P-132-2013:0:4.4", "grade": "A", "score": 0.9, "narrator_score": 0.035, "meets": True, "n_items": 2, "title": "[P-132-2013:0:4.4] (A, score 0.035) 연속식 반응기", "lines": []}
-    assert V.clause_label(c, synthetic=True) == "연속식 반응기 · P-132 §4.4 · A등급 · 합성 주입 0.900 / 검색 0.035 · 기준 충족 · 청크 2개"
-    assert V.clause_label(c, synthetic=False) == "연속식 반응기 · P-132 §4.4 · A등급 · 최대 청크 점수 0.900 · 기준 충족 · 청크 2개"
+    assert V.clause_label(c, synthetic=True) == "연속식 반응기 · P-132 §4.4 · A등급 · 합성 주입 0.900 / 검색 0.035 · 기준 충족 · 검색된 발췌 청크 2건"
+    assert V.clause_label(c, synthetic=False) == "연속식 반응기 · P-132 §4.4 · A등급 · 최대 청크 점수 0.900 · 기준 충족 · 검색된 발췌 청크 2건"
     real = {**c, "score": 0.035, "n_items": 1}
-    assert V.clause_label(real, synthetic=False) == "연속식 반응기 · P-132 §4.4 · A등급 · score 0.035 · 기준 충족"
+    assert V.clause_label(real, synthetic=False) == "연속식 반응기 · P-132 §4.4 · A등급 · score 0.035 · 기준 충족 · 검색된 발췌 청크 1건"
     cgrade = {"clause_key": "P-129-2013:0:5.2.2", "grade": "C", "score": 0.008227, "narrator_score": 0.008, "meets": False, "n_items": 2, "title": "[P-129-2013:0:5.2.2] (C, score 0.008) 점검방법", "lines": []}
     assert "합성" not in V.clause_label(cgrade, synthetic=True)                                   # C grade is never injected
     assert V.clause_label({"clause_key": None, "title": "weird", "lines": []}) == "weird"

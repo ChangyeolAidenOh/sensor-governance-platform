@@ -167,8 +167,8 @@ def clause_label(c: dict, synthetic: bool = False) -> str:
         parts.append(f"검색 점수 {ns:.3f}")
     if c.get("meets") is not None:
         parts.append("기준 충족" if c["meets"] else "기준 미충족")
-    if multi:
-        parts.append(f"청크 {c['n_items']}개")
+    if "n_items" in c:                                                   # ST4-41: clause groups built by turn_sections carry n_items; an excerpt count, never "i of n"
+        parts.append(f"검색된 발췌 청크 {c['n_items']}건")
     return " · ".join(p for p in parts if p)
 
 

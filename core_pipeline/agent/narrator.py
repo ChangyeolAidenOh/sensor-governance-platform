@@ -106,11 +106,14 @@ class TemplateNarrator:
             return "\n".join(p for p in parts if p)
         # action
         dec = state.get("decision_after") or state.get("decision") or {}
-        if dec:
-            parts.append(f"정책 결정(E): {ACTION_KO.get(dec.get('action'), dec.get('action'))} — 규칙 {dec.get('rule')} ({dec.get('reason')})")
+        first = state.get("decision") if state.get("decision_after") else None   # ST4-44: show the initial decision only when a re-decision exists
+        if first:
+            parts.append(f"초기 결정(E): {ACTION_KO.get(first.get('action'), first.get('action'))} — 규칙 {first.get('rule')} ({first.get('reason')})")
         q = state.get("query") or {}
         if q:
             parts.append(f"query 상태: {q.get('status')} (expand={q.get('expand_status')}, rerank={q.get('rerank_status')})")
+        if dec:                                                              # initial decision when no re-decision; the re-decision otherwise (label unchanged)
+            parts.append(f"정책 결정(E): {ACTION_KO.get(dec.get('action'), dec.get('action'))} — 규칙 {dec.get('rule')} ({dec.get('reason')})")
         retr = state.get("retrieve_k10") or state.get("retrieve")
         if retr:
             parts.append(_clauses_block(retr))

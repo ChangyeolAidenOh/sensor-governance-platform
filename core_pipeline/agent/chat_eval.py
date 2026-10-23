@@ -302,6 +302,7 @@ def template_line_expectations(snap: dict) -> dict[str, bool]:
         "사용자 주장 결함 ": bool(snap.get("user_claims")) and cat not in ("out_of_scope", "methodology", "history"),
         "이 창에서는 prefix-BH 알람이 없습니다.": cat in ("alarm", "diagnosis") and not det.get("alarm"),
         "정책 결정(E):": cat == "action" and bool(dec),
+        "초기 결정(E):": cat == "action" and bool(snap.get("decision_after")) and bool(snap.get("decision")),
         "query 상태:": cat == "action" and bool(snap.get("query")),
         "검색 mode=": (cat == "action" and _ok(retr)) or (cat == "evidence" and _ok(snap.get("retrieve"))),
         "open 모드 결과는 참고용": cat == "evidence",
