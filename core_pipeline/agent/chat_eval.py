@@ -371,6 +371,16 @@ def _check(name: str, ok: Optional[bool], detail: Any = None) -> dict:
     return {"name": name, "ok": ("unobserved" if ok is None else bool(ok)), "detail": detail}
 
 
+def verdict(checks: list[dict]):
+    """True only when EVERY check is True; False when any check is False; "incomplete" when nothing failed but something
+    required was not observed (never counted as a pass)."""
+    if any(c["ok"] is False for c in checks):
+        return False
+    if any(c["ok"] == "unobserved" for c in checks):
+        return "incomplete"
+    return True
+
+
 def _detect_set(env: dict) -> Optional[list]:
     st = (env or {}).get("state") or {}
     if not st:
@@ -496,10 +506,14 @@ def score_item(item: dict, obs: dict) -> dict:
     if status == "waiting_approval":
         intr = obs.get("interrupt") or {}
         checks.append(_check("interrupt_payload", bool(intr.get("proposal_id")) and bool(intr.get("draft_version")), {k: intr.get(k) for k in ("proposal_id", "draft_version", "content_sha256")}))
-    out["contract"] = {"checks": checks, "ok": all(c["ok"] is True for c in checks if c["ok"] != "unobserved"),
-                       "unobserved": [c["name"] for c in checks if c["ok"] == "unobserved"], "failure_kind": failure_kind}
-    if not out["contract"]["ok"] and failure_kind is None and status in ("failed", "error"):
-        out["contract"]["failure_kind"] = "error"
+    contract_ok = verdict(checks)
+    if not out["router"]["ok"]:
+        failure_kind = "router"                                               # a misrouted item is a router failure whatever else followed
+    elif failure_kind is None and contract_ok is False:
+        failure_kind = "error" if (status in ("failed", "error") or obs.get("error")) else "contract"
+    out["contract"] = {"checks": checks, "ok": contract_ok, "unobserved": [c["name"] for c in checks if c["ok"] == "unobserved"],
+                       "failure_kind": failure_kind}
+    out["llm_calls"] = obs.get("llm_calls")                                   # paid runs: HTTP calls made during this item (counting client), else None
     # ---- E narration
     narr = obs.get("narration")
     if status != "done" or not narr:
@@ -533,9 +547,9 @@ def score_item(item: dict, obs: dict) -> dict:
             scan = scan.replace(str(snap["refusal"]["message"]), "")
         wins = [w for w in window_numbers(scan) if w > int(dw)]
         nchecks.append(_check("no_window_after_display", not wins, wins))
-        views = obs.get("views_roundtrip")                                     # harness fills: True/False/None(import unavailable)
-        nchecks.append(_check("views_roundtrip_lossless", views))
-        out["narration"] = {"applicable": True, "checks": nchecks, "ok": all(c["ok"] is True for c in nchecks if c["ok"] != "unobserved"),
+        views = obs.get("views_roundtrip")                                     # harness fills: True/False/None(import unavailable); rescore may fill post-hoc
+        nchecks.append(_check("views_roundtrip_lossless", views, obs.get("views_roundtrip_source")))
+        out["narration"] = {"applicable": True, "checks": nchecks, "ok": verdict(nchecks), "unobserved": [c["name"] for c in nchecks if c["ok"] == "unobserved"],
                             "flags": {"fixed": review_flags(fixed, nar.get("review_flags", [])), "prose": review_flags(prose, nar.get("review_flags", []))},
                             "prose_present": prose is not None, "omitted_note": note, "llm": obs.get("narrate_ledger")}
     # ---- observations for the change candidates (not scores)
@@ -570,7 +584,15 @@ def summarize(scored: list[dict], mode: str) -> dict:
     sc = [s for s in scored if s.get("scored")]
     routed = [s for s in sc if s.get("router")]
     matched = [str((s["router"] or {}).get("matched") or "") for s in routed]
-    sent = [s for s in routed if s["router"]["matched"] in LLM_SENT]
+    counters = any(s.get("llm_calls") is not None for s in routed)
+    if counters:                                                              # paid run: the counting client's record is the source
+        sent = [s for s in routed if any(c.get("tool") == "router" for c in (s.get("llm_calls") or []))]
+        n_http = sum(len(s.get("llm_calls") or []) for s in routed)
+        n_http_router = sum(1 for s in routed for c in (s.get("llm_calls") or []) if c.get("tool") == "router")
+        n_http_narrate = sum(1 for s in routed for c in (s.get("llm_calls") or []) if c.get("tool") == "narrate")
+    else:
+        sent = [s for s in routed if s["router"]["matched"] in LLM_SENT]
+        n_http = n_http_router = n_http_narrate = None
     valid = [s for s in sent if s["router"]["matched"] == "llm"]
     not_sent = [s for s in routed if any(str(s["router"]["matched"]).startswith(p) for p in LLM_NOT_SENT_PREFIXES)]
     def frac(a, b):
@@ -580,21 +602,30 @@ def summarize(scored: list[dict], mode: str) -> dict:
         "router": {"accuracy_all": f"{sum(1 for s in routed if s['router']['ok'])}/{len(routed)}",
                    "default_count": sum(1 for m in matched if m == "default"),
                    "matched_counts": {m: matched.count(m) for m in sorted(set(matched))},
-                   "llm": {"definitions": "n_called = items whose HTTP request went out (matched in llm / llm_fallback:invalid_output / llm_outcome_unknown); "
-                                          "valid_rate = matched=='llm' ÷ n_called; acc_called = correct FINAL category (fallback included) ÷ n_called; "
-                                          "acc_valid_conditional = correct ÷ valid responses; n_not_sent = refused reservation / client refusal before sending",
+                   "llm": {"definitions": "n_called = items with a router HTTP request (counting-client record when present, else matched ∈ llm / llm_fallback:invalid_output / "
+                                          "llm_outcome_unknown); valid_rate = matched=='llm' ÷ n_called; acc_called = LLM-valid AND correct ÷ n_called (a fallback that "
+                                          "kept a correct rule result counts in accuracy_all only, never as an LLM correct); acc_valid_conditional = LLM-valid AND correct ÷ "
+                                          "valid responses; n_not_sent = refused reservation / client refusal before sending",
+                           "source": "counting_client" if counters else "matched",
                            "n_called": len(sent), "n_not_sent": len(not_sent), "n_rule": len(routed) - len(sent) - len(not_sent),
+                           "n_http_calls": n_http, "n_http_router": n_http_router, "n_http_narrate": n_http_narrate,
                            "valid_rate": frac(len(valid), len(sent)),
-                           "acc_called": frac(sum(1 for s in sent if s["router"]["ok"]), len(sent)),
+                           "acc_called": frac(sum(1 for s in valid if s["router"]["ok"]), len(sent)),
                            "acc_valid_conditional": frac(sum(1 for s in valid if s["router"]["ok"]), len(valid))}},
         "extraction": {f: f"{sum(1 for s in sc if (s.get('extraction') or {}).get(f, {}).get('ok'))}/{len(sc)}" for f in ("user_claims", "ref_faults", "ref_window", "ref_proposal")},
-        "contract": {"pass": f"{sum(1 for s in sc if (s.get('contract') or {}).get('ok'))}/{len(sc)}",
+        "contract": {"pass": f"{sum(1 for s in sc if (s.get('contract') or {}).get('ok') is True)}/{len(sc)}",
+                     "incomplete": {s["id"]: s["contract"]["unobserved"] for s in sc if (s.get("contract") or {}).get("ok") == "incomplete"},
                      "failure_kinds": {k: [s["id"] for s in sc if (s.get("contract") or {}).get("failure_kind") == k] for k in ("router", "skill_error", "contract", "error")},
+                     "failed_items": [s["id"] for s in sc if (s.get("contract") or {}).get("ok") is False],
                      "unobserved": {s["id"]: s["contract"]["unobserved"] for s in sc if (s.get("contract") or {}).get("unobserved")}},
         "narration": {"applicable": [s["id"] for s in sc if (s.get("narration") or {}).get("applicable")],
-                      "auto_pass": f"{sum(1 for s in sc if (s.get('narration') or {}).get('applicable') and s['narration'].get('ok'))}/{sum(1 for s in sc if (s.get('narration') or {}).get('applicable'))}",
+                      "auto_pass": f"{sum(1 for s in sc if (s.get('narration') or {}).get('applicable') and s['narration'].get('ok') is True)}/{sum(1 for s in sc if (s.get('narration') or {}).get('applicable'))}",
+                      "incomplete": {s["id"]: s["narration"]["unobserved"] for s in sc if (s.get("narration") or {}).get("applicable") and s["narration"].get("ok") == "incomplete"},
                       "flagged": {s["id"]: s["narration"]["flags"] for s in sc if (s.get("narration") or {}).get("applicable") and (s["narration"]["flags"]["fixed"] or s["narration"]["flags"]["prose"])},
-                      "prose_present": [s["id"] for s in sc if (s.get("narration") or {}).get("prose_present")]},
+                      "prose_present": [s["id"] for s in sc if (s.get("narration") or {}).get("prose_present")],
+                      "failed_items": {s["id"]: [c["name"] for c in s["narration"]["checks"] if c["ok"] is False]
+                                       for s in sc if (s.get("narration") or {}).get("applicable") and s["narration"].get("ok") is False},
+                      "failed_due_to_router": [s["id"] for s in sc if (s.get("narration") or {}).get("applicable") and s["narration"].get("ok") is False and not s["router"]["ok"]]},
         "note": "development observations on 10 items; not a performance claim. contaminated items are kept but excluded from mode comparison.",
     }
     return summary
@@ -622,3 +653,74 @@ def assert_test_dsn(dsn: Optional[str], project_dsn: Optional[str] = None) -> No
         raise SystemExit("refusing: the DSN must name a database containing 'test'")
     if project_dsn and project_dsn == dsn:
         raise SystemExit("refusing: the test DSN equals SGP_PG_DSN")
+
+
+# ------------------------------------------------------------------------------------------------- human judgment / publish
+def required_criteria(ds: dict, item_id: str) -> list[str]:
+    """The criteria a judgment must cover: the dev set's common criteria + the item's own — the dev set is the source, not the sheet."""
+    common = list((ds.get("_meta") or {}).get("human_criteria_common") or [])
+    it = next((x for x in ds.get("items") or [] if x.get("id") == item_id), None)
+    return common + list((it or {}).get("human") or [])
+
+
+def judgment_status(judgment: Optional[dict], scored: list[dict], ds: dict) -> dict:
+    """Sheet existence is not completion: complete only when, for every applicable item, EVERY required criterion (from the
+    dev set) carries a pass/fail verdict — a criterion missing from the sheet counts as unjudged."""
+    applicable = [s["id"] for s in scored if s.get("scored") and (s.get("narration") or {}).get("applicable")]
+    if not judgment:
+        return {"sheet": False, "complete": False, "n_applicable": len(applicable), "n_unjudged_items": len(applicable),
+                "n_unjudged_criteria": sum(len(required_criteria(ds, i)) for i in applicable), "per_criterion": {}, "failed_items": {}, "judge": None}
+    per, fails, unjudged_items, unjudged_criteria = {}, {}, [], 0
+    for iid in applicable:
+        v = (judgment.get("items") or {}).get(iid) or {}
+        verdicts = v.get("verdicts") or {}
+        required = required_criteria(ds, iid)
+        missing = [c for c in required if verdicts.get(c) not in ("pass", "fail")]
+        if missing:
+            unjudged_items.append(iid)
+            unjudged_criteria += len(missing)
+        for c in required:
+            x = verdicts.get(c)
+            per.setdefault(c, {"pass": 0, "fail": 0, "unjudged": 0})
+            per[c]["pass" if x == "pass" else "fail" if x == "fail" else "unjudged"] += 1
+            if x == "fail":
+                fails.setdefault(iid, []).append(c)
+    return {"sheet": True, "complete": not unjudged_items, "n_applicable": len(applicable), "n_unjudged_items": len(unjudged_items),
+            "unjudged_items": unjudged_items, "n_unjudged_criteria": unjudged_criteria, "per_criterion": per, "failed_items": fails,
+            "judge": judgment.get("judge")}
+
+
+def refined_result(ds: dict, context: dict, obs_list: list[dict], scored: list[dict], judgment: Optional[dict], run_meta: dict) -> dict:
+    """The tracked result file: allow-listed fields joined explicitly from the dev set, the raw observations, the scores and
+    the judgment sheet. No secrets, no tokens, no clause text, no messages."""
+    items = {it["id"]: it for it in ds["items"]}
+    obs_by = {o["id"]: o for o in obs_list}
+    j_items = (judgment or {}).get("items") or {}
+    out_items = []
+    for sc in scored:
+        it, o = items[sc["id"]], obs_by.get(sc["id"], {})
+        pc = (context.get("presets") or {}).get(str((o.get("preset") or it["context"]["preset"]))) or {}
+        narr = o.get("narration") or {}
+        out_items.append({
+            "id": sc["id"], "question": it["question"], "expected": it["expected"], "context": {"preset": it["context"]["preset"], "display_window": o.get("dw"),
+                                                                                              "episode_id": o.get("episode_id"), "alarm_id": o.get("alarm_id"),
+                                                                                              "detector": pc.get("detector"), "contract_sha256": pc.get("contract"),
+                                                                                              "prep": (o.get("context") or {}).get("prep"), "contaminated": (o.get("context") or {}).get("contaminated")},
+            "status": o.get("status"), "thread_id": o.get("thread_id"), "turn_id": o.get("turn_id"), "elapsed_s": o.get("elapsed_s"), "error": o.get("error"),
+            "route": (o.get("route") or {}).get("result"), "skill_steps": [x.get("step") or x.get("tool") for x in (o.get("skills") or [])],
+            "decisions": [{k: d.get(k) for k in ("phase", "action", "rule", "decision_id")} for d in (o.get("decisions") or [])],
+            "query": (o.get("result") or {}).get("query"), "interrupt": o.get("interrupt"), "answer": narr.get("answer"),
+            "scores": {k: sc.get(k) for k in ("router", "extraction", "contract", "narration", "observations")},
+            "llm_calls": o.get("llm_calls"), "ledger": [{k: r.get(k) for k in ("tool", "stage_key", "status", "reason_code", "cost_usd", "input_tokens", "output_tokens",
+                                                                              "violation", "usage_missing", "reservation_exceeded", "fallback_reason", "calibration")}
+                                                       for r in (o.get("ledger") or [])] or None,
+            "human": {"verdicts": (j_items.get(sc["id"]) or {}).get("verdicts"), "note": (j_items.get(sc["id"]) or {}).get("note")} if (j_items.get(sc["id"]) or {}).get("applicable") else None,
+        })
+    jm = judgment or {}
+    return {"schema": "chat_dev_result/1", "run": run_meta, "dev_set": {"revision": (ds.get("_meta") or {}).get("revision"), "sha16": run_meta.get("dev_set_sha16"),
+                                                                     "n": len(items)},
+            "judgment": {k: jm.get(k) for k in ("judge", "basis", "readability_scope", "readability_observation")} if judgment else None,
+            "context": {"dbname": context.get("dbname"), "project_manifest_sha16": context.get("project_manifest_sha16"), "code_commit_at_reset": context.get("code_commit"),
+                        "presets": {p: {"detector": v.get("detector"), "contract_sha256": v.get("contract"), "prep": v.get("prep"), "entry": v.get("entry")}
+                                    for p, v in (context.get("presets") or {}).items()}},
+            "summary": run_meta.get("summary"), "items": out_items}

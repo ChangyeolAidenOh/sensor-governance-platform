@@ -214,7 +214,15 @@ def _checks(sc, area="contract"):
 def test_score_chat08_like_observation_passes_everything():
     sc = CE.score_item(ITEMS["chat08"], _action_obs())
     assert sc["router"]["ok"] and all(sc["extraction"][f]["ok"] for f in ("user_claims", "ref_faults", "ref_window", "ref_proposal"))
-    assert sc["contract"]["ok"], _checks(sc)
+    assert sc["contract"]["ok"] is True, _checks(sc)
+    assert sc["narration"]["ok"] is True
+    # views round-trip unobserved → narration incomplete, not a pass
+    sc_u = CE.score_item(ITEMS["chat08"], _action_obs(views_roundtrip=None))
+    assert sc_u["narration"]["ok"] == "incomplete" and sc_u["narration"]["unobserved"] == ["views_roundtrip_lossless"]
+    sc_p = CE.score_item(ITEMS["chat08"], _action_obs(views_roundtrip=True, views_roundtrip_source={"posthoc": True, "views_sha16": "b19c2b3c5ef63a94"}))
+    assert sc_p["narration"]["ok"] is True and _checks(sc_p, "narration")["views_roundtrip_lossless"] is True
+    assert next(c for c in sc_p["narration"]["checks"] if c["name"] == "views_roundtrip_lossless")["detail"]["posthoc"] is True
+    assert CE.summarize([sc_u], "baseline")["narration"]["auto_pass"] == "0/1"
     assert sc["contract"]["failure_kind"] is None
     assert sc["narration"]["ok"], _checks(sc, "narration")
     assert sc["narration"]["flags"] == {"fixed": [], "prose": []}
@@ -226,6 +234,23 @@ def test_prep_failure_is_not_scored_and_contamination_is_kept():
     assert sc["scored"] is False and "router" not in sc
     sc2 = CE.score_item(ITEMS["chat08"], _action_obs(context={"prep": "ok", "contaminated": True, "contamination": [{"when": "before_turn"}]}))
     assert sc2["scored"] and sc2["context"]["contaminated"] and sc2["contract"]["ok"]
+
+
+def test_misrouted_non_action_item_gets_router_failure_kind():
+    """chat05-like: a methodology question routed to diagnosis (gate+detect ran). failure_kind must say 'router', not null."""
+    obs = {"id": "chat05", "status": "done", "dw": 8, "context": {"prep": "ok"}, "route": _route("diagnosis", matched="diagnosis"),
+           "skills": [_skill("gate_check", "gate:t8"), _skill("detect_diagnose", "detect:t8:x1:initial", state={"alarm": True, "pred_set": [1]})], "decisions": [],
+           "narration": {"snapshot": {"category": "diagnosis", "display_window": 8, "detect": {"status": "OK", "state": {"alarm": True, "pred_set": [1]}}}, "answer": "창 8: …\n진단 집합(후보): [1] (크기 1, top1=1)"},
+           "views_roundtrip": True, "result": {"status": "done", "refusal": None, "trace": []}, "db": {}}
+    sc = CE.score_item(ITEMS["chat05"], obs)
+    assert sc["router"]["ok"] is False and sc["contract"]["ok"] is False and sc["contract"]["failure_kind"] == "router"
+    assert sc["narration"]["ok"] is False
+    s = CE.summarize([sc], "baseline")
+    assert s["contract"]["failure_kinds"]["router"] == ["chat05"] and s["contract"]["failed_items"] == ["chat05"] and "chat05" in s["narration"]["failed_items"]
+    # a contract failure with the right category and no decision expected → 'contract'
+    obs2 = dict(obs, route=_route("methodology", matched="method"))
+    sc2 = CE.score_item(ITEMS["chat05"], obs2)
+    assert sc2["router"]["ok"] and sc2["contract"]["failure_kind"] == "contract"
 
 
 def test_missing_decision_is_classified_by_observation_not_as_prep_failure():
@@ -261,10 +286,16 @@ def test_waiting_approval_turn_scored_without_narration_and_with_db_counts():
     assert sc["contract"]["ok"], ch
     assert ch["query"] is True and ch["decision_after_observed"] is True and ch["interrupt_payload"] is True
     assert sc["narration"] == {"applicable": False, "note": "N/A — 승인 대기"}
-    # unobserved values stay unobserved (never estimated into a pass)
-    obs2 = dict(obs, db={"decision_rows": 2, "approvals": None, "work_orders": None, "plan": None})
+    # unobserved values stay unobserved — the item is INCOMPLETE, never a pass (reviewer counter-example)
+    obs2 = dict(obs, db={"decision_rows": None, "approvals": None, "work_orders": None, "plan": None})
     sc2 = CE.score_item(ITEMS["chat07"], obs2)
-    assert set(sc2["contract"]["unobserved"]) >= {"approvals_zero", "work_orders_zero", "query"} and sc2["contract"]["ok"]
+    assert set(sc2["contract"]["unobserved"]) >= {"decision_rows_db", "approvals_zero", "work_orders_zero", "query"}
+    assert sc2["contract"]["ok"] == "incomplete" and sc2["contract"]["failure_kind"] is None
+    s = CE.summarize([sc, sc2], "baseline")
+    assert s["contract"]["pass"] == "1/2" and list(s["contract"]["incomplete"]) == ["chat07"] and s["contract"]["failed_items"] == []
+    # one real failure + unobserved → False (failure wins)
+    obs3 = dict(obs2, db={"decision_rows": None, "approvals": 1, "work_orders": None, "plan": None})
+    assert CE.score_item(ITEMS["chat07"], obs3)["contract"]["ok"] is False
 
 
 def test_state_line_contrast_fails_on_wrong_template_line_and_review_flags_do_not_fail():
@@ -309,10 +340,16 @@ def test_summary_metrics_separate_llm_called_valid_not_sent():
     scored.append(CE.score_item(ITEMS["chat08"], _action_obs(context={"prep": "ok", "contaminated": True})))
     s = CE.summarize(scored, "paid")
     llm = s["router"]["llm"]
-    assert llm["n_called"] == 4 and llm["n_not_sent"] == 1 and llm["n_rule"] == 3
-    assert llm["valid_rate"] == 0.5 and llm["acc_called"] == 0.75 and llm["acc_valid_conditional"] == 0.5   # acc_called counts the FINAL category (fallback kept the correct rule result)
+    assert llm["source"] == "matched" and llm["n_called"] == 4 and llm["n_not_sent"] == 1 and llm["n_rule"] == 3
+    assert llm["valid_rate"] == 0.5 and llm["acc_called"] == 0.25 and llm["acc_valid_conditional"] == 0.5   # fallback items never count as LLM-correct
     assert s["router"]["default_count"] == 1 and s["n_scored"] == 8 and s["context_prep_failed"] == ["chat08"] and s["context_contaminated"] == ["chat08"]
-    assert s["router"]["accuracy_all"] == "7/8"
+    assert s["router"]["accuracy_all"] == "7/8"                                 # the correct fallback results DO count here
+    # counting-client records take precedence over matched strings
+    for sc_, calls in zip(scored[:7], ([], [{"tool": "router"}], [{"tool": "router"}, {"tool": "narrate"}], [{"tool": "router"}], [{"tool": "router"}], [], [{"tool": "router"}])):
+        sc_["llm_calls"] = calls
+    s2 = CE.summarize(scored, "paid")["router"]["llm"]
+    assert s2["source"] == "counting_client" and s2["n_called"] == 5 and s2["n_http_calls"] == 6 and s2["n_http_router"] == 5 and s2["n_http_narrate"] == 1
+    assert s2["acc_called"] == 0.2 and s2["acc_valid_conditional"] == 0.5
 
 
 # ------------------------------------------------------------------------------------------------- backup filter / DSN guard
@@ -327,3 +364,45 @@ def test_strip_secret_columns_and_dsn_guard():
             CE.assert_test_dsn(bad, None)
     with pytest.raises(SystemExit):
         CE.assert_test_dsn("postgresql://u:pw@localhost:5999/main_test", "postgresql://u:pw@localhost:5999/main_test")
+
+
+# ------------------------------------------------------------------------------------------------- judgment / refined result
+def test_judgment_status_distinguishes_sheet_from_completion_and_catches_missing_criteria():
+    scored = [CE.score_item(ITEMS["chat08"], _action_obs()), CE.score_item(ITEMS["chat08"], _action_obs(status="waiting_approval", narration=None, result={"status": "waiting_approval"}))]
+    scored[1]["id"] = "chat07"
+    req = CE.required_criteria(DS, "chat08")
+    assert len(req) == 5 and req[:4] == DS["_meta"]["human_criteria_common"] and req[4].startswith("core:")
+    st = CE.judgment_status(None, scored, DS)
+    assert st["sheet"] is False and st["complete"] is False and st["n_applicable"] == 1 and st["n_unjudged_items"] == 1 and st["n_unjudged_criteria"] == 5
+    full = {c: "pass" for c in req}
+    j = {"judge": "aiden", "items": {"chat08": {"applicable": True, "verdicts": dict(full)}, "chat07": {"applicable": False}}}
+    assert CE.judgment_status(j, scored, DS)["complete"] is True
+    # reviewer counter-example: one required criterion deleted from the sheet → NOT complete, exactly one unjudged criterion
+    del j["items"]["chat08"]["verdicts"][req[1]]
+    st = CE.judgment_status(j, scored, DS)
+    assert st["complete"] is False and st["n_unjudged_items"] == 1 and st["n_unjudged_criteria"] == 1 and st["per_criterion"][req[1]]["unjudged"] == 1
+    # a null verdict counts the same; a stray extra key is ignored
+    j["items"]["chat08"]["verdicts"][req[1]] = None
+    j["items"]["chat08"]["verdicts"]["not-a-criterion"] = "pass"
+    st = CE.judgment_status(j, scored, DS)
+    assert st["complete"] is False and st["n_unjudged_criteria"] == 1 and "not-a-criterion" not in st["per_criterion"]
+    j["items"]["chat08"]["verdicts"][req[1]] = "fail"
+    st = CE.judgment_status(j, scored, DS)
+    assert st["complete"] and st["failed_items"] == {"chat08": [req[1]]} and st["per_criterion"][req[1]] == {"pass": 0, "fail": 1, "unjudged": 0}
+
+
+def test_refined_result_has_allow_listed_fields_only():
+    obs = _action_obs(thread_id="s-1", turn_id="t-1", preset=1, episode_id="ep", alarm_id="ep:8:detector_v1", elapsed_s=1.2)
+    obs["skills"][2]["payload"]["clauses"].append({"clause_key": "P-9", "grade": "C", "score": 0.1, "title": "t"})
+    sc = CE.score_item(ITEMS["chat08"], obs)
+    ctx = {"dbname": "main_test", "project_manifest_sha16": "abc", "code_commit": "786bbc4",
+           "presets": {"1": {"detector": "detector_v1", "contract": "808601", "prep": "ok", "entry": {"preset": 1, "display_window": 8}}}}
+    j = {"judge": "aiden", "basis": "reviewer draft, adopted by aiden", "readability_scope": "text only", "readability_observation": "4 items",
+         "items": {"chat08": {"applicable": True, "verdicts": {"x": "pass"}, "note": "ok", "answer": "SHOULD NOT LEAK VIA answer field of sheet"}}}
+    out = CE.refined_result(DS, ctx, [obs], [sc], j, {"run_id": "b1", "mode": "baseline", "dev_set_sha16": "dddd", "summary": {"n_items": 1}})
+    it = out["items"][0]
+    assert it["question"] == ITEMS["chat08"]["question"] and it["answer"] == obs["narration"]["answer"] and it["human"] == {"verdicts": {"x": "pass"}, "note": "ok"}
+    assert it["context"]["detector"] == "detector_v1" and it["skill_steps"] == ["gate:t8", "detect:t8:x1:initial", "retrieve:scoped:k5"]
+    dumped = json.dumps(out, ensure_ascii=False)
+    assert "SHOULD NOT LEAK" not in dumped and "text" not in it["scores"]["observations"]["retrieve"][0] and out["schema"] == "chat_dev_result/1"
+    assert out["judgment"] == {"judge": "aiden", "basis": "reviewer draft, adopted by aiden", "readability_scope": "text only", "readability_observation": "4 items"}

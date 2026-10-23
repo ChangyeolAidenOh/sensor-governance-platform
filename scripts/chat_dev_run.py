@@ -1,11 +1,12 @@
 """S4a-07 chat dev-set harness (ST4-33..35). TEST DB ONLY (dbname contains 'test', distinct from SGP_PG_DSN).
 
     python scripts/chat_dev_run.py reset --run-id b1                      # backup (allow-listed) → clean+replay 4 episodes → manifest → pre-check
+    python scripts/chat_dev_run.py reset --run-id b1 --precheck-only      # pre-check only on an already replayed state (no backup/clean/replay)
     python scripts/chat_dev_run.py run   --run-id b1 --mode baseline      # rule/template, $0
     python scripts/chat_dev_run.py run   --run-id d1 --mode dry           # FakeLLM + MemoryLedger ($0): prompt sizes / reservation estimates
     python scripts/chat_dev_run.py run   --run-id p1 --mode paid --max-calls 20 --paid-approved "<approval text>"   # separate approval
     python scripts/chat_dev_run.py judge --run-id b1                      # write / refresh the human judgment sheet
-    python scripts/chat_dev_run.py score --run-id b1 [--publish]          # merge judgments, summary, optional copy to evals/results/
+    python scripts/chat_dev_run.py score --run-id b1 [--publish]          # re-score from turns.jsonl with the current code, merge judgments, optional copy to evals/results/
 
 One run = one reset + the 10 items in id order (one thread per item, single turn, no approval resume; an interrupt
 ends the item). `run` refuses a context that was already used by a run — reset again. Everything written under
@@ -20,7 +21,6 @@ import asyncio
 import hashlib
 import json
 import os
-import shutil
 import subprocess
 import sys
 import time
@@ -32,6 +32,7 @@ from dotenv import load_dotenv
 
 from core_pipeline.agent import chat_eval as CE
 
+ROOT = Path(__file__).resolve().parents[1]
 OUT_ROOT = Path("outputs/chat_dev")
 PROJECT_MANIFEST = "outputs/demo_presets.json"
 OWNER = "chatdev"
@@ -55,6 +56,31 @@ def git_commit() -> str:
 
 def sha16(path: str) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16]
+
+
+def git_dirty() -> bool | None:
+    try:
+        return bool(subprocess.check_output(["git", "status", "--porcelain", "--", "core_pipeline", "scripts", "evals"], text=True).strip())
+    except Exception:
+        return None
+
+
+def views_roundtrip_fn():
+    """(fn, views_sha16, import_error). demo/ is not an installed package (demo/app.py adds the repo root itself), so the
+    root is put on sys.path first; an import failure is returned as text, never swallowed."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    try:
+        from demo.views import answer_blocks, answer_from_blocks
+    except Exception as e:
+        return None, None, f"{type(e).__name__}: {e}"[:300]
+    vp = ROOT / "demo" / "views.py"
+    return (lambda ans: answer_from_blocks(answer_blocks(ans)) == ans), (sha16(str(vp)) if vp.exists() else None), None
+
+
+def scorer_version() -> dict:
+    """Scoring-code identity, separate from the run-time code commit (uncommitted patches are told apart by file hashes)."""
+    return {"code_commit": git_commit(), "git_dirty": git_dirty(), "chat_eval_sha16": sha16(CE.__file__), "run_script_sha16": sha16(__file__)}
 
 
 def out_dir(run_id: str) -> Path:
@@ -107,22 +133,41 @@ def _listify(v):
     return list(v)
 
 
-def probe(dsn: str, episode_id: str, dw: int, detector: str | None, alarm_id: str | None) -> dict:
-    """Window row at the display window + decision rows of the alarm — the state that must be explained by the run."""
+def probe(dsn: str, episode_id: str, dw: int, detector: str | None, contract: str | None, manifest_alarm_id: str | None) -> dict:
+    """State that the run must explain: the episode_windows row at the display window (key episode·window·detector_version·
+    contract_sha256 — table columns only; `alarm_id` is an envelope field, not a column), the alarm row of that window in
+    mart.alarms (episode_id·window_index·detector) compared with the manifest, and the decision rows of the CONFIRMED alarm.
+    More than one window row, or more than one alarm row, is a mismatch (`problems`) — never a silent first-row pick."""
     cond, args = ["episode_id=%s", "window_index=%s"], [uuid.UUID(episode_id), int(dw)]
     if detector:
         cond.append("detector_version=%s"); args.append(detector)
-    rows = _rows(dsn, f"SELECT alarm, drift, gate, pred_set, expanded_set, q_used, query_request_id, alarm_id FROM mart.episode_windows WHERE {' AND '.join(cond)}", *args)
-    r = rows[0] if rows else {}
+    if contract:
+        cond.append("contract_sha256=%s"); args.append(contract)
+    rows = _rows(dsn, f"SELECT alarm, drift, gate, pred_set, expanded_set, q_used, query_request_id FROM mart.episode_windows WHERE {' AND '.join(cond)}", *args)
+    acond, aargs = ["episode_id=%s", "window_index=%s"], [uuid.UUID(episode_id), int(dw)]
+    if detector:
+        acond.append("detector=%s"); aargs.append(detector)
+    alarm_rows = _rows(dsn, f"SELECT alarm_id FROM mart.alarms WHERE {' AND '.join(acond)}", *aargs)
+    problems: list[str] = []
+    if len(rows) != 1:
+        problems.append(f"episode_windows rows at window {dw}: {len(rows)} (expected 1)")
+    if len(alarm_rows) > 1:
+        problems.append(f"mart.alarms rows at window {dw}: {len(alarm_rows)} (expected 0 or 1)")
+    alarm_id = alarm_rows[0]["alarm_id"] if len(alarm_rows) == 1 else None
+    if (manifest_alarm_id or None) != (alarm_id or None):
+        problems.append(f"alarm_id: manifest {manifest_alarm_id} vs mart.alarms {alarm_id}")
+    r = rows[0] if len(rows) == 1 else {}
+    if len(rows) == 1 and bool(r.get("alarm")) != bool(alarm_id):
+        problems.append(f"episode_windows.alarm={r.get('alarm')} but alarm row {'present' if alarm_id else 'absent'}")
     dec = _rows(dsn, "SELECT decision_key, action, rule FROM mart.policy_decisions WHERE alarm_id=%s ORDER BY seq", alarm_id) if alarm_id else []
-    return {"found": bool(rows), "n_rows": len(rows), "alarm": r.get("alarm"), "drift": r.get("drift"), "gate": r.get("gate"),
+    return {"found": len(rows) == 1, "n_rows": len(rows), "n_alarm_rows": len(alarm_rows), "alarm": r.get("alarm"), "drift": r.get("drift"), "gate": r.get("gate"),
             "pred_set": _listify(r.get("pred_set")), "expanded_set": _listify(r.get("expanded_set")), "q_used": r.get("q_used"),
-            "query_request_id": (str(r["query_request_id"]) if r.get("query_request_id") else None), "alarm_id": r.get("alarm_id"),
-            "n_decisions": len(dec), "decision_keys": [d["decision_key"] for d in dec]}
+            "query_request_id": (str(r["query_request_id"]) if r.get("query_request_id") else None), "alarm_id": alarm_id,
+            "n_decisions": len(dec), "decision_keys": [d["decision_key"] for d in dec], "problems": problems}
 
 
 def probe_diff(a: dict, b: dict) -> dict:
-    keys = ("alarm", "drift", "pred_set", "expanded_set", "q_used", "query_request_id", "n_decisions")
+    keys = ("n_rows", "n_alarm_rows", "alarm", "drift", "pred_set", "expanded_set", "q_used", "query_request_id", "alarm_id", "n_decisions")
     return {k: {"before": a.get(k), "now": b.get(k)} for k in keys if a.get(k) != b.get(k)}
 
 
@@ -159,14 +204,21 @@ def backup_episode(dsn: str, episode_id: str) -> dict:
     out = {"episode_id": episode_id, "alarms": alarms, "proposals": [], "proposal_drafts": [], "approvals": [], "work_orders": [],
            "policy_decisions": [], "query_plans": []}
     if alarms:
-        props = _rows(dsn, "SELECT * FROM mart.proposals WHERE alarm_id = ANY(%s)", alarms)
+        props = _rows(dsn, "SELECT proposal_id, alarm_id, policy, action, hold_reason, ev_ab, current_version, episode_id, window_index, thread_id, created_at "
+                           "FROM mart.proposals WHERE alarm_id = ANY(%s)", alarms)
         out["proposals"] = [CE.strip_secret_columns(p) for p in props]
         pids = [p["proposal_id"] for p in props]
         if pids:
-            for tbl in ("proposal_drafts", "approvals", "work_orders"):
-                out[tbl] = [CE.strip_secret_columns(r) for r in _rows(dsn, f"SELECT * FROM mart.{tbl} WHERE proposal_id = ANY(%s)", pids)]
-        out["policy_decisions"] = [CE.strip_secret_columns(r) for r in _rows(dsn, "SELECT decision_id, alarm_id, policy, action, rule, decision_key, seq FROM mart.policy_decisions WHERE alarm_id = ANY(%s)", alarms)]
-    out["query_plans"] = [CE.strip_secret_columns(r) for r in _rows(dsn, "SELECT * FROM mart.query_plans WHERE episode_id=%s", ep)]
+            # proposal_drafts: column list not confirmed → SELECT * then drop any token/secret-named column (strip_secret_columns)
+            out["proposal_drafts"] = [CE.strip_secret_columns(r) for r in _rows(dsn, "SELECT * FROM mart.proposal_drafts WHERE proposal_id = ANY(%s)", pids)]
+            # approvals: explicit columns — approval_token is NOT selected
+            out["approvals"] = [CE.strip_secret_columns(r) for r in _rows(dsn, "SELECT approval_id, proposal_id, approver, decision, token_used, draft_version, content_sha256, thread_id, decided_at "
+                                                                            "FROM mart.approvals WHERE proposal_id = ANY(%s)", pids)]
+            out["work_orders"] = [CE.strip_secret_columns(r) for r in _rows(dsn, "SELECT work_order_id, proposal_id, approval_id, cmms_ref, status, draft_version, issued_at "
+                                                                              "FROM mart.work_orders WHERE proposal_id = ANY(%s)", pids)]
+        out["policy_decisions"] = [CE.strip_secret_columns(r) for r in _rows(dsn, "SELECT decision_id, alarm_id, policy, action, rule, decision_key, seq, decided_at FROM mart.policy_decisions WHERE alarm_id = ANY(%s)", alarms)]
+    out["query_plans"] = [CE.strip_secret_columns(r) for r in _rows(dsn, "SELECT query_id, episode_id, window_index, detector_version, thread_id, turn_id, initial_decision_id, kind, planned_expand, planned_rerank, "
+                                                                        "expand_status, expand_reason, rerank_status, rerank_reason, created_at, updated_at FROM mart.query_plans WHERE episode_id=%s", ep)]
     ws = _rows(dsn, "SELECT count(*) AS n, count(*) FILTER (WHERE q_used) AS n_q FROM mart.episode_windows WHERE episode_id=%s", ep)[0]
     out["episode_windows"] = {"n_rows": ws["n"], "n_q_used": ws["n_q"]}
     return out
@@ -185,12 +237,22 @@ def cmd_reset(a) -> int:
     d = out_dir(a.run_id)
     from core_pipeline.skills import replay_client as RC
     from core_pipeline.skills.client import SkillClient
-    backups = {p: backup_episode(dsn, str(RC.episode_for_preset(dsn, p))) for p in presets}
-    dump_json(d / "pre_reset_backup.json", {"at": now(), "note": "allow-listed rows deleted by clean_episode (verification evidence; not a restore backup)", "presets": backups})
-    emit({"phase": "backup", "presets": {p: {k: (len(v) if isinstance(v, list) else v) for k, v in b.items() if k != "episode_id"} for p, b in backups.items()}})
-    if a.backup_only:
-        return 0
     entries, replay_rows = {}, {}
+    if a.precheck_only:
+        # verification only: no backup, no clean_episode, no replay — uses the manifest the earlier reset wrote; the earlier backup file is left untouched
+        mp = d / "manifest_test.json"
+        if not mp.exists():
+            emit({"abort": f"{mp} not found; run a full reset first"}); return 2
+        if (d / "context.json").exists() and (load_json(d / "context.json").get("used_by_run")):
+            emit({"abort": "this run-id was already used by a run; choose a new run-id and reset"}); return 2
+        entries = {int(e["preset"]): e for e in load_json(mp)["presets"]}
+        replay_rows = {"note": "precheck-only rerun: replay rows of the earlier reset were not recorded (probe fix)"}
+    else:
+        backups = {p: backup_episode(dsn, str(RC.episode_for_preset(dsn, p))) for p in presets}
+        dump_json(d / "pre_reset_backup.json", {"at": now(), "note": "allow-listed rows deleted by clean_episode (verification evidence; not a restore backup)", "presets": backups})
+        emit({"phase": "backup", "presets": {p: {k: (len(v) if isinstance(v, list) else v) for k, v in b.items() if k != "episode_id"} for p, b in backups.items()}})
+        if a.backup_only:
+            return 0
 
     async def replay():
         async with SkillClient(env={"SGP_PG_DSN": dsn}) as sk:
@@ -205,9 +267,10 @@ def cmd_reset(a) -> int:
                               "pred_set": alarm["pred_set"] if alarm else []}
                 replay_rows[p] = {"elapsed_s": round(time.perf_counter() - t0, 1), "windows": [{k: r.get(k) for k in ("t", "gate", "alarm", "pred_set", "top1")} for r in rows]}
                 emit({"phase": "replay", "preset": p, "entry": entries[p], "elapsed_s": replay_rows[p]["elapsed_s"]})
-    asyncio.run(replay())
-    manifest = {"schema": "demo_presets/1", "generated_for": f"chat dev-set run {a.run_id} on the test DB (ST4-33) — NOT a demo manifest", "presets": [entries[p] for p in presets]}
-    dump_json(d / "manifest_test.json", manifest)
+    if not a.precheck_only:
+        asyncio.run(replay())
+        manifest = {"schema": "demo_presets/1", "generated_for": f"chat dev-set run {a.run_id} on the test DB (ST4-33) — NOT a demo manifest", "presets": [entries[p] for p in presets]}
+        dump_json(d / "manifest_test.json", manifest)
     # pre-check against the project manifest + DB probe + item requirements
     ctx = {"run_id": a.run_id, "created": now(), "dbname": CE.dbname_of(dsn), "code_commit": git_commit(), "dev_set_sha16": sha16(a.dev_set),
            "dev_set_revision": ds["_meta"].get("revision"), "project_manifest": a.manifest, "project_manifest_sha16": sha16(a.manifest),
@@ -223,16 +286,16 @@ def cmd_reset(a) -> int:
                     reasons.append(f"{k}: test {e.get(k)} vs project {pe.get(k)}")
             if sorted(e.get("pred_set") or []) != sorted(pe.get("pred_set") or []):
                 reasons.append(f"pred_set: test {e.get('pred_set')} vs project {pe.get('pred_set')}")
-        detector = ((pe or {}).get("versions") or {}).get("detector")
-        pr = probe(dsn, e["episode_id"], e["display_window"], detector, e.get("alarm_id"))
-        if not pr["found"]:
-            reasons.append("display window row not found")
+        vers = (pe or {}).get("versions") or {}
+        detector, contract = vers.get("detector"), (vers.get("contract_sha256") or vers.get("retrieve.contract_sha256"))
+        pr = probe(dsn, e["episode_id"], e["display_window"], detector, contract, e.get("alarm_id"))
+        reasons += pr["problems"]
         if pr.get("q_used"):
             reasons.append("q_used is true after reset")
         if pr.get("n_decisions"):
             reasons.append(f"{pr['n_decisions']} decision rows after reset")
         ctx["presets"][str(p)] = {"entry": e, "project_entry": {k: pe.get(k) for k in ("display_window", "kind", "alarm_id", "pred_set")} if pe else None,
-                                  "detector": detector, "probe": pr, "prep": "failed" if reasons else "ok", "reasons": reasons}
+                                  "detector": detector, "contract": contract, "probe": pr, "prep": "failed" if reasons else "ok", "reasons": reasons}
     for it in ds["items"]:
         p = str(it["context"]["preset"])
         pc = ctx["presets"][p]
@@ -240,6 +303,8 @@ def cmd_reset(a) -> int:
         req, e, pr = it["context"].get("requires") or {}, pc["entry"], pc["probe"]
         if req.get("kind") and e["kind"] != req["kind"]:
             reasons.append(f"kind {e['kind']} != {req['kind']}")
+        if req.get("kind") == "alarm" and not pr.get("alarm_id"):
+            reasons.append("no confirmed alarm row")
         if req.get("drift") and pr.get("drift") != req["drift"]:
             reasons.append(f"drift {pr.get('drift')} != {req['drift']}")
         if req.get("q_used") is False and pr.get("q_used"):
@@ -259,18 +324,21 @@ def cmd_reset(a) -> int:
 
 # ------------------------------------------------------------------------------------------------- run
 class CountingClient:
-    """Paid mode: refuses the (cap+1)-th request without sending it and stops after any billing-unknown outcome."""
+    """Paid mode: refuses the (cap+1)-th request without sending it and stops after any billing-unknown outcome.
+    Every request that IS sent is recorded with the item and tool (router / narrate) — the source of the LLM call counts."""
 
-    def __init__(self, inner, cap: int) -> None:
-        self.inner, self.cap, self.calls, self.stopped = inner, int(cap), [], None
+    def __init__(self, inner, cap: int, rec: CE.Recorder) -> None:
+        self.inner, self.cap, self.rec, self.calls, self.stopped = inner, int(cap), rec, [], None
 
     def complete(self, req):
+        from core_pipeline.agent import llm_router as LR
         from core_pipeline.agent.llm_client import LLMOutcomeUnknown, LLMRequestRejected
         if self.stopped:
             raise LLMRequestRejected(f"run stopped: {self.stopped}; request not sent")
         if len(self.calls) >= self.cap:
             raise LLMRequestRejected(f"cap: {self.cap} real calls already made; request not sent")
-        self.calls.append({"max_tokens": req.max_tokens, "estimated_input_tokens": req.estimated_input_tokens(), "reserved_usd": req.reserved_usd()})
+        self.calls.append({"n": len(self.calls) + 1, "item": self.rec.current, "tool": ("router" if req.system == LR.SYSTEM_PROMPT else "narrate"),
+                           "max_tokens": req.max_tokens, "estimated_input_tokens": req.estimated_input_tokens(), "reserved_usd": req.reserved_usd()})
         try:
             return self.inner.complete(req)
         except LLMOutcomeUnknown as e:
@@ -331,7 +399,7 @@ def build_llm(mode: str, dsn: str, a, ds: dict, rec: CE.Recorder, prompt_log: li
             raise SystemExit("SGP_LLM_BUDGET_USD is not set: the ledger would refuse every reservation")
         from core_pipeline.agent.llm_client import AnthropicClient
         ledger = PostgresLedger(dsn)
-        client = CountingClient(AnthropicClient(), a.max_calls)
+        client = CountingClient(AnthropicClient(), a.max_calls, rec)
     return LLMRouter(client, ledger, max_attempts=1), LLMNarrator(client, ledger, mode="llm", max_attempts=1), client, ledger
 
 
@@ -354,7 +422,7 @@ def cmd_run(a) -> int:
     start_diffs = {}
     for p, pc in ctx["presets"].items():
         e = pc["entry"]
-        pr = probe(dsn, e["episode_id"], e["display_window"], pc.get("detector"), e.get("alarm_id"))
+        pr = probe(dsn, e["episode_id"], e["display_window"], pc.get("detector"), pc.get("contract"), e.get("alarm_id"))
         diff = probe_diff(pc["probe"], pr)
         if diff:
             start_diffs[p] = diff
@@ -374,13 +442,9 @@ def cmd_run(a) -> int:
     from core_pipeline.agent.turns import TurnStore
     from core_pipeline.skills.client import SyncSkillClient
     from core_pipeline.skills.work_order import record_decision
-    try:
-        from demo.views import answer_blocks, answer_from_blocks
-        def views_roundtrip(ans):
-            return answer_from_blocks(answer_blocks(ans)) == ans
-    except Exception:
-        def views_roundtrip(ans):
-            return None
+    views_fn, views_sha, views_err = views_roundtrip_fn()
+    if views_err:
+        emit({"warning": "demo.views not importable; the display round-trip check will be unobserved", "error": views_err})
     ctx["used_by_run"] = {"run_id": a.run_id, "mode": a.mode, "started": now()}
     dump_json(ctx_path, ctx)
     run_threads: list[str] = []
@@ -413,8 +477,8 @@ def cmd_run(a) -> int:
                     turns_path.open("a", encoding="utf-8").write(json.dumps(obs, ensure_ascii=False, default=str) + "\n")
                     emit({"item": iid, "status": "not_executed", "reason": client.stopped})
                     continue
-                detector = ctx["presets"][str(p)].get("detector")
-                pre = probe(dsn, e["episode_id"], dw, detector, e.get("alarm_id"))
+                detector, contract = ctx["presets"][str(p)].get("detector"), ctx["presets"][str(p)].get("contract")
+                pre = probe(dsn, e["episode_id"], dw, detector, contract, e.get("alarm_id"))
                 diff = probe_diff(expected_probe[e["episode_id"]], pre)
                 if diff:
                     obs["context"]["contaminated"] = True
@@ -441,9 +505,10 @@ def cmd_run(a) -> int:
                             "interrupt": (res.get("interrupt") if res.get("status") == "waiting_approval" else None) and
                                          {k: res["interrupt"].get(k) for k in ("proposal_id", "draft_version", "content_sha256", "question")}})
                 if obs["narration"]:
-                    obs["views_roundtrip"] = views_roundtrip(obs["narration"]["answer"])
+                    obs["views_roundtrip"] = views_fn(obs["narration"]["answer"]) if views_fn else None
+                    obs["views_roundtrip_source"] = {"posthoc": False, "views_sha16": views_sha, "import_error": views_err}
                 # DB reads after the turn
-                post = probe(dsn, e["episode_id"], dw, detector, e.get("alarm_id"))
+                post = probe(dsn, e["episode_id"], dw, detector, contract, e.get("alarm_id"))
                 foreign = [k for k in post["decision_keys"] if not any(k.startswith(t + ":") for t in run_threads) and k not in expected_probe[e["episode_id"]]["decision_keys"]]
                 if foreign:
                     obs["context"]["contaminated"] = True
@@ -458,8 +523,12 @@ def cmd_run(a) -> int:
                     db.update(counts_for_alarm(dsn, e["alarm_id"]))
                 obs["db"] = db
                 if a.mode == "paid":
+                    obs["llm_calls"] = [c for c in client.calls if c.get("item") == iid]
                     rows = ledger_rows_for_thread(dsn, tid)
                     obs["ledger"] = rows
+                    blocking = [r["request_id"] for r in rows if r.get("usage_missing") or r.get("reservation_exceeded") or r["status"] == "PENDING"]
+                    if blocking and not client.stopped:                      # billing unknown / over-reservation: stop the run ourselves, not only the ledger
+                        client.stopped = f"ledger row(s) need manual resolution after item {iid}: {blocking}"[:200]
                     obs["router_ledger"] = next(({k: r.get(k) for k in ("status", "reason_code", "rule_extract", "llm_parsed", "merged", "validation_errors", "llm_raw_text", "fallback_reason")} for r in rows if r["tool"] == "router"), None)
                     obs["narrate_ledger"] = next(({k: r.get(k) for k in ("status", "reason_code", "prose", "rejected_prose", "check_errors", "fallback_reason", "violation")} for r in rows if r["tool"] == "narrate"), None)
                 sc = CE.score_item(it, obs)
@@ -513,36 +582,64 @@ def cmd_judge(a) -> int:
     return 0
 
 
+def rescore(d: Path, dev_set_path: str, allow_devset_change: bool = False) -> tuple[dict, list[dict], dict]:
+    """Recompute every item from turns.jsonl (the raw observations) with the CURRENT scoring code; result.json keeps the
+    run-time record. Same items and expectations only: a dev set whose sha differs from the one the run used is refused
+    unless --allow-devset-change is given (and then recorded)."""
+    res = load_json(d / "result.json")
+    ds = CE.load_dev_set(dev_set_path)
+    cur = sha16(dev_set_path)
+    if cur != res.get("dev_set_sha16"):
+        if not allow_devset_change:
+            raise SystemExit(f"dev set changed since the run (run {res.get('dev_set_sha16')} vs now {cur}); re-scoring must use the same items/expectations — "
+                             f"restore the dev set or pass --allow-devset-change (recorded)")
+    items = {it["id"]: it for it in ds["items"]}
+    obs_list = [json.loads(l) for l in (d / "turns.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    # post-hoc display round-trip on the STORED answers for items whose run-time check was unobserved (turns.jsonl itself is not rewritten)
+    views_fn, views_sha, views_err = views_roundtrip_fn()
+    posthoc = []
+    for o in obs_list:
+        if o.get("views_roundtrip") is None and (o.get("narration") or {}).get("answer") is not None and views_fn:
+            o["views_roundtrip"] = views_fn(o["narration"]["answer"])
+            o["views_roundtrip_source"] = {"posthoc": True, "views_sha16": views_sha, "at": now()}
+            posthoc.append(o["id"])
+    scored = [CE.score_item(items[o["id"]], o) for o in obs_list]
+    res["items"] = scored
+    res["summary"] = CE.summarize(scored, res["mode"])
+    res["rescored"] = {"at": now(), "from": "turns.jsonl", "scorer": scorer_version(), "dev_set_sha16_now": cur,
+                       "dev_set_changed_since_run": cur != res.get("dev_set_sha16"),
+                       "views_roundtrip_posthoc": {"items": posthoc, "views_sha16": views_sha, "import_error": views_err,
+                                                   "note": "string parse/reassemble preservation on stored answers (not a Streamlit render check)"}}
+    return res, obs_list, ds
+
+
 def cmd_score(a) -> int:
     d = out_dir(a.run_id)
-    res = load_json(d / "result.json")
+    res, obs_list, ds = rescore(d, a.dev_set, a.allow_devset_change)
     jp = d / "judgment.json"
     j = load_json(jp) if jp.exists() else None
-    human = {"judged": False}
+    human = CE.judgment_status(j, res["items"], ds)
     if j:
-        per, fails = {}, {}
-        for iid, v in j["items"].items():
-            if not v.get("applicable"):
-                continue
-            for c, verdict in (v.get("verdicts") or {}).items():
-                per.setdefault(c, {"pass": 0, "fail": 0, "unjudged": 0})
-                per[c]["pass" if verdict == "pass" else "fail" if verdict == "fail" else "unjudged"] += 1
-                if verdict == "fail":
-                    fails.setdefault(iid, []).append(c)
-        human = {"judged": True, "judge": j.get("judge"), "per_criterion": per, "failed_items": fails}
         for sc in res["items"]:
-            if sc["id"] in j["items"] and j["items"][sc["id"]].get("applicable"):
-                sc.setdefault("narration", {})["human"] = j["items"][sc["id"]].get("verdicts")
-                sc["narration"]["human_note"] = j["items"][sc["id"]].get("note")
+            v = (j.get("items") or {}).get(sc["id"]) or {}
+            if v.get("applicable") and sc.get("narration"):
+                sc["narration"]["human"] = v.get("verdicts")
+                sc["narration"]["human_note"] = v.get("note")
     res["summary"]["human"] = human
     res["scored_at"] = now()
     dump_json(d / "scored.json", res)
-    emit({"phase": "score", "summary": res["summary"], "out": str(d / "scored.json")})
+    emit({"phase": "score", "summary": res["summary"], "rescored": res["rescored"], "out": str(d / "scored.json")})
     if a.publish:
+        if not human["complete"]:
+            emit({"abort": "human judgment incomplete; fill judgment.json (judge) before --publish", "human": human}); return 3
+        ctx = load_json(d / "context.json") if (d / "context.json").exists() else {}
+        run_meta = {k: res.get(k) for k in ("run_id", "mode", "finished", "code_commit", "dev_set_revision", "dev_set_sha16", "project_manifest_sha16", "dbname", "threads", "rescored", "paid", "dry_run")}
+        run_meta["summary"] = res["summary"]
+        refined = CE.refined_result(ds, ctx, obs_list, res["items"], j, run_meta)
         dst = Path("evals/results") / f"chat_dev_{a.run_id}_{res.get('code_commit', 'unknown')}.json"
         dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(d / "scored.json", dst)
-        emit({"published": str(dst)})
+        dump_json(dst, refined)
+        emit({"published": str(dst), "items": len(refined["items"])})
     return 0
 
 
@@ -553,6 +650,7 @@ def main() -> int:
     r = sub.add_parser("reset"); common_args(r)
     r.add_argument("--manifest", default=PROJECT_MANIFEST, help="project demo_presets.json (selection reference)")
     r.add_argument("--backup-only", action="store_true", help="write the allow-listed backup and stop (no deletion)")
+    r.add_argument("--precheck-only", action="store_true", help="verify an already replayed state (no backup / clean / replay); keeps the earlier backup file")
     u = sub.add_parser("run"); common_args(u)
     u.add_argument("--mode", choices=("baseline", "dry", "paid"), required=True)
     u.add_argument("--max-calls", type=int, default=20)
@@ -560,7 +658,8 @@ def main() -> int:
     jd = sub.add_parser("judge"); common_args(jd)
     jd.add_argument("--judge", default="aiden")
     s = sub.add_parser("score"); common_args(s)
-    s.add_argument("--publish", action="store_true")
+    s.add_argument("--publish", action="store_true", help="write the refined result to evals/results/ (requires a complete judgment sheet)")
+    s.add_argument("--allow-devset-change", action="store_true", help="re-score even though evals/chat_dev_set.json changed since the run (recorded)")
     a = ap.parse_args()
     return {"reset": cmd_reset, "run": cmd_run, "judge": cmd_judge, "score": cmd_score}[a.cmd](a)
 
