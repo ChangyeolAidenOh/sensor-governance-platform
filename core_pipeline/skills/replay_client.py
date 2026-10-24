@@ -16,7 +16,8 @@ from core_pipeline import prereg_constants as P
 from core_pipeline.skills.client import SkillClient
 from core_pipeline.skills.servers.common import new_ctx
 
-SQL_FILES = ("sql/003_skill_state.sql", "sql/004_skill_state_rev2.sql", "sql/005_gate_checks.sql", "sql/007_graph_state.sql")
+SQL_FILES = ("sql/003_skill_state.sql", "sql/004_skill_state_rev2.sql", "sql/005_gate_checks.sql", "sql/007_graph_state.sql",
+             "sql/010_policy_isolation.sql")
 
 
 def apply_stage4a_schema(dsn: str) -> None:
@@ -46,6 +47,9 @@ def clean_episode(dsn: str, episode_id: UUID) -> None:
     with psycopg.connect(dsn) as conn, conn.cursor() as cur:
         cur.execute("SELECT alarm_id FROM mart.alarms WHERE episode_id=%s", (episode_id,))
         alarms = [r[0] for r in cur.fetchall()]
+        # first-observation snapshots reference alarms and episode_windows (schema v8, ST4-50); policy_events / eval_runs
+        # are evaluation-run ledgers, never deleted here
+        cur.execute("DELETE FROM mart.policy_input_snapshots WHERE episode_id=%s", (episode_id,))
         if alarms:
             cur.execute("SELECT proposal_id FROM mart.proposals WHERE alarm_id = ANY(%s)", (alarms,))
             props = [r[0] for r in cur.fetchall()]
