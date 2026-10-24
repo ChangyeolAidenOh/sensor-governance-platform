@@ -41,6 +41,14 @@ class DriverError(RuntimeError):
         self.code = code
 
 
+def assert_fastmcp_update_check_off() -> None:
+    """fastmcp's PyPI update check (settings.check_for_updates, env FASTMCP_CHECK_FOR_UPDATES) must be off for replay
+    runs. This disables that one request only; it is not an offline guarantee for model downloads or anything else."""
+    v = (os.environ.get("FASTMCP_CHECK_FOR_UPDATES") or "").strip().lower()
+    if v != "off":
+        raise DriverError("UPDATE_CHECK_ON", f"export FASTMCP_CHECK_FOR_UPDATES=off before a replay run (now {v!r})")
+
+
 def assert_no_llm_env() -> None:
     r = (os.environ.get("SGP_LLM_ROUTER") or "rule").strip().lower()
     n = (os.environ.get("SGP_LLM_NARRATOR") or "template").strip().lower()

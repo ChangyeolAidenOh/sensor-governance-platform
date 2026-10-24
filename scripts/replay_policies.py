@@ -23,7 +23,7 @@ import psycopg
 from core_pipeline.eval.archive import archive_run
 from core_pipeline.eval.eval_runs import (RUN_SPACE_KEY, DriverLease, RunStateError, assert_replay_dsn, completeness, finish_run, get_run,
                                           resume_run, set_status, start_run)
-from core_pipeline.eval.replay_driver import ReplayDriver, RunInfo, assert_no_llm_env, make_db_deps
+from core_pipeline.eval.replay_driver import ReplayDriver, RunInfo, assert_fastmcp_update_check_off, assert_no_llm_env, make_db_deps
 from core_pipeline.skills.client import SyncSkillClient
 from core_pipeline.skills.replay_client import clean_episode, episode_for_preset
 
@@ -87,6 +87,7 @@ def main() -> int:
     commit = a.commit or git_commit()
     if a.cmd == "start":
         assert_no_llm_env()
+        assert_fastmcp_update_check_off()
         if not a.presets:
             print("--presets required")
             return 2
@@ -97,6 +98,7 @@ def main() -> int:
         return 0
     if a.cmd == "resume":
         assert_no_llm_env()
+        assert_fastmcp_update_check_off()
         run = resume_run(dsn, a.run, commit)
         print(f"eval_run {run.eval_run_id} resumed")
         drive(dsn, run, a.t_max)
