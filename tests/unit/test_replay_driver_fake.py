@@ -17,7 +17,8 @@ import pytest
 
 from core_pipeline.eval import keys as K
 from core_pipeline.eval.policy_events import EventMismatch, MemoryEventStore
-from core_pipeline.eval.replay_driver import DriverDeps, DriverError, ReplayDriver, RunInfo, assert_no_llm_env, k5_envelope
+from core_pipeline.eval.replay_driver import (DriverDeps, DriverError, ReplayDriver, RunInfo, assert_fastmcp_update_check_off, assert_no_llm_env,
+                                               k5_envelope)
 from core_pipeline.policy.baselines import decide_baseline
 from core_pipeline.policy.decide_action import decide_action
 from core_pipeline.policy.initial_snapshot import SnapshotError, alarm_id_of, validate_k5
@@ -231,6 +232,18 @@ def test_llm_env_refused(monkeypatch):
     monkeypatch.delenv("SGP_LLM_NARRATOR")
     monkeypatch.setenv("SGP_LLM_ROUTER", "rule")
     assert_no_llm_env()
+
+
+def test_fastmcp_update_check_must_be_off(monkeypatch):
+    monkeypatch.delenv("FASTMCP_CHECK_FOR_UPDATES", raising=False)
+    with pytest.raises(DriverError) as e:
+        assert_fastmcp_update_check_off()
+    assert e.value.code == "UPDATE_CHECK_ON"
+    monkeypatch.setenv("FASTMCP_CHECK_FOR_UPDATES", "stable")
+    with pytest.raises(DriverError):
+        assert_fastmcp_update_check_off()
+    monkeypatch.setenv("FASTMCP_CHECK_FOR_UPDATES", "off")
+    assert_fastmcp_update_check_off()
 
 
 def test_request_ids_are_deterministic_and_distinguish_initial_from_after_query():
