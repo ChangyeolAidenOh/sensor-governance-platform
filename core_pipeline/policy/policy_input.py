@@ -75,5 +75,6 @@ K5_VERSION_KEYS = ("embedder", "reranker", "tau", "fault_map_sha256", "k_primary
 
 
 def versions_mismatch(stored: dict, expected: dict) -> list[str]:
-    """Keys of K5_VERSION_KEYS whose values differ (missing on either side counts as a difference)."""
-    return [k for k in K5_VERSION_KEYS if str(stored.get(k)) != str(expected.get(k))]
+    """Keys of K5_VERSION_KEYS that the run EXPECTS (present in `expected`) and that the stored envelope lacks or
+    carries with another value. Keys the run does not pin are not compared."""
+    return [k for k in K5_VERSION_KEYS if k in expected and str(stored.get(k)) != str(expected.get(k))]
