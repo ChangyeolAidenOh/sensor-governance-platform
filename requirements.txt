@@ -1,3 +1,6 @@
 # demo-public branch: Community Cloud installs this file. The landing page needs streamlit only.
-# Pinned to the version in requirements_v2.txt so a Cloud redeploy never silently changes the frontend bundle.
+# All three are pinned to the versions verified locally. Streamlit only requires starlette>=0.40, and
+# Starlette 1.8+ breaks Streamlit's gzip middleware (binary responses fail with an ASGI RuntimeError).
 streamlit==1.57.0
+starlette==0.52.1
+uvicorn==0.46.0
