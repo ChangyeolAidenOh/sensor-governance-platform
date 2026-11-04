@@ -1,7 +1,3 @@
-# Streamlit Cloud deployment (lightweight)
-# For full development setup: pip install -r requirements_dev.txt
-streamlit>=1.28.0
-plotly>=5.18.0
-pandas>=2.0.0
-numpy>=1.24.0
-pyarrow>=14.0.0
+# demo-public branch: Community Cloud installs this file. The landing page needs streamlit only.
+# Pinned to the version in requirements_v2.txt so a Cloud redeploy never silently changes the frontend bundle.
+streamlit==1.57.0
