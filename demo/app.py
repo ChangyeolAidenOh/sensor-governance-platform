@@ -267,9 +267,9 @@ if "thread_id" not in st.session_state:
                     "마지막 사례는 승인 게이트를 보여 주기 위한 합성 사례이며 실제 탐지 결과가 아닙니다.")
     st.stop()
 
-if st.session_state.get("notice"):
-    level, text = st.session_state.pop("notice")
-    getattr(st, level)(text)
+pending_notice = st.session_state.pop("notice", None)
+if pending_notice and not cfg.public:                                    # public mode shows it next to the input, below the turns
+    getattr(st, pending_notice[0])(pending_notice[1])
 
 if st.session_state.inflight:                                            # a rerun interrupted a turn → resend the same id
     rec = st.session_state.inflight
@@ -300,6 +300,9 @@ for t in st.session_state.turns:
             st.markdown(f"**상태** {sec['state_line']}")
         for line in sec["main_lines"]:                                   # recognised template lines only; the rest stays in the raw answer
             st.markdown(line)
+        if cfg.public:                                                   # public demo: the whole template answer is visible (narrator text, no envelopes)
+            for line in sec["hidden_lines"]:
+                st.markdown(line)
         if sec["clauses"]:                                               # 3. clause list, 4. bodies on demand
             st.markdown("**검색된 조항**" + (f" — {sec['criterion']}" if sec["criterion"] else ""))
             for c in sec["clauses"]:
@@ -316,7 +319,7 @@ for t in st.session_state.turns:
                         else:
                             st.caption("이 턴의 답변에 이 청크의 본문이 없습니다 (결정 스냅샷의 키만 기록됨).")
         with st.expander("실행 상세 — 답변 원문·정책 입력·승인/발행 봉투·트레이스·장부", expanded=False):   # 5. details
-            if sec["hidden_lines"]:
+            if sec["hidden_lines"] and not cfg.public:
                 st.caption(f"기본 화면에 표시하지 않은 답변 줄 {len(sec['hidden_lines'])}개 — 아래 원문에 포함")
             st.text(v.get("answer") or "")
             cols = st.columns(2)
@@ -358,6 +361,9 @@ if pa:
                     st.rerun()
     with st.expander("초안 상세 (근거 키·신호)", expanded=False):
         st.json({"p_adj": f.get("p_adj"), "pred_set": f.get("pred_set"), "evidence_keys": f.get("evidence_keys"), "decision_id": f.get("decision_id")})
+
+if pending_notice and cfg.public:
+    getattr(st, pending_notice[0])(pending_notice[1])
 
 if cfg.public and not (pa or st.session_state.inflight):
     qs = [q for q in public_questions() if st.session_state.kind in (q.get("kinds") or [st.session_state.kind])]
