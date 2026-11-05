@@ -40,7 +40,7 @@ from demo.ledger_view import cost_buckets, rows_for_turn
 from demo.runtime import DEFAULT_OWNER, DemoConfigError, build_runtime, fingerprint, load_config, mode_summary
 
 load_dotenv(".env")
-st.set_page_config(page_title="Process Reliability Agent — demo", layout="wide")
+st.set_page_config(page_title="Process Reliability Agent Demo", layout="wide")
 
 
 QUESTIONS_PATH = ROOT / "outputs" / "public_demo_questions.json"
@@ -227,25 +227,28 @@ with st.sidebar:
         st.write("LLM 호출: **활성** (장부 예약 경유)")
     else:
         st.write("LLM 호출: **거부** (`SGP_LLM_BUDGET_USD` 미설정)")
-    st.caption(f"활성화 시 사용할 모델: `{mode['model']}` — 0-F 규칙 선정(형식 오류 0 → 턴당 비용 최소 → 지연 최소, ST0-23)")
+    if cfg.public:
+        st.caption(f"활성화 시 사용할 모델: `{mode['model']}` (선정 규칙: 형식 오류 0, 턴당 비용 최소, 지연 최소)")
+    else:
+        st.caption(f"활성화 시 사용할 모델: `{mode['model']}` — 0-F 규칙 선정(형식 오류 0 → 턴당 비용 최소 → 지연 최소, ST0-23)")
     if mode["budget_set"]:
         st.caption(f"누적 상한 {mode['budget_usd']:.2f} USD (DSN 기준 누적 총액)")
-    st.divider()
-    st.header("비용 (장부, 읽기 전용)")
-    try:
-        b = cost_buckets(cfg.app_dsn)
-        st.write(f"확정 정산 **{b['settled_usd']:.6f}** USD ({b['settled_rows']}행)")
-        st.write(f"예약 중(PENDING) {b['pending_usd']:.6f} USD ({b['pending_rows']}행)")
-        st.write(f"usage 미확인 {b['usage_missing_usd']:.6f} USD ({b['usage_missing_rows']}행) — 미확정")
-        st.write(f"초과 미해소 {b['exceeded_unresolved_rows']}행 · 차단 행 {b['blocked_unresolved']}")
-    except Exception as e:
-        st.caption(f"장부 조회 실패: {type(e).__name__}")
+    if not cfg.public:
+        st.divider()
+        st.header("비용 (장부, 읽기 전용)")
+        try:
+            b = cost_buckets(cfg.app_dsn)
+            st.write(f"확정 정산 **{b['settled_usd']:.6f}** USD ({b['settled_rows']}행)")
+            st.write(f"예약 중(PENDING) {b['pending_usd']:.6f} USD ({b['pending_rows']}행)")
+            st.write(f"usage 미확인 {b['usage_missing_usd']:.6f} USD ({b['usage_missing_rows']}행) — 미확정")
+            st.write(f"초과 미해소 {b['exceeded_unresolved_rows']}행 · 차단 행 {b['blocked_unresolved']}")
+        except Exception as e:
+            st.caption(f"장부 조회 실패: {type(e).__name__}")
     st.divider()
     if cfg.public:
         st.header("공개 데모 안내")
-        st.caption(f"세션당 {G.SESSION_MAX_TURNS}턴 · {G.SESSION_MAX_MINUTES}분, 하루 {G.DAY_MAX_TURNS}턴 · {G.DAY_MAX_MINUTES}분. "
-                   "문서 근거 검색은 사전계산된 질문만 재생하고(추천 질문 버튼), 상태·진단·이력·방법론·승인은 자유 입력도 처리합니다. "
-                   "탐지 결과는 사전계산된 저장 행을 그대로 읽고, 작업지시 초안·승인·발행은 실시간으로 실행됩니다.")
+        st.caption("문서 근거 검색은 사전계산된 추천 질문에 대해 이루어집니다. 상태, 진단, 이력, 방법론, 승인은 사전계산과 무관하게 자유 입력으로 처리됩니다. "
+                   "탐지 결과는 사전계산된 저장 행을 그대로 읽고, 작업지시 초안, 승인, 발행은 실시간으로 실행됩니다.")
     else:
         if st.button("리소스 재시작 (Skill 서버·풀)"):
             try:
@@ -256,9 +259,9 @@ with st.sidebar:
                 st.rerun()
 
 # --------------------------------------------------------------------------------------------------------- main
-st.title("Process Reliability Agent — 대화형 데모")
+st.title("Process Reliability Agent Demo")
 if "thread_id" not in st.session_state:
-    st.info("왼쪽에서 사례를 고르고 세션을 시작하세요. 표시 창 이후의 정보는 대화에 들어오지 않습니다 (ST4-14).")
+    st.info("왼쪽에서 사례를 고르고 세션을 시작하세요. 표시 창 이후의 정보는 대화에 들어오지 않습니다." + ("" if cfg.public else " (ST4-14)"))
     if cfg.public:
         st.markdown("공개 데모입니다. 사례를 고른 뒤 추천 질문 버튼으로 시작해 보세요. 문서 근거 검색은 사전계산된 질문만 재생하고, 나머지 범주(상태, 진단, 이력, 방법론, 작업지시·승인)는 자유 입력도 처리합니다. "
                     "마지막 사례는 승인 게이트를 보여 주기 위한 합성 사례이며 실제 탐지 결과가 아닙니다.")
