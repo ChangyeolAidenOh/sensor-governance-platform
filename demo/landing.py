@@ -12,6 +12,7 @@ preregistered evaluation has not been run.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import streamlit as st
@@ -27,8 +28,20 @@ st.set_page_config(page_title="Process Reliability Agent", layout="wide")
 st.title("Process Reliability Agent")
 st.caption("sensor-governance-platform v2: 공정 센서 이상 탐지, 보정된 불확실성, 문서 근거, 사람 승인 흐름을 갖춘 대화형 LangGraph 에이전트")
 
-st.info("이 페이지는 프로젝트 소개용 정적 페이지입니다. 실제 대화형 데모는 Postgres와 Skill 서버가 필요해 현재는 로컬에서 실행합니다(아래 '로컬에서 실행하기'). "
-        "공개 URL용 재생 데모는 준비 중입니다. 평가(Stage 5)는 사전등록된 가설대로 준비 중이며, 결과 수치는 아직 없습니다.")
+DEMO_URL = (os.environ.get("PUBLIC_DEMO_URL") or "").strip()
+try:
+    DEMO_URL = (st.secrets.get("PUBLIC_DEMO_URL") or DEMO_URL).strip()
+except Exception:
+    pass
+
+if DEMO_URL:
+    st.success("대화형 데모를 바로 써 볼 수 있습니다. 사례 10개는 사전계산된 실제 결과를 재생하고, 마지막 사례는 승인 게이트를 보여 주기 위한 합성 사례입니다. "
+               "첫 접속 시 컨테이너가 깨어나는 데 15~30초가 걸릴 수 있습니다.")
+    st.link_button("대화형 데모 열기", DEMO_URL, type="primary")
+else:
+    st.info("이 페이지는 프로젝트 소개용 정적 페이지입니다. 실제 대화형 데모는 Postgres와 Skill 서버가 필요해 현재는 로컬에서 실행합니다(아래 '로컬에서 실행하기'). "
+            "공개 URL용 재생 데모는 준비 중입니다.")
+st.caption("평가(Stage 5)는 사전등록된 가설대로 준비 중이며, 결과 수치는 아직 없습니다.")
 
 st.header("무엇을 하는가")
 st.markdown("""

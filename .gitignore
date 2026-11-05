@@ -41,3 +41,9 @@ outputs/*_dev_check.json
 outputs/gate_reference_dev.json
 outputs/demo_presets_test.json
 outputs/chat_dev/
+# demo-public: local build artefacts and image assets (never committed)
+build/
+cloudrun/assets/
+outputs/demo_presets_public_raw.json
+
+!docs/public_demo_deploy.md

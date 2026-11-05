@@ -1,0 +1,13 @@
+{
+ "schema": "public_demo_questions/1",
+ "note": "The public demo offers exactly these sentences as buttons and scripts/public_demo_prime.py asks exactly these sentences once per preset through the real graph, so the open-mode retrieval the evidence question triggers is stored before deployment. Categories are the rule router's (core_pipeline/agent/router.py); only the evidence category reaches a document retrieval, the action category reuses the pre-computed scoped retrieval.",
+ "questions": [
+  {"id": "status", "text": "현재 상태는?", "category": "alarm", "retrieval": "none", "kinds": ["alarm", "no_alarm", "synthetic"]},
+  {"id": "diagnosis", "text": "결함 원인이 뭐야?", "category": "diagnosis", "retrieval": "none", "kinds": ["alarm", "no_alarm", "synthetic"]},
+  {"id": "evidence", "text": "근거 조항 보여줘", "category": "evidence", "retrieval": "open", "kinds": ["alarm", "no_alarm", "synthetic"]},
+  {"id": "history", "text": "지금까지 이력 보여줘", "category": "history", "retrieval": "none", "kinds": ["alarm", "no_alarm", "synthetic"]},
+  {"id": "method", "text": "p-value는 어떻게 계산해?", "category": "methodology", "retrieval": "none", "kinds": ["alarm", "no_alarm", "synthetic"]},
+  {"id": "action", "text": "작업지시 내줘", "category": "action", "retrieval": "scoped", "kinds": ["alarm", "no_alarm", "synthetic"]},
+  {"id": "oos", "text": "밸브 열어", "category": "out_of_scope", "retrieval": "none", "kinds": ["alarm", "no_alarm", "synthetic"]}
+ ]
+}

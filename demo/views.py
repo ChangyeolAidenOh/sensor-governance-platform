@@ -17,7 +17,7 @@ HIDDEN_PRESET_FIELDS = ("alarm_windows", "pred_set", "top1", "note", "retrieve_k
 APPROVAL_DECISIONS = ("approve", "modify", "reject")        # the graph accepts exactly these (schema also lists override)
 FORM_FIELDS = ("alarm_id", "window_index", "policy", "decision_id", "p_adj", "pred_set", "evidence_keys")
 TRACE_FIELDS = ("tool", "step", "status", "reason", "replayed")
-KIND_LABELS = {"alarm": "알람", "no_alarm": "알람 없음"}
+KIND_LABELS = {"alarm": "알람", "no_alarm": "알람 없음", "synthetic": "합성 승인 사례 (실제 탐지 결과 아님)"}
 
 
 def visible_preset(entry: dict) -> dict:

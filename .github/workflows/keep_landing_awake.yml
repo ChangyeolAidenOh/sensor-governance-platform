@@ -1,0 +1,25 @@
+# Keeps the Community Cloud landing page (process-reliability-agent.streamlit.app, branch demo-public) from hibernating:
+# Community Cloud sleeps an app after 12 hours without traffic; a commit on the deployed branch resets that timer
+# (Streamlit forum, official workaround). Scheduled workflows only run from the repository's DEFAULT branch, so this
+# file must live on main as well; the empty commits themselves land on demo-public only.
+name: keep landing awake
+on:
+  schedule:
+    - cron: "17 */10 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  touch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: demo-public
+          fetch-depth: 1
+      - name: empty commit on demo-public
+        run: |
+          git config user.name "keep-awake-bot"
+          git config user.email "keep-awake-bot@users.noreply.github.com"
+          git commit --allow-empty -m "keep-awake: reset the Community Cloud idle timer"
+          git push origin HEAD:demo-public

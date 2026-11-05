@@ -1,0 +1,26 @@
+# Cloud Run image of the PUBLIC demo (demo-public branch). Pins copied from requirements_v2_lock.full.txt (the local
+# environment the demo was verified in). No torch / sentence-transformers: the public app replays stored retrievals.
+streamlit==1.57.0
+starlette==0.52.1
+uvicorn==0.46.0
+psycopg==3.3.6
+psycopg-binary==3.3.6
+psycopg-pool==3.3.3
+langgraph==1.2.16
+langgraph-checkpoint==4.3.0
+langgraph-checkpoint-postgres==3.2.0
+langchain-core==1.6.12
+fastmcp==3.4.0
+mcp==1.30.0
+lightgbm==4.7.0
+scikit-learn==1.7.2
+scipy==1.15.3
+pandas==2.3.3
+numpy==1.26.4
+pyarrow==23.0.1
+joblib==1.6.0
+jsonschema==4.26.0
+referencing==0.37.0
+python-dotenv==1.2.4
+anthropic==1.15.0
+langchain-anthropic==1.7.6

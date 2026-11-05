@@ -11,9 +11,15 @@ The UI calls only start_session() and AgentSession.invoke / resume / pending_tur
   * what is rendered goes through demo.views allow-lists (ST4-26/27); the LLM mode is fixed at startup and the cost
     panel shows four separate buckets (ST4-28); the runtime is created once per process (ST4-30) and a turn runs
     synchronously under a spinner (ST4-31).
+Public mode (SGP_PUBLIC_DEMO=1, demo-public branch): owner is fixed to "public", the session start and every turn pass
+demo.public_guard (session / day limits), the questions of outputs/public_demo_questions.json are offered as buttons
+(document retrieval is replayed from stored results, so only those questions reach a stored result; the other categories
+answer free text), a refused pre-computed retrieval is explained in a notice, the synthetic approval preset is labelled
+in the sidebar and in every clause label, and the resource-restart button is hidden.
 """
 from __future__ import annotations
 
+import json
 import sys
 import uuid
 from pathlib import Path
@@ -28,6 +34,7 @@ if str(ROOT) not in sys.path:
 from core_pipeline.agent.manifest import entry_for_preset
 from core_pipeline.agent.session import AuthError, start_session
 from core_pipeline.agent.turns import TurnBusy, TurnConflict
+from demo import public_guard as G
 from demo import views as V
 from demo.ledger_view import cost_buckets, rows_for_turn
 from demo.runtime import DEFAULT_OWNER, DemoConfigError, build_runtime, fingerprint, load_config, mode_summary
@@ -36,12 +43,27 @@ load_dotenv(".env")
 st.set_page_config(page_title="Process Reliability Agent — demo", layout="wide")
 
 
-@st.cache_resource(show_spinner="런타임 준비 중 (Skill 서버 2개 기동)…")
+QUESTIONS_PATH = ROOT / "outputs" / "public_demo_questions.json"
+
+
+@st.cache_resource(show_spinner="런타임 준비 중 (Skill 서버 기동)")
 def get_runtime(fp: str):
     rt = build_runtime(load_config())
     import atexit
     atexit.register(rt.close)
     return rt
+
+
+@st.cache_data
+def public_questions() -> list[dict]:
+    if not QUESTIONS_PATH.is_file():
+        return []
+    doc = json.loads(QUESTIONS_PATH.read_text(encoding="utf-8"))
+    return [q for q in doc.get("questions", []) if q.get("text")]
+
+
+def _session_synthetic() -> bool:
+    return st.session_state.get("kind") == "synthetic"
 
 
 def _reset_session_state() -> None:
@@ -57,6 +79,8 @@ def _apply_result(result: dict, kind: str) -> None:
         st.session_state.turns.append({"role": "assistant", "view": view})
         st.session_state.pending_approval, st.session_state.inflight = None, None
         st.session_state.last_turn_id = result.get("turn_id")
+        if cfg.public and G.public_limit_hit(view):
+            st.session_state.notice = ("info", "공개 데모 한계: 이 질문의 문서 검색은 사전계산되어 있지 않아 근거 없이 답했습니다. 추천 질문 버튼의 문장을 그대로 쓰면 저장된 검색 결과가 재생됩니다.")
     elif status == "waiting_approval":
         st.session_state.pending_approval = view["interrupt"]
         st.session_state.inflight = None
@@ -102,6 +126,11 @@ def _send(rt, inflight: dict) -> None:
 
 
 def _submit_message(rt, message: str) -> None:
+    if cfg.public:
+        why = G.check_turn(cfg.app_dsn, st.session_state.thread_id)
+        if why:
+            st.session_state.notice = ("warning", why)
+            return
     rec = V.inflight_message(str(uuid.uuid4()), message)
     st.session_state.inflight = rec                                     # stored BEFORE the call (ST4-25)
     st.session_state.turns.append({"role": "user", "text": message, "turn_id": rec["client_request_id"]})
@@ -152,12 +181,24 @@ with st.sidebar:
     st.header("세션")
     if cfg.synthetic:
         st.error("합성 사례 모드 — 데모 아님 (test DB, 승인 계약 검증용)")
-    st.caption(f"DB {mode['database']} · 앱 역할 {mode['app_user']} · manifest {Path(mode['manifest']).name}")
+    if cfg.public:
+        st.caption(f"공개 데모 · 앱 역할 {mode['app_user']} · manifest {Path(mode['manifest']).name}")
+    else:
+        st.caption(f"DB {mode['database']} · 앱 역할 {mode['app_user']} · manifest {Path(mode['manifest']).name}")
     if "thread_id" not in st.session_state:
-        owner = st.text_input("승인자(owner)", value=DEFAULT_OWNER)
+        blocked = G.check_new_session(cfg.app_dsn) if cfg.public else None
+        if blocked:
+            st.warning(blocked)
+        if cfg.public:
+            owner = G.PUBLIC_OWNER
+            st.caption(f"승인자(owner): {owner} (공개 데모에서는 고정)")
+        else:
+            owner = st.text_input("승인자(owner)", value=DEFAULT_OWNER)
         presets = {int(p["preset"]): p for p in V.visible_presets(rt.manifest)}
         choice = st.selectbox("사례", list(presets), format_func=lambda n: V.preset_label(presets[n]))
-        if st.button("세션 시작", type="primary", disabled=not owner.strip()):
+        if cfg.public and int(choice) in cfg.synthetic_presets:
+            st.error("합성 사례: 실제 탐지 결과가 아닙니다. 근거 등급과 정책 결정을 인위적으로 '제안'으로 고정해 승인 게이트(approve / modify / reject)를 보여 주는 용도입니다.")
+        if st.button("세션 시작", type="primary", disabled=(not owner.strip()) or bool(blocked)):
             e = entry_for_preset(rt.manifest, int(choice))
             tid, secret = start_session(cfg.app_dsn, owner.strip(), int(choice), e["episode_id"], int(e["display_window"]))
             _reset_session_state()
@@ -167,6 +208,11 @@ with st.sidebar:
     else:
         st.write(f"프리셋 {st.session_state.preset} · 창 {st.session_state.display_window} · {V.KIND_LABELS.get(st.session_state.kind, st.session_state.kind)}")
         st.caption(f"thread {st.session_state.thread_id[:14]}… · 승인자 {st.session_state.owner}")
+        if _session_synthetic():
+            st.error("합성 사례 세션: 실제 탐지 결과가 아닙니다 (승인 게이트 시연용).")
+        if cfg.public:
+            u = G.session_usage(cfg.app_dsn, st.session_state.thread_id)
+            st.caption(f"이 세션 {u['turns']}/{G.SESSION_MAX_TURNS}턴 · {u['age_min']:.0f}/{G.SESSION_MAX_MINUTES}분")
         if st.button("세션 종료 (새 사례)"):
             _reset_session_state()
             st.rerun()
@@ -195,18 +241,27 @@ with st.sidebar:
     except Exception as e:
         st.caption(f"장부 조회 실패: {type(e).__name__}")
     st.divider()
-    if st.button("리소스 재시작 (Skill 서버·풀)"):
-        try:
-            rt.close()
-        finally:
-            get_runtime.clear()
-            _reset_session_state()
-            st.rerun()
+    if cfg.public:
+        st.header("공개 데모 안내")
+        st.caption(f"세션당 {G.SESSION_MAX_TURNS}턴 · {G.SESSION_MAX_MINUTES}분, 하루 {G.DAY_MAX_TURNS}턴 · {G.DAY_MAX_MINUTES}분. "
+                   "문서 근거 검색은 사전계산된 질문만 재생하고(추천 질문 버튼), 상태·진단·이력·방법론·승인은 자유 입력도 처리합니다. "
+                   "탐지 결과는 사전계산된 저장 행을 그대로 읽고, 작업지시 초안·승인·발행은 실시간으로 실행됩니다.")
+    else:
+        if st.button("리소스 재시작 (Skill 서버·풀)"):
+            try:
+                rt.close()
+            finally:
+                get_runtime.clear()
+                _reset_session_state()
+                st.rerun()
 
 # --------------------------------------------------------------------------------------------------------- main
 st.title("Process Reliability Agent — 대화형 데모")
 if "thread_id" not in st.session_state:
     st.info("왼쪽에서 사례를 고르고 세션을 시작하세요. 표시 창 이후의 정보는 대화에 들어오지 않습니다 (ST4-14).")
+    if cfg.public:
+        st.markdown("공개 데모입니다. 사례를 고른 뒤 추천 질문 버튼으로 시작해 보세요. 문서 근거 검색은 사전계산된 질문만 재생하고, 나머지 범주(상태, 진단, 이력, 방법론, 작업지시·승인)는 자유 입력도 처리합니다. "
+                    "마지막 사례는 승인 게이트를 보여 주기 위한 합성 사례이며 실제 탐지 결과가 아닙니다.")
     st.stop()
 
 if st.session_state.get("notice"):
@@ -245,7 +300,7 @@ for t in st.session_state.turns:
         if sec["clauses"]:                                               # 3. clause list, 4. bodies on demand
             st.markdown("**검색된 조항**" + (f" — {sec['criterion']}" if sec["criterion"] else ""))
             for c in sec["clauses"]:
-                with st.expander(V.clause_label(c, synthetic=cfg.synthetic), expanded=False):
+                with st.expander(V.clause_label(c, synthetic=(cfg.synthetic or _session_synthetic())), expanded=False):
                     st.caption(f"clause_key {c['clause_key']}")
                     for ch in c["chunks"]:                                # every retrieved chunk of the clause, in order
                         sc = f"스냅샷 {ch['score']:.3f}" if isinstance(ch["score"], (int, float)) else "스냅샷 —"
@@ -265,19 +320,19 @@ for t in st.session_state.turns:
             cols[0].json({"category": v.get("category"), "decision": v.get("decision"), "decision_after": v.get("decision_after"), "refs_discarded": v.get("turn_refs_discarded")})
             cols[1].json({"query": v.get("query"), "draft": v.get("draft"), "approval": v.get("approval"), "work_order": v.get("work_order")})
             if v.get("trace"):
-                st.dataframe(v["trace"], use_container_width=True, hide_index=True)
+                st.dataframe(v["trace"], width="stretch", hide_index=True)
             if mode["paid"] and v.get("turn_id"):
                 rows = rows_for_turn(cfg.app_dsn, st.session_state.thread_id, v["turn_id"])
                 st.caption(f"이번 턴 장부 행 {len(rows)}건 (thread + stage_key로 연결)")
                 if rows:
-                    st.dataframe(rows, use_container_width=True, hide_index=True)
+                    st.dataframe(rows, width="stretch", hide_index=True)
 
 pa = st.session_state.pending_approval
 if pa:
     st.subheader(f"승인 대기 — 작업지시 초안 v{pa['draft_version']}")
     f = pa["form"]
     st.caption(f"proposal {pa['proposal_id']} · sha256 {pa['content_sha256'][:16]}… · 창 {f.get('window_index')} · 정책 {f.get('policy')} · 승인자 {st.session_state.owner}")
-    st.dataframe(f["action_items"], use_container_width=True, hide_index=True)
+    st.dataframe(f["action_items"], width="stretch", hide_index=True)
     st.write(pa.get("question"))
     c1, c2, c3 = st.columns(3)
     if c1.button("승인 (approve)", type="primary"):
@@ -300,6 +355,18 @@ if pa:
                     st.rerun()
     with st.expander("초안 상세 (근거 키·신호)", expanded=False):
         st.json({"p_adj": f.get("p_adj"), "pred_set": f.get("pred_set"), "evidence_keys": f.get("evidence_keys"), "decision_id": f.get("decision_id")})
+
+if cfg.public and not (pa or st.session_state.inflight):
+    qs = [q for q in public_questions() if st.session_state.kind in (q.get("kinds") or [st.session_state.kind])]
+    if qs:
+        st.caption("추천 질문 (문서 근거 검색이 사전계산된 문장)")
+        cols = st.columns(min(4, len(qs)))
+        for i, q in enumerate(qs):
+            if cols[i % len(cols)].button(q["text"], key=f"q_{q.get('id', i)}"):
+                _reconcile_pending(rt)
+                if not (st.session_state.inflight or st.session_state.pending_approval):
+                    _submit_message(rt, q["text"].strip())
+                st.rerun()
 
 msg = st.chat_input("메시지 (예: 지금 어떤 상황이야? / 근거 조항 보여줘 / 작업지시 내줘)", disabled=bool(pa or st.session_state.inflight))
 if msg:
