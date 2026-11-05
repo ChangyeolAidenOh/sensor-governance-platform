@@ -167,12 +167,14 @@ def policy_by_preset(dsn: str, presets: tuple[int, ...]):
     from core_pipeline.agent.graph import POLICY
     from core_pipeline.agent.session import current_auth
     from core_pipeline.policy.decide_action import decide_action
-    from demo.synthetic import synthetic_policy
+    from core_pipeline.policy.decide_action import Decision
+    from demo.synthetic import SYNTHETIC_RULE
     cache: dict = {}
     syn = tuple(int(p) for p in presets)
+    reason = "synthetic propose (public demo synthetic case: approval-gate demonstration, not a policy result)"
 
     def policy(sig):
         if _preset_of(dsn, current_auth().thread_id, cache) in syn:
-            return synthetic_policy(sig)
+            return Decision("propose", SYNTHETIC_RULE, reason)
         return decide_action(sig, POLICY)
     return policy
