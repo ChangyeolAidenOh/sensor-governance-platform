@@ -24,7 +24,7 @@ COPY models/gate_v2 ./models/gate_v2
 COPY models/retrieval_v1/tau.json models/retrieval_v1/index_meta.json ./models/retrieval_v1/
 COPY cloudrun/assets/models/detector_v1 ./models/detector_v1
 COPY cloudrun/assets/models/diagnoser_v1 ./models/diagnoser_v1
-COPY cloudrun/assets/data/processed/gate_reference_v1.parquet ./data/processed/gate_reference_v1.parquet
+COPY cloudrun/assets/data/processed/ ./data/processed/
 
 RUN cd /tmp && python -c "import core_pipeline.skills.servers.skills_detect, demo.runtime, demo.public_guard, core_pipeline.skills.public_skills; print('imports ok')"
 

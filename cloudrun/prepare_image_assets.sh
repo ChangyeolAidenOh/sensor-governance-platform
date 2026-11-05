@@ -10,7 +10,8 @@ rm -rf "$DST"
 mkdir -p "$DST/models" "$DST/data/processed"
 cp -R "$SRC_ABS/models/detector_v1" "$DST/models/detector_v1"
 cp -R "$SRC_ABS/models/diagnoser_v1" "$DST/models/diagnoser_v1"
-cp "$SRC_ABS/data/processed/gate_reference_v1.parquet" "$DST/data/processed/gate_reference_v1.parquet"
+cp "$SRC_ABS"/data/processed/gate_reference_v1.* "$DST/data/processed/"
+ls -la "$DST/data/processed/"
 find "$DST" -name '.DS_Store' -delete
 du -sh "$DST"
 test -f outputs/demo_presets_public.json || { echo "outputs/demo_presets_public.json missing: run the local build first"; exit 1; }
